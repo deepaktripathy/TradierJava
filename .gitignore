@@ -1,0 +1,20 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# JVM crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+*.iml
+target/
+
+# Other misc local files and folders
+scratch
+debug.log
+test-debug.log
+**/my-test.properties
+
+.classpath
+.project
