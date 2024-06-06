@@ -18,7 +18,7 @@ public class Profile {
     private String name;
     
     @JsonProperty("account")
-    private Collection<Account> accounts;
+    private List<Account> accounts;
 
 	public String getId() {
 		return id;
@@ -28,7 +28,7 @@ public class Profile {
 		return name;
 	}
 
-	public Collection<Account> getAccounts() {
+	public List<Account> getAccounts() {
 		return accounts;
 	}
 

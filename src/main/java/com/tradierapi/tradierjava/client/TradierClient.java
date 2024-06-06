@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import com.tradierapi.tradierjava.model.HistoricPrice;
 import com.tradierapi.tradierjava.model.Option;
 import com.tradierapi.tradierjava.model.Order;
@@ -14,6 +16,7 @@ import com.tradierapi.tradierjava.model.Position;
 import com.tradierapi.tradierjava.model.Profile;
 import com.tradierapi.tradierjava.model.Quote;
 import com.tradierapi.tradierjava.model.Security;
+import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.model.StockSplitInfo;
 
 /**
@@ -32,9 +35,10 @@ public interface TradierClient {
     public static final String KEY_ACCOUNT_STOCK_BP = "stock_buying_power";//in a Margin account
     public static final String KEY_ACCOUNT_OPTION_BP = "option_buying_power";//in a Margin account
 
+    @Nullable
     Quote getQuote(String symbol);
 
-    Collection<Quote> getQuotes(String... symbols);
+    List<Quote> getQuotes(List<String> symbols);
 
     /**
      * If fromDate is after toDate or any of these are zero/negative, throws IllegalArgumentException
@@ -52,11 +56,23 @@ public interface TradierClient {
     
     /**
      * Look up stocks, etfs, indices as well as individual option symbols.
+     * 
+     * Note: This will be extremely slow since this will do a huge lookup. It is suggested to 
+     * use the overloaded method with a supplied type.
      * */
     Optional<Security> lookupSymbol(String symbol);
 
+    /**
+     * Look up stocks, etfs, indices as well as individual option symbols based on the 
+     * supplied type.
+     * */
+    Optional<Security> lookupSymbol(String symbol, List<SecurityType> types);
+
     /** 
      * Returns all the options traded for an underlying stock.
+     * 
+     * Note: This will be extremely slow since this will do a huge lookup. It is 
+     * suggested to use the overloaded method with supplied type(s).
      * */
     List<String> lookupOptionSymbolsFor(String underlyingSymbol);
     
@@ -130,5 +146,17 @@ public interface TradierClient {
      * Returns all the future option expiery dates for a stock
      * */
     List<LocalDate> getOptionExpieryDates(String underlyingStockSymbol);
+ 
+    /** 
+     * Tradier returns single digit exchange codes in some of the responses. 
+     * This returns a static map of all the names to the respective exchange codes. 
+     * */
+    Map<String, String> getStockExchangeCodeMap();
     
+    /** 
+     * Tradier returns single digit exchange codes in some of the responses. 
+     * This returns a static map of all the names to the respective option exchange codes. 
+     * */
+    Map<String, String> getOptionExchangeCodeMap();
+
 }

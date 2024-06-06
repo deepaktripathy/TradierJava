@@ -34,8 +34,8 @@ public class OrderRequest {
     
     //basic stock/option order constructor
     //TODO: Have to create separate order classes, order & orderStatus
-    public OrderRequest(String symbol, String type, String side, double quantity, String duration,
-			double price, ZonedDateTime create_date, String equityClass, double stopPrice, String orderTag, String optionSymbol) {
+    public OrderRequest(String symbol, String type, String side, double quantity, double price, 
+    		String duration, ZonedDateTime create_date, String equityClass, double stopPrice, String orderTag, String optionSymbol) {
     	
 		this.orderType = type;
 		this.symbol = symbol;

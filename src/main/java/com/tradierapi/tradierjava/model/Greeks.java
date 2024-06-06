@@ -11,57 +11,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Greeks {
     @JsonProperty("delta")
-    private double delta;
+    private Double delta;
     @JsonProperty("gamma")
-    private double gamma;
+    private Double gamma;
     @JsonProperty("theta")
-    private double theta;
+    private Double theta;
     @JsonProperty("vega")
-    private double vega;
+    private Double vega;
     @JsonProperty("rho")
-    private double rho;
+    private Double rho;
     @JsonProperty("phi")
-    private double phi;
+    private Double phi;
     
     @JsonProperty("bid_iv")
-    private double bidIv;
+    private Double bidIv;
     @JsonProperty("mid_iv")
-    private double midIv;
+    private Double midIv;
     @JsonProperty("ask_iv")
-    private double askIv;
+    private Double askIv;
     @JsonProperty("smv_vol")
-    private double smvVol;
+    private Double smvVol;
     @JsonProperty("updated_at")
     private String updatedAt;//TODO: convert it to a date?
     
-	public double getDelta() {
+	public Double getDelta() {
 		return delta;
 	}
-	public double getGamma() {
+	public Double getGamma() {
 		return gamma;
 	}
-	public double getTheta() {
+	public Double getTheta() {
 		return theta;
 	}
-	public double getVega() {
+	public Double getVega() {
 		return vega;
 	}
-	public double getRho() {
+	public Double getRho() {
 		return rho;
 	}
-	public double getPhi() {
+	public Double getPhi() {
 		return phi;
 	}
-	public double getBidIv() {
+	public Double getBidIv() {
 		return bidIv;
 	}
-	public double getMidIv() {
+	public Double getMidIv() {
 		return midIv;
 	}
-	public double getAskIv() {
+	public Double getAskIv() {
 		return askIv;
 	}
-	public double getSmvVol() {
+	public Double getSmvVol() {
 		return smvVol;
 	}
 	public String getUpdatedAt() {

@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -42,6 +44,7 @@ import com.tradierapi.tradierjava.model.Profile;
 import com.tradierapi.tradierjava.model.Quote;
 import com.tradierapi.tradierjava.model.Quotes;
 import com.tradierapi.tradierjava.model.Security;
+import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.utils.Utils;
 
 /**
@@ -58,6 +61,8 @@ import com.tradierapi.tradierjava.utils.Utils;
 public class TradierRestClient implements TradierClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TradierRestClient.class);
 
+	protected static final String DEFAULT_PATH = "https://api.tradier.com/v1";
+	
 	//property keys
 	private static String K_TRADIER_URL = "tradierjava.api.url";
 	private static String K_TRADIER_ACCOUNTID = "tradierjava.api.accountid";
@@ -74,23 +79,51 @@ public class TradierRestClient implements TradierClient {
 		LOGGER.info("Initiating TradierClient...");
 
 		this.tradierProps = (props == null) ? initProps() : props;
-		//TODO: Validate the property values
 
+		validateProps(this.tradierProps);
+		
 		this.headers = new HashMap<>();
 		setupHeaders();
 	}
 
 	protected static Properties initProps() {
 		try (InputStream in = TradierRestClient.class.getClassLoader()
-				.getResourceAsStream("tradier-config.properties")) {
+				.getResourceAsStream("tradier-api-config.properties")) {
 			Properties tradProperties = new Properties();
 			tradProperties.load(in);
 			return tradProperties;
 		} catch (IOException e) {
 			throw new IllegalArgumentException(
-					"Could not load default properties from com.tradier.tda.tda-api.properties in classpath");
+					"Could not load default properties from tradier-api-config.properties in classpath");
 		}
 	}
+	
+	  /**
+	   * validates the necessary props like token and account id. If others are missing, just use
+	   * friendly defaults.
+	   *
+	   * @param tdaProps the required props to validate
+	   */
+	  protected static void validateProps(Properties tradierProps) {
+	    LOGGER.trace("Validating props: {}", tradierProps.toString());
+	    String accountId = tradierProps.getProperty(K_TRADIER_ACCOUNTID);
+	    if (StringUtils.isBlank(accountId)) {
+	      throw new IllegalArgumentException(
+	          "Missing tradierjava.api.accountid property. This is obtained from Tradier account API settings page");
+	    }
+
+	    String token = tradierProps.getProperty(K_TRADIER_TOKEN);
+	    if (StringUtils.isBlank(token)) {
+	      throw new IllegalArgumentException(
+	          "Missing tradierjava.api.token property. This is obtained from the Tradier account API settings page when creating a authentication token");
+	    }
+
+	    String url = tradierProps.getProperty(K_TRADIER_URL);
+	    if (StringUtils.isBlank(url)) {
+	    	tradierProps.setProperty(K_TRADIER_URL, DEFAULT_PATH);
+	    }
+	  }
+
 
 	private void setupHeaders() {
 		headers.put("Authorization", "Bearer " + tradierProps.getProperty(K_TRADIER_TOKEN));
@@ -117,6 +150,7 @@ public class TradierRestClient implements TradierClient {
 			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
 			if(response.getStatusLine().getStatusCode() == 200) {
 				final String responseEntity = EntityUtils.toString(response.getEntity());
+				System.out.println("Entity: " + responseEntity);
 				ObjectMapper mapper = Utils.objectMapper();
 				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
 				JsonNode quoteNode = jsonTree.findPath("quotes").findPath("quote");
@@ -139,15 +173,16 @@ public class TradierRestClient implements TradierClient {
 		return quote;
 	}
 
+	//TODO: Add retryable as Tradier sometimes refuses connection
 	@Override
-	public Collection<Quote> getQuotes(String... symbols) {
+	public List<Quote> getQuotes(List<String> symbols) {
 		List<Quote> quotes = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/quotes");
 			RequestBuilder requestBuilder = RequestBuilder.post(url);
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			final HttpUriRequest request = requestBuilder
-					.addParameter("symbols", Arrays.stream(symbols).collect(Collectors.joining(",")))
+					.addParameter("symbols", symbols.stream().collect(Collectors.joining(",")))
 					.addParameter("greeks", "true")
 					.build();
 
@@ -159,10 +194,10 @@ public class TradierRestClient implements TradierClient {
 				JsonNode quoteNode = jsonTree.findPath("quotes").findPath("quote");
 	
 				//Tradier returns single quote as an object while multi as an Array
-				System.out.println("tree: " + jsonTree);
-				System.out.println("obj: " + quoteNode.isObject());
-				System.out.println("arr: " + quoteNode.isArray());
-				System.out.println("container: " + quoteNode.isContainerNode());
+//				System.out.println("tree: " + jsonTree);
+//				System.out.println("obj: " + quoteNode.isObject());
+//				System.out.println("arr: " + quoteNode.isArray());
+//				System.out.println("container: " + quoteNode.isContainerNode());
 				if(quoteNode.isObject()) {
 					Quote quote = mapper.treeToValue(quoteNode, Quote.class);
 					quotes.add(quote);
@@ -247,12 +282,23 @@ public class TradierRestClient implements TradierClient {
 
 	@Override
 	public Optional<Security> lookupSymbol(String symbol) {
+		List<SecurityType> types = new ArrayList();
+		types.add(SecurityType.stock);
+		types.add(SecurityType.option);
+		types.add(SecurityType.etf);
+		types.add(SecurityType.index);
+		return lookupSymbol(symbol, types);
+	}
+
+	@Override
+	public Optional<Security> lookupSymbol(String symbol, List<SecurityType> types) {
 		try {
+			String typesStr = types.stream().map(String::valueOf).collect(Collectors.joining(",")); 
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/lookup");
 			URI uri = new URIBuilder(url)
 					.setParameter("q", symbol)
 					//.setParameter("exchanges", "Q,N")//can even filter by exchange
-					.setParameter("types", "stock,option,etf,index")
+					.setParameter("types", typesStr)//"stock,option,etf,index")
 					.build();
 			RequestBuilder requestBuilder = RequestBuilder.get(uri);
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
@@ -598,7 +644,13 @@ public class TradierRestClient implements TradierClient {
 				final String responseEntity = EntityUtils.toString(response.getEntity());
 				ObjectMapper mapper = Utils.objectMapper();
 				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseEntity);
-				return jsonNode.findValue("id").asLong();
+				if(jsonNode.hasNonNull("order"))
+					return jsonNode.findValue("id").asLong();
+				if(jsonNode.has("errors")) {
+					JsonNode errorNode = jsonNode.findPath("errors").findPath("error");
+					String errorStr = mapper.writeValueAsString(errorNode);
+					LOGGER.error("Error response: " + errorStr);
+				}
 			}
 			else
 				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
@@ -620,7 +672,6 @@ public class TradierRestClient implements TradierClient {
 					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
 					.addParameter("class", orderReq.getEquityClass())// "option")
 					.addParameter("symbol", orderReq.getSymbol())
-					.addParameter("option_symbol", orderReq.getOptionSymbol())
 					.addParameter("side", orderReq.getSide())
 					.addParameter("quantity", ""+(int)orderReq.getQuantity())
 					.addParameter("type", orderReq.getOrderType())
@@ -628,6 +679,7 @@ public class TradierRestClient implements TradierClient {
 					.addParameter("price", ""+orderReq.getPrice())
 					.addParameter("stop", ""+orderReq.getStopPrice())
 					.addParameter("tag", orderReq.getOrderTag())
+					.addParameter("option_symbol", orderReq.getOptionSymbol())
 					.build();
 
 			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
@@ -635,7 +687,13 @@ public class TradierRestClient implements TradierClient {
 				final String responseEntity = EntityUtils.toString(response.getEntity());
 				ObjectMapper mapper = Utils.objectMapper();
 				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseEntity);
-				return jsonNode.findValue("id").asLong();
+				if(jsonNode.hasNonNull("order"))
+					return jsonNode.findValue("id").asLong();
+				if(jsonNode.has("errors")) {
+					JsonNode errorNode = jsonNode.findPath("errors").findPath("error");
+					String errorStr = mapper.writeValueAsString(errorNode);
+					LOGGER.error("Error response: " + errorStr);
+				}
 			}
 			else
 				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
@@ -755,8 +813,14 @@ public class TradierRestClient implements TradierClient {
 			if(statusCode == 200 || statusCode == 201) {//what is the code that the order is updated?
 				final String responseEntity = EntityUtils.toString(response.getEntity());
 				ObjectMapper mapper = Utils.objectMapper();
-				final com.fasterxml.jackson.databind.JsonNode json = mapper.readTree(responseEntity);
-				return json.findValue("id").asLong();
+				final com.fasterxml.jackson.databind.JsonNode jsonTree = mapper.readTree(responseEntity);
+				if(jsonTree.hasNonNull("order"))
+					return jsonTree.findValue("id").asLong();
+				if(jsonTree.has("errors")) {
+					JsonNode errorNode = jsonTree.findPath("errors").findPath("error");
+					String errorStr = mapper.writeValueAsString(errorNode);
+					LOGGER.error("Error response: " + errorStr);
+				}
 			}
 			else
 				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
@@ -767,5 +831,56 @@ public class TradierRestClient implements TradierClient {
 
 		return 0;
 	}
+
+	@Override
+    public Map<String, String> getOptionExchangeCodeMap() {
+    	String exchMapStr = "A=NYSE Amex Options"
+    			+ ",B=BOX Options Exchange"
+    			+ ",C=Chicago Board Options Exchange (CBOE)"
+    			+ ",H=ISE Gemini"
+    			+ ",I=International Securities Exchange (ISE)"
+    			+ ",M=MIAX Options Exchange"
+    			+ ",N=NYSE Arca Options"
+    			+ ",O=Options Price Reporting Authority (OPRA)"
+    			+ ",P=MIAX PEARL"
+    			+ ",Q=NASDAQ Options Market"
+    			+ ",T=NASDAQ OMX BX"
+    			+ ",W=C2 Options Exchange"
+    			+ ",X=NASDAQ OMX PHLX"
+    			+ ",Z=BATS Options Market";
+    	
+    	return Stream.of(exchMapStr.split("\\,"))
+                .collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
+    }
+    
+	@Override
+    public Map<String, String> getStockExchangeCodeMap() {
+    	String exchMapStr = "A=NYSE MKT"
+    			+ ",B=NASDAQ OMX BX"
+    			+ ",C=National Stock Exchange"
+    			+ ",D=FINRA ADF"
+    			+ ",E=Market Independent (Generated by Nasdaq SIP)"
+    			+ ",F=Mutual Funds/Money Markets (NASDAQ)"
+    			+ ",I=International Securities Exchange"
+    			+ ",J=Direct Edge A"
+    			+ ",K=Direct Edge X"
+    			+ ",L=Long Term Stock Exchange"
+    			+ ",M=Chicago Stock Exchange"
+    			+ ",N=NYSE"
+    			+ ",P=NYSE Arca"
+    			+ ",Q=NASDAQ OMX"
+    			+ ",S=NASDAQ Small Cap"
+    			+ ",T=NASDAQ Int"
+    			+ ",U=OTCBB"
+    			+ ",V=OTC other"
+    			+ ",W=CBOE"
+    			+ ",X=NASDAQ OMX PSX"
+    			+ ",G=GLOBEX"
+    			+ ",Y=BATS Y-Exchange"
+    			+ ",Z=BATS";
+    	
+    	return Stream.of(exchMapStr.split("\\,"))
+                .collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
+    }
 
 }

@@ -13,29 +13,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Position {
 
     @JsonProperty("cost_basis")
-    private double costBasis;
+    private Double costBasis;
     @JsonProperty("date_acquired")
     private ZonedDateTime dateAcquired;
     @JsonProperty("id")
-    private long id;
+    private Long id;
     @JsonProperty("quantity")
-    private double quantity;
+    private Double quantity;
     @JsonProperty("symbol")
     private String symbol;
     
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	public String getSymbol() {
 		return symbol;
 	}
-	public double getQuantity() {
+	public Double getQuantity() {
 		return quantity;
 	}
 	public ZonedDateTime getDateAcquired() {
 		return dateAcquired;
 	}
-	public double getCostBasis() {
+	public Double getCostBasis() {
 		return costBasis;
 	}
 	

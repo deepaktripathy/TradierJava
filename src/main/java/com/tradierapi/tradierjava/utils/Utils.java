@@ -1,7 +1,10 @@
 package com.tradierapi.tradierjava.utils;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,21 +16,39 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  */
 public class Utils {
 
-    public static String isoDate(long millisecondsSinceEpoch) {
+    public static ZoneId etZone = ZoneId.of( "America/New_York" );
+
+    /** Returns a local date from milliseconds since epoch */
+    public static LocalDate localDate(long millisecondsSinceEpoch) {
         final long millisPerDay = 1000 * 60 * 60 * 24;
-        return java.time.LocalDate.ofEpochDay(millisecondsSinceEpoch / millisPerDay).format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return java.time.LocalDate.ofEpochDay(millisecondsSinceEpoch / millisPerDay);
     }
 
-    public static String isoDate(LocalDate date) {
+    /** Returns the String representation in DateTimeFormatter.ISO_LOCAL_DATE format */
+    public static String isoDate(long millisecondsSinceEpoch) {
         final long millisPerDay = 1000 * 60 * 60 * 24;
+        return java.time.LocalDate.ofEpochDay(millisecondsSinceEpoch / millisPerDay)
+        		.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    /** Returns the String representation in DateTimeFormatter.ISO_LOCAL_DATE format */
+    public static String isoDate(LocalDate date) {
+        //final long millisPerDay = 1000 * 60 * 60 * 24;
         return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
     
+    /** Returns time since epoch to UTC time */
     public static long epochMilliseconds(LocalDate date) {
         final long millisPerDay = 1000 * 60 * 60 * 24;
         return date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
     }
     
+    /** Returns time at ET zone */
+    public static ZonedDateTime zonedDateTime(long millisecondsSinceEpoch) {
+    	return ZonedDateTime.ofInstant(Instant.ofEpochMilli(millisecondsSinceEpoch), etZone);    
+    }
+
+
     /**
      * Returns an ObjectMapper configured to handle new java.time & single list element. 
      * */

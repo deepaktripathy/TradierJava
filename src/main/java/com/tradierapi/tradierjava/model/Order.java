@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Order {
 
     @JsonProperty("id")
-    private long id;
+    private Long id;
     @JsonProperty("type")
     private String type;
     @JsonProperty("symbol")
@@ -23,25 +23,25 @@ public class Order {
     private String side;
     
     @JsonProperty("quantity")
-    private double quantity;
+    private Double quantity;
     @JsonProperty("status")
     private String status;
     @JsonProperty("duration")
     private String duration;
     
     @JsonProperty("price")
-    private double price;
+    private Double price;
     @JsonProperty("avg_fill_price")
-    private double avgFillPrice;
+    private Double avgFillPrice;
     
     @JsonProperty("exec_quantity")
-    private double execQuantity;
+    private Double execQuantity;
     @JsonProperty("last_fill_price")
-    private double lastFillPrice;
+    private Double lastFillPrice;
     @JsonProperty("last_fill_quantity")
-    private double lastFillQuantity;    
+    private Double lastFillQuantity;    
     @JsonProperty("remaining_quantity")
-    private double remainingQuantity;
+    private Double remainingQuantity;
     
     //can also be this format: yyyy-mm-ddTHH:mm:ss.SSSZ 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
@@ -60,13 +60,13 @@ public class Order {
     private String optionSymbol;
     
     @JsonProperty("stop_price")
-    private double stopPrice;
+    private Double stopPrice;
     @JsonProperty("reason_description")
     private String reasonDescription;
     @JsonProperty("tag")
     private String orderTag;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	public String getType() {
@@ -78,7 +78,7 @@ public class Order {
 	public String getSide() {
 		return side;
 	}
-	public double getQuantity() {
+	public Double getQuantity() {
 		return quantity;
 	}
 	public String getStatus() {
@@ -87,22 +87,22 @@ public class Order {
 	public String getDuration() {
 		return duration;
 	}
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public double getAvgFillPrice() {
+	public Double getAvgFillPrice() {
 		return avgFillPrice;
 	}
-	public double getExecQuantity() {
+	public Double getExecQuantity() {
 		return execQuantity;
 	}
-	public double getLastFillPrice() {
+	public Double getLastFillPrice() {
 		return lastFillPrice;
 	}
-	public double getLastFillQuantity() {
+	public Double getLastFillQuantity() {
 		return lastFillQuantity;
 	}
-	public double getRemainingQuantity() {
+	public Double getRemainingQuantity() {
 		return remainingQuantity;
 	}
 	public ZonedDateTime getCreateDate() {
@@ -118,7 +118,7 @@ public class Order {
 		return optionSymbol;
 	}
 	
-	public double getStopPrice() {
+	public Double getStopPrice() {
 		return stopPrice;
 	}
 	public String getReasonDescription() {

@@ -1,6 +1,7 @@
 package com.tradierapi.tradierjava.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,81 +12,63 @@ public class HistoricPrice {
     @JsonProperty("date")
     private LocalDate date;
     @JsonProperty("open")
-    private double open;
+    private Double open;
     @JsonProperty("high")
-    private double high;
+    private Double high;
     @JsonProperty("low")
-    private double low;
+    private Double low;
     @JsonProperty("close")
-    private double close;
+    private Double close;
     @JsonProperty("volume")
-    private int volume;
+    private Long volume;
 
     public LocalDate getDate() {
         return date;
     }
 
-    public double getOpen() {
+    public Double getOpen() {
         return open;
     }
 
-    public double getHigh() {
+    public Double getHigh() {
         return high;
     }
 
-    public double getLow() {
+    public Double getLow() {
         return low;
     }
 
-    public double getClose() {
+    public Double getClose() {
         return close;
     }
 
-    public int getVolume() {
+    public Long getVolume() {
         return volume;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public int hashCode() {
+		return Objects.hash(close, date, high, low, open, volume);
+	}
 
-        HistoricPrice that = (HistoricPrice) o;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HistoricPrice other = (HistoricPrice) obj;
+		return Objects.equals(close, other.close) && Objects.equals(date, other.date)
+				&& Objects.equals(high, other.high) && Objects.equals(low, other.low)
+				&& Objects.equals(open, other.open) && Objects.equals(volume, other.volume);
+	}
 
-        if (Double.compare(that.open, open) != 0) return false;
-        if (Double.compare(that.high, high) != 0) return false;
-        if (Double.compare(that.low, low) != 0) return false;
-        if (Double.compare(that.close, close) != 0) return false;
-        if (volume != that.volume) return false;
-        return date != null ? date.equals(that.date) : that.date == null;
-    }
+	@Override
+	public String toString() {
+		return "HistoricPrice [date=" + date + ", open=" + open + ", high=" + high + ", low=" + low + ", close=" + close
+				+ ", volume=" + volume + "]";
+	}
 
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = date != null ? date.hashCode() : 0;
-        temp = Double.doubleToLongBits(open);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(high);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(low);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(close);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + volume;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "HistoricalDailyPrice{" +
-                "date='" + date + '\'' +
-                ", open=" + open +
-                ", high=" + high +
-                ", low=" + low +
-                ", close=" + close +
-                ", volume=" + volume +
-                '}';
-    }
 }

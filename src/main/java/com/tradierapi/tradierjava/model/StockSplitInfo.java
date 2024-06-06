@@ -23,13 +23,13 @@ public class StockSplitInfo {
     private LocalDate exDate;
     
     @JsonProperty("adjustment_factor")
-    private double adjustmentFactor;
+    private Double adjustmentFactor;
     
     @JsonProperty("split_from")
-    private double splitFrom;
+    private Double splitFrom;
     
     @JsonProperty("split_to")
-    private double splitTo;
+    private Double splitTo;
     
     @JsonProperty("split_type")
     private String splitType;
@@ -42,15 +42,15 @@ public class StockSplitInfo {
 		return exDate;
 	}
 
-	public double getAdjustmentFactor() {
+	public Double getAdjustmentFactor() {
 		return adjustmentFactor;
 	}
 
-	public double getSplitFrom() {
+	public Double getSplitFrom() {
 		return splitFrom;
 	}
 
-	public double getSplitTo() {
+	public Double getSplitTo() {
 		return splitTo;
 	}
 
