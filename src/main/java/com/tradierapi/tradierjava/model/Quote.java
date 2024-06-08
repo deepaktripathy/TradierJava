@@ -86,7 +86,7 @@ public class Quote {
     @JsonProperty("expiration_type")
     private String expirationType;
     @JsonProperty("option_type")
-    private String optionType;
+    private OptionType optionType;
     
     @JsonProperty("root_symbol")
     private String rootSymbol;
@@ -235,7 +235,7 @@ public class Quote {
         return this.expirationType;
     }
 
-    public String getOptionType() {
+    public OptionType getOptionType() {
         return this.optionType;
     }
 

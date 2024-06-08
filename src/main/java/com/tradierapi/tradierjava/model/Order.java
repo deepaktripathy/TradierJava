@@ -16,7 +16,7 @@ public class Order {
     @JsonProperty("id")
     private Long id;
     @JsonProperty("type")
-    private String type;
+    private OrderType orderType;
     @JsonProperty("symbol")
     private String symbol;    
     @JsonProperty("side")
@@ -25,7 +25,7 @@ public class Order {
     @JsonProperty("quantity")
     private Double quantity;
     @JsonProperty("status")
-    private String status;
+    private OrderStatus status;
     @JsonProperty("duration")
     private String duration;
     
@@ -47,11 +47,13 @@ public class Order {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonProperty("create_date")
     private ZonedDateTime createDate;
+    
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonProperty("transaction_date")
     private ZonedDateTime transactionDate;
+    
     @JsonProperty("class")
-    private String equityClass;
+    private EquityClass equityClass;
     
     //strategy field: SKIPPED
     
@@ -69,8 +71,8 @@ public class Order {
 	public Long getId() {
 		return id;
 	}
-	public String getType() {
-		return type;
+	public OrderType getType() {
+		return orderType;
 	}
 	public String getSymbol() {
 		return symbol;
@@ -81,7 +83,7 @@ public class Order {
 	public Double getQuantity() {
 		return quantity;
 	}
-	public String getStatus() {
+	public OrderStatus getStatus() {
 		return status;
 	}
 	public String getDuration() {
@@ -111,7 +113,7 @@ public class Order {
 	public ZonedDateTime getTransactionDate() {
 		return transactionDate;
 	}
-	public String getEquityClass() {
+	public EquityClass getEquityClass() {
 		return equityClass;
 	}
 	public String getOptionSymbol() {
@@ -131,7 +133,7 @@ public class Order {
 	public int hashCode() {
 		return Objects.hash(avgFillPrice, createDate, duration, equityClass, execQuantity, id, lastFillPrice,
 				lastFillQuantity, optionSymbol, orderTag, price, quantity, reasonDescription, remainingQuantity, side,
-				status, stopPrice, symbol, transactionDate, type);
+				status, stopPrice, symbol, transactionDate, orderType);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -157,12 +159,12 @@ public class Order {
 				&& Objects.equals(side, other.side) && Objects.equals(status, other.status)
 				&& Double.doubleToLongBits(stopPrice) == Double.doubleToLongBits(other.stopPrice)
 				&& Objects.equals(symbol, other.symbol) && Objects.equals(transactionDate, other.transactionDate)
-				&& Objects.equals(type, other.type);
+				&& Objects.equals(orderType, other.orderType);
 	}
 	
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", type=" + type + ", symbol=" + symbol + ", side=" + side + ", quantity=" + quantity
+		return "Order [id=" + id + ", type=" + orderType + ", symbol=" + symbol + ", side=" + side + ", quantity=" + quantity
 				+ ", status=" + status + ", duration=" + duration + ", price=" + price + ", avgFillPrice="
 				+ avgFillPrice + ", execQuantity=" + execQuantity + ", lastFillPrice=" + lastFillPrice
 				+ ", lastFillQuantity=" + lastFillQuantity + ", remainingQuantity=" + remainingQuantity

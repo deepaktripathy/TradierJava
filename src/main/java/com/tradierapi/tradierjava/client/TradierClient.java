@@ -1,23 +1,22 @@
 package com.tradierapi.tradierjava.client;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import com.tradierapi.tradierjava.model.EquityOrderRequest;
 import com.tradierapi.tradierjava.model.HistoricPrice;
 import com.tradierapi.tradierjava.model.Option;
+import com.tradierapi.tradierjava.model.OptionOrderRequest;
 import com.tradierapi.tradierjava.model.Order;
-import com.tradierapi.tradierjava.model.OrderRequest;
 import com.tradierapi.tradierjava.model.Position;
 import com.tradierapi.tradierjava.model.Profile;
 import com.tradierapi.tradierjava.model.Quote;
 import com.tradierapi.tradierjava.model.Security;
 import com.tradierapi.tradierjava.model.SecurityType;
-import com.tradierapi.tradierjava.model.StockSplitInfo;
 
 /**
  * Currently this works and returns data for a single account. Decide if the client should lock to the 
@@ -99,14 +98,14 @@ public interface TradierClient {
     /**
      * Posts a stock only order 
      * */
-    long postStockOrder(OrderRequest order);
+    long postStockOrder(EquityOrderRequest order);
 
     /**
      * Posts an Option order. 
      * 
      * Request must have both the symbol as well as optionSymbol present.
      * */
-    long postOptionOrder(OrderRequest order);
+    long postOptionOrder(OptionOrderRequest order);
 
     /** 
      * Tradier API site notes: You can only modify some of the parameters like type, duration, price 

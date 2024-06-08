@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +31,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tradierapi.tradierjava.model.EquityOrderRequest;
 import com.tradierapi.tradierjava.model.HistoricPrice;
 import com.tradierapi.tradierjava.model.Option;
+import com.tradierapi.tradierjava.model.OptionOrderRequest;
 import com.tradierapi.tradierjava.model.Options;
 import com.tradierapi.tradierjava.model.Order;
-import com.tradierapi.tradierjava.model.OrderRequest;
 import com.tradierapi.tradierjava.model.Orders;
 import com.tradierapi.tradierjava.model.Position;
 import com.tradierapi.tradierjava.model.Positions;
@@ -473,6 +473,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			final HttpUriRequest request = requestBuilder
 					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
+					.addParameter("includeTags", "true")
 					.build();
 
 			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
@@ -619,7 +620,7 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public long postStockOrder(OrderRequest orderReq) {
+	public long postStockOrder(EquityOrderRequest orderReq) {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
@@ -628,12 +629,12 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			final HttpUriRequest request = requestBuilder
 					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.addParameter("class", orderReq.getEquityClass())
+					.addParameter("class", orderReq.getEquityClass().toString())
 					.addParameter("symbol", orderReq.getSymbol())
-					.addParameter("side", orderReq.getSide())
+					.addParameter("side", orderReq.getSide().toString())
 					.addParameter("quantity", ""+(int)orderReq.getQuantity())
-					.addParameter("type", orderReq.getOrderType())
-					.addParameter("duration", orderReq.getDuration())
+					.addParameter("type", orderReq.getOrderType().toString())
+					.addParameter("duration", orderReq.getDuration().toString())
 					.addParameter("price", ""+orderReq.getPrice())
 					.addParameter("stop", ""+orderReq.getStopPrice())
 					.addParameter("tag", orderReq.getOrderTag())
@@ -649,7 +650,7 @@ public class TradierRestClient implements TradierClient {
 				if(jsonNode.has("errors")) {
 					JsonNode errorNode = jsonNode.findPath("errors").findPath("error");
 					String errorStr = mapper.writeValueAsString(errorNode);
-					LOGGER.error("Error response: " + errorStr);
+					LOGGER.error("postStockOrder Error response: " + errorStr);
 				}
 			}
 			else
@@ -662,7 +663,7 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public long postOptionOrder(OrderRequest orderReq) {
+	public long postOptionOrder(OptionOrderRequest orderReq) {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
@@ -670,12 +671,12 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			final HttpUriRequest request = requestBuilder
 					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.addParameter("class", orderReq.getEquityClass())// "option")
+					.addParameter("class", orderReq.getEquityClass().toString())
 					.addParameter("symbol", orderReq.getSymbol())
-					.addParameter("side", orderReq.getSide())
+					.addParameter("side", orderReq.getSide().toString())
 					.addParameter("quantity", ""+(int)orderReq.getQuantity())
-					.addParameter("type", orderReq.getOrderType())
-					.addParameter("duration", orderReq.getDuration())
+					.addParameter("type", orderReq.getOrderType().toString())
+					.addParameter("duration", orderReq.getDuration().toString())
 					.addParameter("price", ""+orderReq.getPrice())
 					.addParameter("stop", ""+orderReq.getStopPrice())
 					.addParameter("tag", orderReq.getOrderTag())
@@ -692,7 +693,7 @@ public class TradierRestClient implements TradierClient {
 				if(jsonNode.has("errors")) {
 					JsonNode errorNode = jsonNode.findPath("errors").findPath("error");
 					String errorStr = mapper.writeValueAsString(errorNode);
-					LOGGER.error("Error response: " + errorStr);
+					LOGGER.error("postOptionOrder Error response: " + errorStr);
 				}
 			}
 			else
@@ -819,7 +820,7 @@ public class TradierRestClient implements TradierClient {
 				if(jsonTree.has("errors")) {
 					JsonNode errorNode = jsonTree.findPath("errors").findPath("error");
 					String errorStr = mapper.writeValueAsString(errorNode);
-					LOGGER.error("Error response: " + errorStr);
+					LOGGER.error("modifyOrder Error response: " + errorStr);
 				}
 			}
 			else
