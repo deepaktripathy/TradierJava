@@ -19,15 +19,16 @@ public class Order {
     private OrderType orderType;
     @JsonProperty("symbol")
     private String symbol;    
+    
     @JsonProperty("side")
-    private String side;
+    private Side side;
     
     @JsonProperty("quantity")
     private Double quantity;
     @JsonProperty("status")
     private OrderStatus status;
     @JsonProperty("duration")
-    private String duration;
+    private Duration duration;
     
     @JsonProperty("price")
     private Double price;
@@ -77,7 +78,7 @@ public class Order {
 	public String getSymbol() {
 		return symbol;
 	}
-	public String getSide() {
+	public Side getSide() {
 		return side;
 	}
 	public Double getQuantity() {
@@ -86,7 +87,7 @@ public class Order {
 	public OrderStatus getStatus() {
 		return status;
 	}
-	public String getDuration() {
+	public Duration getDuration() {
 		return duration;
 	}
 	public Double getPrice() {

@@ -561,7 +561,6 @@ public class TradierRestClient implements TradierClient {
 				if(! cashNode.isNull() && !cashNode.isMissingNode()) {
 					//interestingly cash account dont have the stock/option BP!!!
 					availableCash = cashNode.get(KEY_ACCOUNT_CASH_AVAILABLE).asDouble();
-					//LOGGER.debug("Json cash available: " + availableCash);
 				}
 				double stockBp, optionBp;
 				stockBp = optionBp = 0;
