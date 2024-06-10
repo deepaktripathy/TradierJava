@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,4 +60,17 @@ public class Utils {
 		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 		return mapper;
     }
+    
+    /** Adds the key:value pair to the supplied map if the value is non-null */
+    public static void addIfValid(Map map, String key, Object value) {
+    	if(value != null) {
+    		if(value instanceof String) {
+    			if(!((String)value).isEmpty())
+    	    		map.put(key, value);
+    		}
+    		else
+        		map.put(key, "" + value);
+    	}
+    }
+
 }

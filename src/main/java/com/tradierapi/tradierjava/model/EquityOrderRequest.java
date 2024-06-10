@@ -1,5 +1,9 @@
 package com.tradierapi.tradierjava.model;
 
+import java.util.Map;
+
+import com.tradierapi.tradierjava.utils.Utils;
+
 /**
  * Fields from: https://documentation.tradier.com/brokerage-api/trading/place-equity-order
  * 
@@ -56,5 +60,15 @@ public class EquityOrderRequest extends OrderRequest {
 	public String toString() {
 		return "EquityOrderRequest [side=" + side
 				+ ", equityClass=" + equityClass + "]";
-	}    
+	}  
+	
+	/** Returns all non-empty/null parameters as key-value pairs where each key is a valid API request key*/
+	@Override
+    public Map<String, String> getRequestParams() {
+        Map<String, String> paramMap = super.getRequestParams();
+        Utils.addIfValid(paramMap, "side", side);
+
+        return paramMap;
+    }
+
 }

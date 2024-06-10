@@ -4,8 +4,6 @@ import static com.tradierapi.tradierjava.utils.Utils.isoDate;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,12 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +39,14 @@ import com.tradierapi.tradierjava.model.Security;
 import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.utils.Utils;
 
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 /**
  * Looks like we cant use Gson for parsing since Gson mangles all the numbers to doubles, even orderIds 
  * are returned as E'notations. So, Jackson is the better choice even though somewhat slower.
@@ -62,7 +62,7 @@ public class TradierRestClient implements TradierClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TradierRestClient.class);
 
 	protected static final String DEFAULT_PATH = "https://api.tradier.com/v1";
-	
+
 	//property keys
 	private static String K_TRADIER_URL = "tradierjava.api.url";
 	private static String K_TRADIER_ACCOUNTID = "tradierjava.api.accountid";
@@ -81,7 +81,7 @@ public class TradierRestClient implements TradierClient {
 		this.tradierProps = (props == null) ? initProps() : props;
 
 		validateProps(this.tradierProps);
-		
+
 		this.headers = new HashMap<>();
 		setupHeaders();
 	}
@@ -97,33 +97,32 @@ public class TradierRestClient implements TradierClient {
 					"Could not load default properties from tradier-api-config.properties in classpath");
 		}
 	}
-	
-	  /**
-	   * validates the necessary props like token and account id. If others are missing, just use
-	   * friendly defaults.
-	   *
-	   * @param tdaProps the required props to validate
-	   */
-	  protected static void validateProps(Properties tradierProps) {
-	    LOGGER.trace("Validating props: {}", tradierProps.toString());
-	    String accountId = tradierProps.getProperty(K_TRADIER_ACCOUNTID);
-	    if (StringUtils.isBlank(accountId)) {
-	      throw new IllegalArgumentException(
-	          "Missing tradierjava.api.accountid property. This is obtained from Tradier account API settings page");
-	    }
 
-	    String token = tradierProps.getProperty(K_TRADIER_TOKEN);
-	    if (StringUtils.isBlank(token)) {
-	      throw new IllegalArgumentException(
-	          "Missing tradierjava.api.token property. This is obtained from the Tradier account API settings page when creating a authentication token");
-	    }
+	/**
+	 * validates the necessary props like token and account id. If others are missing, just use
+	 * friendly defaults.
+	 *
+	 * @param tdaProps the required props to validate
+	 */
+	protected static void validateProps(Properties tradierProps) {
+		LOGGER.trace("Validating props: {}", tradierProps.toString());
+		String accountId = tradierProps.getProperty(K_TRADIER_ACCOUNTID);
+		if (StringUtils.isBlank(accountId)) {
+			throw new IllegalArgumentException(
+					"Missing tradierjava.api.accountid property. This is obtained from Tradier account API settings page");
+		}
 
-	    String url = tradierProps.getProperty(K_TRADIER_URL);
-	    if (StringUtils.isBlank(url)) {
-	    	tradierProps.setProperty(K_TRADIER_URL, DEFAULT_PATH);
-	    }
-	  }
+		String token = tradierProps.getProperty(K_TRADIER_TOKEN);
+		if (StringUtils.isBlank(token)) {
+			throw new IllegalArgumentException(
+					"Missing tradierjava.api.token property. This is obtained from the Tradier account API settings page when creating a authentication token");
+		}
 
+		String url = tradierProps.getProperty(K_TRADIER_URL);
+		if (StringUtils.isBlank(url)) {
+			tradierProps.setProperty(K_TRADIER_URL, DEFAULT_PATH);
+		}
+	}
 
 	private void setupHeaders() {
 		headers.put("Authorization", "Bearer " + tradierProps.getProperty(K_TRADIER_TOKEN));
@@ -138,21 +137,26 @@ public class TradierRestClient implements TradierClient {
 		Quote quote = null;
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/quotes");
-			URI uri = new URIBuilder(url)
-					.build();
-			RequestBuilder requestBuilder = RequestBuilder.get(uri);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("symbols", symbol)
-					.addParameter("greeks", "true")// we need a separate method for options to make it usable.
-					.build();
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder
+			.addQueryParameter("symbols", symbol)
+			.addQueryParameter("greeks", "true");
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
-				System.out.println("Entity: " + responseEntity);
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 				JsonNode quoteNode = jsonTree.findPath("quotes").findPath("quote");
 				//Tradier returns single quote as an object while multi as an Array
 				if(quoteNode.isObject()) {
@@ -165,9 +169,9 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
-		catch(IOException|URISyntaxException ex) {
+		catch(IOException ex) {
 			throw new RuntimeException(ex);
 		}
 		return quote;
@@ -179,25 +183,29 @@ public class TradierRestClient implements TradierClient {
 		List<Quote> quotes = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/quotes");
-			RequestBuilder requestBuilder = RequestBuilder.post(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("symbols", symbols.stream().collect(Collectors.joining(",")))
-					.addParameter("greeks", "true")
-					.build();
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder
+			.addQueryParameter("symbols", symbols.stream().collect(Collectors.joining(",")))
+			.addQueryParameter("greeks", "true");
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 				JsonNode quoteNode = jsonTree.findPath("quotes").findPath("quote");
-	
+
 				//Tradier returns single quote as an object while multi as an Array
-//				System.out.println("tree: " + jsonTree);
-//				System.out.println("obj: " + quoteNode.isObject());
-//				System.out.println("arr: " + quoteNode.isArray());
-//				System.out.println("container: " + quoteNode.isContainerNode());
 				if(quoteNode.isObject()) {
 					Quote quote = mapper.treeToValue(quoteNode, Quote.class);
 					quotes.add(quote);
@@ -209,7 +217,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
@@ -237,27 +245,32 @@ public class TradierRestClient implements TradierClient {
 
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/history");
-			URI uri = new URIBuilder(url)
-					.setParameter("symbol", symbol)
-					.build();
-			RequestBuilder requestBuilder = RequestBuilder.get(uri);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder.addQueryParameter("symbol", symbol);
 			if(fromDate != null && toDate != null) {
-				requestBuilder.addParameter("start", isoDate(fromDate));
-				requestBuilder.addParameter("end", isoDate(toDate));
+				httpBuilder.addQueryParameter("start", isoDate(fromDate));
+				httpBuilder.addQueryParameter("end", isoDate(toDate));
 			}
-			final HttpUriRequest request = requestBuilder.build();
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 				JsonNode dayNode = jsonTree.findPath("history").findPath("day");
-	
+
 				if(dayNode.isNull() || dayNode.isMissingNode())
 					return new ArrayList<>();
-	
+
 				//Tradier returns single quote as an object while multi as an Array
 				if(dayNode.isObject()) {
 					HistoricPrice historic = mapper.treeToValue(dayNode, HistoricPrice.class);
@@ -272,9 +285,9 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
-		catch(IOException|URISyntaxException ex) {
+		catch(IOException ex) {
 			throw new RuntimeException(ex);
 		}
 		return new ArrayList<>();
@@ -282,7 +295,7 @@ public class TradierRestClient implements TradierClient {
 
 	@Override
 	public Optional<Security> lookupSymbol(String symbol) {
-		List<SecurityType> types = new ArrayList();
+		List<SecurityType> types = new ArrayList<>();
 		types.add(SecurityType.stock);
 		types.add(SecurityType.option);
 		types.add(SecurityType.etf);
@@ -295,25 +308,33 @@ public class TradierRestClient implements TradierClient {
 		try {
 			String typesStr = types.stream().map(String::valueOf).collect(Collectors.joining(",")); 
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/lookup");
-			URI uri = new URIBuilder(url)
-					.setParameter("q", symbol)
-					//.setParameter("exchanges", "Q,N")//can even filter by exchange
-					.setParameter("types", typesStr)//"stock,option,etf,index")
-					.build();
-			RequestBuilder requestBuilder = RequestBuilder.get(uri);
+
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder.addQueryParameter("includeTags", "true")
+			.addQueryParameter("q", symbol)
+			//.addQueryParameter("exchanges", "Q,N")//can even filter by exchange
+			.addQueryParameter("types", typesStr);
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder.build();
-			
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 				JsonNode lookupNode = jsonTree.findPath("securities").findPath("security");
-	
+
 				if(lookupNode.isMissingNode())
 					return Optional.empty();
-				
+
 				//Tradier returns single security as an object while multi as an Array
 				//but, since this does approx matches, it can return an array of similar ones
 				if(lookupNode.isObject()) {
@@ -334,9 +355,9 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
-		catch(IOException|URISyntaxException ex) {
+		catch(IOException ex) {
 			throw new RuntimeException(ex);
 		}
 
@@ -347,21 +368,27 @@ public class TradierRestClient implements TradierClient {
 	public List<String> lookupOptionSymbolsFor(String underlyingStockSymbol) {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/lookup");
-			URI uri = new URIBuilder(url)
-					.build();
-			RequestBuilder requestBuilder = RequestBuilder.get(uri);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("underlying", underlyingStockSymbol)
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder.addQueryParameter("underlying", underlyingStockSymbol);
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 				JsonNode optionsNode = jsonTree.findPath("symbols").findPath("options");
-	
+
 				//Tradier returns single quote as an object while multi as an Array
 				if(optionsNode.isObject()) {
 					String optionSymbol = mapper.treeToValue(optionsNode, String.class);
@@ -373,9 +400,9 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
-		catch(IOException|URISyntaxException ex) {
+		catch(IOException ex) {
 			throw new RuntimeException(ex);
 		}
 
@@ -395,30 +422,37 @@ public class TradierRestClient implements TradierClient {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
-			URI uri = new URIBuilder(url)
-					.setParameter("includeTags", "true")
-					.build();
-			RequestBuilder requestBuilder = RequestBuilder.get(uri);
+
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder.addQueryParameter("includeTags", "true");
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder.build();
-			
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 
 				JsonNode orderNode = jsonTree.findPath("order");
-	
+
 				if(orderNode.isObject()) {
 					order = mapper.treeToValue(orderNode, Order.class);
 					return Optional.of(order);
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
-		catch(IOException|URISyntaxException ex) {
+		catch(IOException ex) {
 			throw new RuntimeException(ex);
 		}
 		return Optional.empty();
@@ -430,17 +464,22 @@ public class TradierRestClient implements TradierClient {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/positions", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 
 				JsonNode positionNode = jsonTree.findPath("positions").findPath("position");
 				if(positionNode.isObject()) {
@@ -454,7 +493,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -466,22 +505,30 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public List<Order> getOrders() {
 		List<Order> orders = new ArrayList<>();
-		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
-					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.addParameter("includeTags", "true")
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+		String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
+				tradierProps.getProperty(K_TRADIER_ACCOUNTID));
+
+		HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+		httpBuilder.addQueryParameter("includeTags", "true");
+
+		Request.Builder requestBuilder = new Request.Builder()
+				.url(httpBuilder.build())
+				.get();
+		headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+		Request request = requestBuilder.build();
+
+		OkHttpClient client = new OkHttpClient();
+		try {
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);
-	
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);  
+
 				JsonNode orderNode = jsonTree.findPath("orders").findPath("order");
 				//Tradier returns single quote as an object while multi as an Array
 				if(orderNode.isObject()) {
@@ -495,7 +542,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -507,16 +554,25 @@ public class TradierRestClient implements TradierClient {
 	public Profile getUserProfile() {
 		try {
 			String url = tradierProps.getProperty(K_TRADIER_URL) + "user/profile";
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder.build();
+			//////////////////
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final String responseEntity = EntityUtils.toString(response.getEntity());
-	
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 				JsonNode profileNode = jsonTree.findPath("profile");
 				if(profileNode.isObject()) {
 					Profile profile = mapper.treeToValue(profileNode, Profile.class);
@@ -524,7 +580,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
@@ -535,28 +591,35 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public Map<String, Object> getAccountBalances(String accountId) {
 		Map<String, Object> params = new HashMap<>();
-		
+
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/balances", accountId);
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
-	
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);    	    
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
+
 				JsonNode balancesNode = jsonTree.findPath("balances");
 				JsonNode marginNode = balancesNode.findPath("margin");
 				JsonNode cashNode = balancesNode.findPath("cash");
 				//JsonNode pdtNode = balancesNode.findPath("pdt");
-				
+
 				String accountType = balancesNode.get(KEY_ACCOUNT_ACCOUNT_TYPE).asText();
 				double totalCash = balancesNode.get(KEY_ACCOUNT_TOTAL_CASH).asDouble();
 				double pendingCash = balancesNode.get(KEY_ACCOUNT_PENDING_CASH).asDouble();
-	
+
 				double availableCash = 0;
 				if(! cashNode.isNull() && !cashNode.isMissingNode()) {
 					//interestingly cash account dont have the stock/option BP!!!
@@ -569,7 +632,7 @@ public class TradierRestClient implements TradierClient {
 					optionBp = marginNode.get(KEY_ACCOUNT_OPTION_BP).asDouble();
 				}
 				//look inside the PDT node?
-				
+
 				//common entries
 				params.put(KEY_ACCOUNT_ACCOUNT_TYPE, accountType);
 				params.put(KEY_ACCOUNT_TOTAL_CASH, totalCash);
@@ -581,7 +644,7 @@ public class TradierRestClient implements TradierClient {
 				params.put(KEY_ACCOUNT_CASH_AVAILABLE, availableCash);
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
@@ -595,21 +658,28 @@ public class TradierRestClient implements TradierClient {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
 
-			RequestBuilder requestBuilder = RequestBuilder.delete(url);
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.delete();
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder.build();
+			Request request = requestBuilder.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final com.fasterxml.jackson.databind.JsonNode responseJson = mapper.readTree(responseEntity);
+				final com.fasterxml.jackson.databind.JsonNode responseJson = mapper.readTree(responseBodyStr);
+
 				if(responseJson.isObject()) {
 					return responseJson.findValue("id").asLong();
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -624,26 +694,27 @@ public class TradierRestClient implements TradierClient {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
-			RequestBuilder requestBuilder = RequestBuilder.post(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.addParameter("class", orderReq.getEquityClass().toString())
-					.addParameter("symbol", orderReq.getSymbol())
-					.addParameter("side", orderReq.getSide().toString())
-					.addParameter("quantity", ""+(int)orderReq.getQuantity())
-					.addParameter("type", orderReq.getOrderType().toString())
-					.addParameter("duration", orderReq.getDuration().toString())
-					.addParameter("price", ""+orderReq.getPrice())
-					.addParameter("stop", ""+orderReq.getStopPrice())
-					.addParameter("tag", orderReq.getOrderTag())
-					.build();
+			FormBody.Builder formBody = new FormBody.Builder();
+			orderReq.getRequestParams()
+			.entrySet().forEach(entry -> formBody.add(entry.getKey(), entry.getValue()));
+			RequestBody body = formBody.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.post(body);
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseEntity);
+				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseBodyStr);
+
 				if(jsonNode.hasNonNull("order"))
 					return jsonNode.findValue("id").asLong();
 				if(jsonNode.has("errors")) {
@@ -653,7 +724,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -666,27 +737,28 @@ public class TradierRestClient implements TradierClient {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
-			RequestBuilder requestBuilder = RequestBuilder.post(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("account_id", tradierProps.getProperty(K_TRADIER_ACCOUNTID))
-					.addParameter("class", orderReq.getEquityClass().toString())
-					.addParameter("symbol", orderReq.getSymbol())
-					.addParameter("side", orderReq.getSide().toString())
-					.addParameter("quantity", ""+(int)orderReq.getQuantity())
-					.addParameter("type", orderReq.getOrderType().toString())
-					.addParameter("duration", orderReq.getDuration().toString())
-					.addParameter("price", ""+orderReq.getPrice())
-					.addParameter("stop", ""+orderReq.getStopPrice())
-					.addParameter("tag", orderReq.getOrderTag())
-					.addParameter("option_symbol", orderReq.getOptionSymbol())
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			FormBody.Builder formBody = new FormBody.Builder();
+			orderReq.getRequestParams()
+			.entrySet().forEach(entry -> formBody.add(entry.getKey(), entry.getValue()));
+			RequestBody body = formBody.build();
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.post(body);
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseEntity);
+				final com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseBodyStr);
+
 				if(jsonNode.hasNonNull("order"))
 					return jsonNode.findValue("id").asLong();
 				if(jsonNode.has("errors")) {
@@ -696,7 +768,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -710,24 +782,35 @@ public class TradierRestClient implements TradierClient {
 		List<LocalDate> expireDates = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/expirations");
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("symbol", underlyingSymbol)
-					.addParameter("includeAllRoots", "true")
-					//.addParameter("strikes", "true")
-					//.addParameter("contractSize", "true")
-					//.addParameter("expirationType", "true")
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder
+			.addQueryParameter("symbol", underlyingSymbol)
+			//uncomment if there is an use case
+			//.addQueryParameter("strikes", "true")
+			//.addQueryParameter("contractSize", "true")
+			//.addQueryParameter("expirationType", "true")
+			.addQueryParameter("includeAllRoots", "true");
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);
-				//if only date then this does not return the expiration block.
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
+
+				//if only single date then this does not return the expiration block.
 				JsonNode expireDateNode = jsonTree.findPath("expirations").findPath("date");
-	
+
 				//Tradier returns single quote as an object while multi as an Array
 				if(expireDateNode.isObject()) {
 					//String expireDateStr = expireDateNode.get("date").asText();
@@ -744,7 +827,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
@@ -757,21 +840,30 @@ public class TradierRestClient implements TradierClient {
 		List<Option> optionQuotes = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/chains");
-			RequestBuilder requestBuilder = RequestBuilder.get(url);
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					.addParameter("symbol", underlyingSymbol)
-					.addParameter("expiration", expieryDate.format(DateTimeFormatter.ISO_LOCAL_DATE))
-					.addParameter("greeks", "true")
-					.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-			if(response.getStatusLine().getStatusCode() == 200) {
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder
+			.addQueryParameter("symbol", underlyingSymbol)
+			.addQueryParameter("expiration", expieryDate.format(DateTimeFormatter.ISO_LOCAL_DATE))
+			.addQueryParameter("greeks", "true");
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseEntity);
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 				JsonNode optionNode = jsonTree.findPath("options").findPath("option");
-		
+
 				//Tradier returns single quote as an object while multi as an Array
 				if(optionNode.isObject()) {
 					Option quote = mapper.treeToValue(optionNode, Option.class);
@@ -784,7 +876,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
@@ -797,23 +889,33 @@ public class TradierRestClient implements TradierClient {
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), existingOrderId);
-			RequestBuilder requestBuilder = RequestBuilder.put(url);
+
+			Map<String, String> bodyParamMap = new HashMap<>();
+			Utils.addIfValid(bodyParamMap, "type", orderType);
+			Utils.addIfValid(bodyParamMap, "duration", duration);
+			Utils.addIfValid(bodyParamMap, "price", "" + price);
+			Utils.addIfValid(bodyParamMap, "stop", "" + stopPrice);
+
+			FormBody.Builder formBody = new FormBody.Builder();
+			bodyParamMap.entrySet().forEach(entry -> formBody.add(entry.getKey(), entry.getValue()));
+			RequestBody body = formBody.build();
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(url)
+					.put(body);
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			final HttpUriRequest request = requestBuilder
-					//.addParameter("type", orderType)
-					//.addParameter("duration", duration)
-					.addParameter("price", "" + price)
-					.addParameter("stop", "" + stopPrice)
-					.build();
+			Request request = requestBuilder.build();
 
-			final HttpResponse response = HttpClientBuilder.create().build().execute(request);
+			OkHttpClient client = new OkHttpClient();
+			Response response = client.newCall(request).execute();
 
-			//We may get 400 with message: 'order not in valid state for modifications' in some cases
-			int statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode == 200 || statusCode == 201) {//what is the code that the order is updated?
-				final String responseEntity = EntityUtils.toString(response.getEntity());
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200 || responseCode == 201) {
 				ObjectMapper mapper = Utils.objectMapper();
-				final com.fasterxml.jackson.databind.JsonNode jsonTree = mapper.readTree(responseEntity);
+				final com.fasterxml.jackson.databind.JsonNode jsonTree = mapper.readTree(responseBodyStr);
+
 				if(jsonTree.hasNonNull("order"))
 					return jsonTree.findValue("id").asLong();
 				if(jsonTree.has("errors")) {
@@ -823,7 +925,7 @@ public class TradierRestClient implements TradierClient {
 				}
 			}
 			else
-				LOGGER.warn("Response code: " + response.getStatusLine().getStatusCode() + ", reason: " + response.getStatusLine().getReasonPhrase());
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
 		}
 		catch(IOException ex) {
 			throw new RuntimeException(ex);
@@ -833,54 +935,54 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-    public Map<String, String> getOptionExchangeCodeMap() {
-    	String exchMapStr = "A=NYSE Amex Options"
-    			+ ",B=BOX Options Exchange"
-    			+ ",C=Chicago Board Options Exchange (CBOE)"
-    			+ ",H=ISE Gemini"
-    			+ ",I=International Securities Exchange (ISE)"
-    			+ ",M=MIAX Options Exchange"
-    			+ ",N=NYSE Arca Options"
-    			+ ",O=Options Price Reporting Authority (OPRA)"
-    			+ ",P=MIAX PEARL"
-    			+ ",Q=NASDAQ Options Market"
-    			+ ",T=NASDAQ OMX BX"
-    			+ ",W=C2 Options Exchange"
-    			+ ",X=NASDAQ OMX PHLX"
-    			+ ",Z=BATS Options Market";
-    	
-    	return Stream.of(exchMapStr.split("\\,"))
-                .collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
-    }
-    
+	public Map<String, String> getOptionExchangeCodeMap() {
+		String exchMapStr = "A=NYSE Amex Options"
+				+ ",B=BOX Options Exchange"
+				+ ",C=Chicago Board Options Exchange (CBOE)"
+				+ ",H=ISE Gemini"
+				+ ",I=International Securities Exchange (ISE)"
+				+ ",M=MIAX Options Exchange"
+				+ ",N=NYSE Arca Options"
+				+ ",O=Options Price Reporting Authority (OPRA)"
+				+ ",P=MIAX PEARL"
+				+ ",Q=NASDAQ Options Market"
+				+ ",T=NASDAQ OMX BX"
+				+ ",W=C2 Options Exchange"
+				+ ",X=NASDAQ OMX PHLX"
+				+ ",Z=BATS Options Market";
+
+		return Stream.of(exchMapStr.split("\\,"))
+				.collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
+	}
+
 	@Override
-    public Map<String, String> getStockExchangeCodeMap() {
-    	String exchMapStr = "A=NYSE MKT"
-    			+ ",B=NASDAQ OMX BX"
-    			+ ",C=National Stock Exchange"
-    			+ ",D=FINRA ADF"
-    			+ ",E=Market Independent (Generated by Nasdaq SIP)"
-    			+ ",F=Mutual Funds/Money Markets (NASDAQ)"
-    			+ ",I=International Securities Exchange"
-    			+ ",J=Direct Edge A"
-    			+ ",K=Direct Edge X"
-    			+ ",L=Long Term Stock Exchange"
-    			+ ",M=Chicago Stock Exchange"
-    			+ ",N=NYSE"
-    			+ ",P=NYSE Arca"
-    			+ ",Q=NASDAQ OMX"
-    			+ ",S=NASDAQ Small Cap"
-    			+ ",T=NASDAQ Int"
-    			+ ",U=OTCBB"
-    			+ ",V=OTC other"
-    			+ ",W=CBOE"
-    			+ ",X=NASDAQ OMX PSX"
-    			+ ",G=GLOBEX"
-    			+ ",Y=BATS Y-Exchange"
-    			+ ",Z=BATS";
-    	
-    	return Stream.of(exchMapStr.split("\\,"))
-                .collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
-    }
+	public Map<String, String> getStockExchangeCodeMap() {
+		String exchMapStr = "A=NYSE MKT"
+				+ ",B=NASDAQ OMX BX"
+				+ ",C=National Stock Exchange"
+				+ ",D=FINRA ADF"
+				+ ",E=Market Independent (Generated by Nasdaq SIP)"
+				+ ",F=Mutual Funds/Money Markets (NASDAQ)"
+				+ ",I=International Securities Exchange"
+				+ ",J=Direct Edge A"
+				+ ",K=Direct Edge X"
+				+ ",L=Long Term Stock Exchange"
+				+ ",M=Chicago Stock Exchange"
+				+ ",N=NYSE"
+				+ ",P=NYSE Arca"
+				+ ",Q=NASDAQ OMX"
+				+ ",S=NASDAQ Small Cap"
+				+ ",T=NASDAQ Int"
+				+ ",U=OTCBB"
+				+ ",V=OTC other"
+				+ ",W=CBOE"
+				+ ",X=NASDAQ OMX PSX"
+				+ ",G=GLOBEX"
+				+ ",Y=BATS Y-Exchange"
+				+ ",Z=BATS";
+
+		return Stream.of(exchMapStr.split("\\,"))
+				.collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
+	}
 
 }

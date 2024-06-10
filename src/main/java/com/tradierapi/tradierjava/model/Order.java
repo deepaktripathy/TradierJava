@@ -64,8 +64,11 @@ public class Order {
     
     @JsonProperty("stop_price")
     private Double stopPrice;
+    
+    //This is NOT documented, but this comes back via 200 response.
     @JsonProperty("reason_description")
     private String reasonDescription;
+    
     @JsonProperty("tag")
     private String orderTag;
 	
@@ -169,9 +172,10 @@ public class Order {
 				+ ", status=" + status + ", duration=" + duration + ", price=" + price + ", avgFillPrice="
 				+ avgFillPrice + ", execQuantity=" + execQuantity + ", lastFillPrice=" + lastFillPrice
 				+ ", lastFillQuantity=" + lastFillQuantity + ", remainingQuantity=" + remainingQuantity
-				+ ", createDate=" + createDate + ", transactionDate=" + transactionDate + ", equityClass=" + equityClass
-				+ ", stopPrice=" + stopPrice + ", reasonDescription="
-				+ reasonDescription + ", orderTag=" + orderTag + ", optionSymbol=" + optionSymbol + "]";
+				+ ", createDate=" + createDate + ", transactionDate=" + transactionDate 
+				+ ", equityClass=" + equityClass + ", stopPrice=" + stopPrice 
+				+ ", reasonDescription=" + reasonDescription 
+				+ ", orderTag=" + orderTag + ", optionSymbol=" + optionSymbol + "]";
 	}
 	
 

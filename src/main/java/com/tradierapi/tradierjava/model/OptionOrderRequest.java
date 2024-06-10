@@ -1,6 +1,8 @@
 package com.tradierapi.tradierjava.model;
 
-import java.time.LocalDateTime;
+import java.util.Map;
+
+import com.tradierapi.tradierjava.utils.Utils;
 
 /**
  * Fields from: https://documentation.tradier.com/brokerage-api/trading/place-option-order
@@ -20,6 +22,9 @@ public class OptionOrderRequest extends OrderRequest {
         		null, orderType, duration, stopPrice, orderTag, optionSymbol);
     }
     
+    /**
+     * The price should be actual option price. This should not be a multiple of 100.
+     */
     public static OptionOrderRequest buildLimitOrder(OptionSide side, String symbol, 
     		Double quantity, Double price, 
     		OrderType orderType, Duration duration, Double stopPrice, String orderTag, String optionSymbol) {
@@ -62,7 +67,6 @@ public class OptionOrderRequest extends OrderRequest {
 		return optionSymbol;
 	}
 
-
 	@Override
 	public String toString() {
 		return "OptionOrderRequest [side=" + side   
@@ -70,4 +74,13 @@ public class OptionOrderRequest extends OrderRequest {
 				+ ", optionSymbol=" + optionSymbol + "]";
 	}    
 
+	/** Returns all non-empty/null parameters as key-value pairs where each key is a valid API request key*/
+	@Override
+    public Map<String, String> getRequestParams() {
+        Map<String, String> paramMap = super.getRequestParams();
+        Utils.addIfValid(paramMap, "side", side);
+        Utils.addIfValid(paramMap, "option_symbol", optionSymbol);
+
+        return paramMap;
+    }
 }

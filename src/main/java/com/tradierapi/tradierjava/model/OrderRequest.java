@@ -1,12 +1,10 @@
 package com.tradierapi.tradierjava.model;
 
-import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tradierapi.tradierjava.utils.Utils;
 
 /**
  * Fields from: https://documentation.tradier.com/brokerage-api/reference/response/orders
@@ -76,4 +74,22 @@ public abstract class OrderRequest {
 				+ ", equityClass=" + equityClass + ", stopPrice=" + stopPrice + ", orderTag=" + orderTag
 				+ "]";
 	}    
+	
+	/** Returns all non-empty/null parameters as key-value pairs where each key is a valid API request key*/
+    protected Map<String, String> getRequestParams() {
+        Map<String, String> paramMap = new HashMap<>();
+        Utils.addIfValid(paramMap, "class", equityClass);
+        Utils.addIfValid(paramMap, "symbol", symbol);//stock/option symbol
+        Utils.addIfValid(paramMap, "type", orderType);
+        Utils.addIfValid(paramMap, "duration", duration);
+        
+        Utils.addIfValid(paramMap, "quantity", quantity);
+        Utils.addIfValid(paramMap, "price", price);
+        Utils.addIfValid(paramMap, "stop", stopPrice);
+        Utils.addIfValid(paramMap, "tag", orderTag);
+        
+        return paramMap;
+    }
+    
+
 }
