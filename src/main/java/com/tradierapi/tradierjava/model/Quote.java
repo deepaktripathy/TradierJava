@@ -1,6 +1,5 @@
 package com.tradierapi.tradierjava.model;
 
-import java.beans.ConstructorProperties;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

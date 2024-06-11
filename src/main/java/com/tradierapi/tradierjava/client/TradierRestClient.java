@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -148,12 +149,13 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
 			int responseCode = response.code();
 			String responseBodyStr = responseBody.string();
+			LOGGER.debug("Response: " + responseBodyStr);
 			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
 				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
@@ -194,7 +196,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -257,7 +259,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -321,7 +323,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -378,7 +380,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -432,7 +434,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -471,7 +473,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -518,7 +520,7 @@ public class TradierRestClient implements TradierClient {
 		headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 		Request request = requestBuilder.build();
 
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = prepareClient();
 		try {
 			Response response = client.newCall(request).execute();
 
@@ -563,7 +565,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -601,7 +603,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -664,7 +666,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -705,7 +707,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -749,7 +751,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -798,7 +800,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -853,7 +855,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -906,7 +908,7 @@ public class TradierRestClient implements TradierClient {
 			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
 			Request request = requestBuilder.build();
 
-			OkHttpClient client = new OkHttpClient();
+			OkHttpClient client = prepareClient();
 			Response response = client.newCall(request).execute();
 
 			ResponseBody responseBody = response.body();
@@ -985,4 +987,15 @@ public class TradierRestClient implements TradierClient {
 				.collect(Collectors.toMap(t -> t.toString().split("=")[0], t -> t.toString().split("=")[1]));
 	}
 
+	//Returns a client customized for timeout.
+	private OkHttpClient prepareClient() {
+		OkHttpClient.Builder builder = new OkHttpClient.Builder();
+		builder.connectTimeout(2, TimeUnit.MINUTES) // connect timeout
+		.writeTimeout(1, TimeUnit.MINUTES) // write timeout
+		.readTimeout(1, TimeUnit.MINUTES); // read timeout
+
+		OkHttpClient client = builder.build();
+		return client;
+		
+	}
 }
