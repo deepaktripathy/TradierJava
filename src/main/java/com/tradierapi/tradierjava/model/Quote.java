@@ -72,8 +72,8 @@ public class Quote {
     private String askExchange;
     @JsonProperty("ask_date")
     private Long askDate;
-    @JsonProperty("open_Integererest")
-    private Integer openIntegererest;
+    @JsonProperty("open_interest")
+    private Integer openInterest;
     @JsonProperty("underlying")
     private String underlying;
     @JsonProperty("strike")
@@ -210,8 +210,8 @@ public class Quote {
         return this.askDate;
     }
 
-    public Integer getOpenIntegererest() {
-        return this.openIntegererest;
+    public Integer getOpenInterest() {
+        return this.openInterest;
     }
 
     public String getUnderlying() {
@@ -246,7 +246,7 @@ public class Quote {
 	public int hashCode() {
 		return Objects.hash(ask, askDate, askExchange, askSize, averageVolume, bid, bidDate, bidExchange, bidSize,
 				change, closePrice, contractSize, dayVolume, description, exchange, expirationDate, expirationType,
-				fiscalYearHigh, fiscalYearLow, greeks, highPrice, lastVolume, lowPrice, openIntegererest, openPrice,
+				fiscalYearHigh, fiscalYearLow, greeks, highPrice, lastVolume, lowPrice, openInterest, openPrice,
 				optionType, percentChange, previousClosePrice, rootSymbol, securityType, strike, symbol, tradeDate,
 				underlying);
 	}
@@ -272,7 +272,7 @@ public class Quote {
 				&& Objects.equals(fiscalYearHigh, other.fiscalYearHigh)
 				&& Objects.equals(fiscalYearLow, other.fiscalYearLow) && Objects.equals(greeks, other.greeks)
 				&& Objects.equals(highPrice, other.highPrice) && Objects.equals(lastVolume, other.lastVolume)
-				&& Objects.equals(lowPrice, other.lowPrice) && Objects.equals(openIntegererest, other.openIntegererest)
+				&& Objects.equals(lowPrice, other.lowPrice) && Objects.equals(openInterest, other.openInterest)
 				&& Objects.equals(openPrice, other.openPrice) && Objects.equals(optionType, other.optionType)
 				&& Objects.equals(percentChange, other.percentChange)
 				&& Objects.equals(previousClosePrice, other.previousClosePrice)
@@ -290,7 +290,7 @@ public class Quote {
 				+ closePrice + ", previousClosePrice=" + previousClosePrice + ", fiscalYearHigh=" + fiscalYearHigh
 				+ ", fiscalYearLow=" + fiscalYearLow + ", bid=" + bid + ", bidSize=" + bidSize + ", bidExchange="
 				+ bidExchange + ", bidDate=" + bidDate + ", ask=" + ask + ", askSize=" + askSize + ", askExchange="
-				+ askExchange + ", askDate=" + askDate + ", openIntegererest=" + openIntegererest + ", underlying="
+				+ askExchange + ", askDate=" + askDate + ", openInterest=" + openInterest + ", underlying="
 				+ underlying + ", strike=" + strike + ", contractSize=" + contractSize + ", expirationDate="
 				+ expirationDate + ", expirationType=" + expirationType + ", optionType=" + optionType + ", rootSymbol="
 				+ rootSymbol + ", greeks=" + greeks + "]";
