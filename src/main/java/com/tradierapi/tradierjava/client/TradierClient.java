@@ -81,12 +81,6 @@ public interface TradierClient {
      */
     Optional<Order> lookupOrder(long orderId);
     
-    /**
-     * Lookup orders by the supplied parameters.
-     * */
-    List<Order> lookupOrders(String status,	Integer limitCount, String afterTimestamp, String untilTimestamp,
-    		 							String symbols, String side);
-    
     /** 
      * Returns all the unfilled orders
      * */

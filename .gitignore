@@ -45,8 +45,10 @@ Thumbs.db
 *.bak
 
 # Eclipse files
+.settings/
 .classpath
 .factorypath
+.project
 
 # Config files
 allocator.props

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -62,12 +63,12 @@ import okhttp3.ResponseBody;
 public class TradierRestClient implements TradierClient {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TradierRestClient.class);
 
-	protected static final String DEFAULT_PATH = "https://api.tradier.com/v1";
+	protected static final String DEFAULT_PATH = "https://sandbox.tradier.com/v1";
 
 	//property keys
-	private static String K_TRADIER_URL = "tradierjava.api.url";
-	private static String K_TRADIER_ACCOUNTID = "tradierjava.api.accountid";
-	private static String K_TRADIER_TOKEN = "tradierjava.api.token";
+	public static String K_TRADIER_URL = "tradierjava.api.url";
+	public static String K_TRADIER_ACCOUNTID = "tradierjava.api.accountid";
+	public static String K_TRADIER_TOKEN = "tradierjava.api.token";
 
 	private Properties tradierProps;
 	private final Map<String, String> headers;
@@ -92,6 +93,7 @@ public class TradierRestClient implements TradierClient {
 				.getResourceAsStream("tradier-api-config.properties")) {
 			Properties tradProperties = new Properties();
 			tradProperties.load(in);
+			LOGGER.info("Properties loaded, keys: " + tradProperties.keySet());
 			return tradProperties;
 		} catch (IOException e) {
 			throw new IllegalArgumentException(
@@ -137,7 +139,7 @@ public class TradierRestClient implements TradierClient {
 
 		Quote quote = null;
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/quotes");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/quotes");
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder
 			.addQueryParameter("symbols", symbol)
@@ -155,7 +157,6 @@ public class TradierRestClient implements TradierClient {
 			ResponseBody responseBody = response.body();
 			int responseCode = response.code();
 			String responseBodyStr = responseBody.string();
-			LOGGER.debug("Response: " + responseBodyStr);
 			if(responseCode == 200) {
 				ObjectMapper mapper = Utils.objectMapper();
 				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
@@ -184,7 +185,7 @@ public class TradierRestClient implements TradierClient {
 	public List<Quote> getQuotes(List<String> symbols) {
 		List<Quote> quotes = new ArrayList<>();
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/quotes");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/quotes");
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder
 			.addQueryParameter("symbols", symbols.stream().collect(Collectors.joining(",")))
@@ -246,7 +247,7 @@ public class TradierRestClient implements TradierClient {
 			throw new IllegalArgumentException("From date can not be after To date");
 
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/history");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/history");
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder.addQueryParameter("symbol", symbol);
 			if(fromDate != null && toDate != null) {
@@ -309,11 +310,10 @@ public class TradierRestClient implements TradierClient {
 	public Optional<Security> lookupSymbol(String symbol, List<SecurityType> types) {
 		try {
 			String typesStr = types.stream().map(String::valueOf).collect(Collectors.joining(",")); 
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/lookup");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/lookup");
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-			httpBuilder.addQueryParameter("includeTags", "true")
-			.addQueryParameter("q", symbol)
+			httpBuilder.addQueryParameter("q", symbol)
 			//.addQueryParameter("exchanges", "Q,N")//can even filter by exchange
 			.addQueryParameter("types", typesStr);
 
@@ -369,7 +369,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public List<String> lookupOptionSymbolsFor(String underlyingStockSymbol) {
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/lookup");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/lookup");
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder.addQueryParameter("underlying", underlyingStockSymbol);
@@ -412,17 +412,10 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public List<Order> lookupOrders(String status,	Integer limitCount, String afterTimestamp, String untilTimestamp,
-			String symbols, String side) {
-
-		throw new UnsupportedOperationException("TODO: Not yet implemented.");
-	}
-
-	@Override
 	public Optional<Order> lookupOrder(long orderId) {
 		Order order = null;
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
@@ -464,7 +457,7 @@ public class TradierRestClient implements TradierClient {
 	public List<Position> getPositions() {
 		List<Position> positions = new ArrayList<>();
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/positions", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/positions", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
 			Request.Builder requestBuilder = new Request.Builder()
@@ -508,7 +501,7 @@ public class TradierRestClient implements TradierClient {
 	public List<Order> getOrders() {
 		List<Order> orders = new ArrayList<>();
 
-		String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
+		String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders", 
 				tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
 		HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
@@ -555,7 +548,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public Profile getUserProfile() {
 		try {
-			String url = tradierProps.getProperty(K_TRADIER_URL) + "user/profile";
+			String url = tradierProps.getProperty(K_TRADIER_URL) + "/v1/user/profile";
 			//////////////////
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 
@@ -595,7 +588,7 @@ public class TradierRestClient implements TradierClient {
 		Map<String, Object> params = new HashMap<>();
 
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/balances", accountId);
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/balances", accountId);
 
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(url)
@@ -657,7 +650,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public long cancelOrder(long orderId) {
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
 
 			Request.Builder requestBuilder = new Request.Builder()
@@ -693,7 +686,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public long postStockOrder(EquityOrderRequest orderReq) {
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
 			FormBody.Builder formBody = new FormBody.Builder();
@@ -737,7 +730,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public long postOptionOrder(OptionOrderRequest orderReq) {
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
 			FormBody.Builder formBody = new FormBody.Builder();
@@ -783,7 +776,7 @@ public class TradierRestClient implements TradierClient {
 
 		List<LocalDate> expireDates = new ArrayList<>();
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/expirations");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/expirations");
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder
@@ -836,12 +829,12 @@ public class TradierRestClient implements TradierClient {
 		}
 		return expireDates;
 	}
-
+	
 	@Override
 	public List<Option> getOptionChainFor(String underlyingSymbol, LocalDate expieryDate) {
 		List<Option> optionQuotes = new ArrayList<>();
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "markets/options/chains");
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/chains");
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder
@@ -889,7 +882,7 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public long modifyOrder(long existingOrderId, String orderType, String duration, Double price, Double stopPrice) {
 		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "accounts/%s/orders/%s", 
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), existingOrderId);
 
 			Map<String, String> bodyParamMap = new HashMap<>();
