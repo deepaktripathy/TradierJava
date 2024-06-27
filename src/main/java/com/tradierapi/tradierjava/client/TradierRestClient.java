@@ -31,10 +31,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tradierapi.tradierjava.model.ExchangeCode;
 import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.model.request.EquityOrderRequest;
+import com.tradierapi.tradierjava.model.request.GainLossRequest;
 import com.tradierapi.tradierjava.model.request.OptionOrderRequest;
 import com.tradierapi.tradierjava.model.response.Balances;
+import com.tradierapi.tradierjava.model.response.Clock;
+import com.tradierapi.tradierjava.model.response.GainLossResponse;
 import com.tradierapi.tradierjava.model.response.HistoricPrice;
 import com.tradierapi.tradierjava.model.response.Interval;
+import com.tradierapi.tradierjava.model.response.MarketCalendar;
 import com.tradierapi.tradierjava.model.response.Option;
 import com.tradierapi.tradierjava.model.response.Options;
 import com.tradierapi.tradierjava.model.response.Order;
@@ -271,6 +275,101 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
+	public Clock getClock(@Nullable Boolean delayed) {
+		try {
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/clock");
+
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			httpBuilder.addQueryParameter("delayed", (delayed == null) ?"true" :delayed.toString());
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = prepareClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
+				ObjectMapper mapper = Utils.objectMapper();
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
+				JsonNode clockNode = jsonTree.findPath("clock");
+
+				if(clockNode.isMissingNode())
+					return null;
+
+				//Tradier returns single security as an object while multi as an Array
+				//but, since this does approx matches, it can return an array of similar ones
+				if(clockNode.isObject()) {
+					Clock clock = mapper.treeToValue(clockNode, Clock.class);
+					return clock;
+				}
+				//this can never be an array.
+			}
+			else
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+		}
+		catch(IOException ex) {
+			throw new RuntimeException(ex);
+		}
+
+		return null;
+	}
+	
+	@Override
+	public MarketCalendar getCalendar(@Nullable Integer month, @Nullable Integer year) {
+		try {
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/calendar");
+
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			if(month != null)
+				httpBuilder.addQueryParameter("month", month.toString());
+			if(year != null)
+				httpBuilder.addQueryParameter("year", year.toString());
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = prepareClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
+				ObjectMapper mapper = Utils.objectMapper();
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
+				JsonNode calendarNode = jsonTree.findPath("calendar");
+
+				if(calendarNode.isMissingNode())
+					return null;
+
+				//Tradier returns single security as an object while multi as an Array
+				//but, since this does approx matches, it can return an array of similar ones
+				if(calendarNode.isObject()) {
+					MarketCalendar calendar = mapper.treeToValue(calendarNode, MarketCalendar.class);
+					return calendar;
+				}
+				//this can never be an array.
+			}
+			else
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+		}
+		catch(IOException ex) {
+			throw new RuntimeException(ex);
+		}
+
+		return null;
+	}
+	
+	@Override
 	public Optional<Security> lookupSymbol(String symbol) {
 		List<SecurityType> types = new ArrayList<>();
 		List<ExchangeCode> exchanges = new ArrayList<>();
@@ -478,6 +577,50 @@ public class TradierRestClient implements TradierClient {
 		return positions;
 	}
 
+	@Override
+	public GainLossResponse getGainLoss(@Nonnull String accountId, GainLossRequest gainLossRequest) {
+		Objects.requireNonNull(accountId);
+		
+		try {
+			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/gainloss", accountId);
+
+			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+			if(gainLossRequest != null) {
+				gainLossRequest.buildParametersMap().entrySet()
+					.forEach(entry -> httpBuilder.addQueryParameter(entry.getKey(), entry.getValue()));
+			}
+
+			Request.Builder requestBuilder = new Request.Builder()
+					.url(httpBuilder.build())
+					.get();
+			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+			Request request = requestBuilder.build();
+
+			OkHttpClient client = prepareClient();
+			Response response = client.newCall(request).execute();
+
+			ResponseBody responseBody = response.body();
+			int responseCode = response.code();
+			String responseBodyStr = responseBody.string();
+			if(responseCode == 200) {
+				ObjectMapper mapper = Utils.objectMapper();
+
+				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
+				JsonNode gainLossNode = jsonTree.findPath("gainloss");
+				if(gainLossNode.isObject()) {
+					GainLossResponse gainLoss = mapper.treeToValue(gainLossNode, GainLossResponse.class);
+					return gainLoss;
+				}
+			}
+			else
+				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+		}
+		catch(Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		return null;
+	}
+	
 	@Override
 	public List<Order> getOrders(@Nullable Boolean includeTags) {
 		List<Order> orders = new ArrayList<>();

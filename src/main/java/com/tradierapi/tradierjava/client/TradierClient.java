@@ -11,10 +11,14 @@ import javax.annotation.Nullable;
 import com.tradierapi.tradierjava.model.ExchangeCode;
 import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.model.request.EquityOrderRequest;
+import com.tradierapi.tradierjava.model.request.GainLossRequest;
 import com.tradierapi.tradierjava.model.request.OptionOrderRequest;
 import com.tradierapi.tradierjava.model.response.Balances;
+import com.tradierapi.tradierjava.model.response.Clock;
+import com.tradierapi.tradierjava.model.response.GainLossResponse;
 import com.tradierapi.tradierjava.model.response.HistoricPrice;
 import com.tradierapi.tradierjava.model.response.Interval;
+import com.tradierapi.tradierjava.model.response.MarketCalendar;
 import com.tradierapi.tradierjava.model.response.Option;
 import com.tradierapi.tradierjava.model.response.Order;
 import com.tradierapi.tradierjava.model.response.Position;
@@ -67,6 +71,17 @@ public interface TradierClient {
      * */
     List<HistoricPrice> getPriceHistory(@Nonnull String symbol);
     
+    /** 
+     * Returns the server side clock parameters
+     * */
+    Clock getClock(@Nullable Boolean delayed);
+    
+    /** 
+     * Returns the server side calendar of market hours
+     * */
+    MarketCalendar getCalendar(@Nullable Integer month, @Nullable Integer year);
+    
+    
     /**
      * Look up stocks, etfs, indices as well as individual option symbols.
      * 
@@ -105,6 +120,17 @@ public interface TradierClient {
      * */
     List<Position> getPositions();
 
+    /** 
+     * Returns all types of history for an account
+     * TODO: Implement it (not enabled for sandbox, need to test in live)  
+     * */
+//    List<Position> getAccountHistory();
+    
+    /** Get cost basis information for a specific user account. This includes information for all closed 
+     * positions.
+     * */
+    GainLossResponse getGainLoss(String accountId, GainLossRequest gainLossRequest);
+    
     /**
      * Posts a stock only order 
      * */
@@ -124,7 +150,8 @@ public interface TradierClient {
      * 
      * TODO: Ask Tradier on why NOT quantity?
      * */
-    long modifyOrder(@Nonnull Long orderId, @Nullable String type, @Nullable String duration, @Nullable Double price, @Nullable Double stopPrice);
+    long modifyOrder(@Nonnull Long orderId, @Nullable String type, @Nullable String duration, 
+    		@Nullable Double price, @Nullable Double stopPrice);
     
     /**
      * Cancels an unfilled order.  
@@ -152,7 +179,8 @@ public interface TradierClient {
      * An option chain is all calls+puts for a single expiration. Since this may take a lot of resources, 
      * have another method to filter out these. 
      * */
-    List<Option> getOptionChainFor(@Nonnull String underlyingSymbol, @Nonnull LocalDate expieryDate, @Nullable Boolean greeks);
+    List<Option> getOptionChainFor(@Nonnull String underlyingSymbol, @Nonnull LocalDate expieryDate, 
+    		@Nullable Boolean greeks);
     
     /** 
      * Returns all the future option expiery dates for a stock
