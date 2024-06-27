@@ -1,9 +1,10 @@
-package com.tradierapi.tradierjava.model;
+package com.tradierapi.tradierjava.model.response;
 
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tradierapi.tradierjava.model.Account;
 
 /**
  * 

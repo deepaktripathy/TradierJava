@@ -19,26 +19,33 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tradierapi.tradierjava.model.EquityOrderRequest;
-import com.tradierapi.tradierjava.model.HistoricPrice;
-import com.tradierapi.tradierjava.model.Option;
-import com.tradierapi.tradierjava.model.OptionOrderRequest;
-import com.tradierapi.tradierjava.model.Options;
-import com.tradierapi.tradierjava.model.Order;
-import com.tradierapi.tradierjava.model.Orders;
-import com.tradierapi.tradierjava.model.Position;
-import com.tradierapi.tradierjava.model.Positions;
-import com.tradierapi.tradierjava.model.Profile;
-import com.tradierapi.tradierjava.model.Quote;
-import com.tradierapi.tradierjava.model.Quotes;
-import com.tradierapi.tradierjava.model.Security;
+import com.tradierapi.tradierjava.model.ExchangeCode;
 import com.tradierapi.tradierjava.model.SecurityType;
+import com.tradierapi.tradierjava.model.request.EquityOrderRequest;
+import com.tradierapi.tradierjava.model.request.OptionOrderRequest;
+import com.tradierapi.tradierjava.model.response.Balances;
+import com.tradierapi.tradierjava.model.response.HistoricPrice;
+import com.tradierapi.tradierjava.model.response.Interval;
+import com.tradierapi.tradierjava.model.response.Option;
+import com.tradierapi.tradierjava.model.response.Options;
+import com.tradierapi.tradierjava.model.response.Order;
+import com.tradierapi.tradierjava.model.response.Orders;
+import com.tradierapi.tradierjava.model.response.Position;
+import com.tradierapi.tradierjava.model.response.Positions;
+import com.tradierapi.tradierjava.model.response.Profile;
+import com.tradierapi.tradierjava.model.response.Quote;
+import com.tradierapi.tradierjava.model.response.Quotes;
+import com.tradierapi.tradierjava.model.response.Security;
+import com.tradierapi.tradierjava.model.response.SessionFilter;
 import com.tradierapi.tradierjava.utils.Utils;
 
 import okhttp3.FormBody;
@@ -135,61 +142,23 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public Quote getQuote(String symbol) {
-
-		Quote quote = null;
-		try {
-			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/quotes");
-			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-			httpBuilder
-			.addQueryParameter("symbols", symbol)
-			.addQueryParameter("greeks", "true");
-
-			Request.Builder requestBuilder = new Request.Builder()
-					.url(httpBuilder.build())
-					.get();
-			headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
-			Request request = requestBuilder.build();
-
-			OkHttpClient client = prepareClient();
-			Response response = client.newCall(request).execute();
-
-			ResponseBody responseBody = response.body();
-			int responseCode = response.code();
-			String responseBodyStr = responseBody.string();
-			if(responseCode == 200) {
-				ObjectMapper mapper = Utils.objectMapper();
-				final JsonNode jsonTree = mapper.readTree(responseBodyStr);
-				JsonNode quoteNode = jsonTree.findPath("quotes").findPath("quote");
-				//Tradier returns single quote as an object while multi as an Array
-				if(quoteNode.isObject()) {
-					quote = mapper.treeToValue(quoteNode, Quote.class);
-				}
-				else {
-					List<Quote> myQuotes = mapper.treeToValue(jsonTree.findPath("quotes"), Quotes.class).getQuotes();
-					if(myQuotes != null && !myQuotes.isEmpty())
-						quote = myQuotes.get(0);
-				}
-			}
-			else
-				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
-		}
-		catch(IOException ex) {
-			throw new RuntimeException(ex);
-		}
-		return quote;
+	public Optional<Quote> getQuote(@Nonnull String symbol, @Nullable Boolean includeGreeks) {
+		List<Quote> quotes = getQuotes(List.of(symbol), includeGreeks);
+		return quotes.isEmpty() ?Optional.empty() :Optional.of(quotes.get(0));
 	}
 
 	//TODO: Add retryable as Tradier sometimes refuses connection
 	@Override
-	public List<Quote> getQuotes(List<String> symbols) {
+	public List<Quote> getQuotes(List<String> symbols, @Nullable Boolean includeGreeks) {
+		Objects.requireNonNull(symbols);
+		
 		List<Quote> quotes = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/quotes");
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder
 			.addQueryParameter("symbols", symbols.stream().collect(Collectors.joining(",")))
-			.addQueryParameter("greeks", "true");
+			.addQueryParameter("greeks", (includeGreeks == null) ?"false" :includeGreeks.toString());
 
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(httpBuilder.build())
@@ -228,21 +197,21 @@ public class TradierRestClient implements TradierClient {
 		return quotes;
 	}
 
-
 	@Override
-	public List<HistoricPrice> getHistory(String symbol) {
-		return getHistory(symbol, null, null);
+	public List<HistoricPrice> getPriceHistory(@Nonnull String symbol) {
+		return getPriceHistory(symbol, null, null, null, null);
 	}
 
-	@Override
-	public List<HistoricPrice> getHistory(String symbol, long fromDate, long toDate) {
-		if(fromDate <= 0 || toDate <= 0)
-			throw new IllegalArgumentException("From and To date values can not be zero or lower");
-		return getHistory(symbol, LocalDate.ofEpochDay(fromDate), LocalDate.ofEpochDay(toDate));
+	public List<HistoricPrice> getPriceHistory(@Nonnull String symbol, 
+    		@Nullable LocalDate fromDate, @Nullable LocalDate toDate) {
+		return getPriceHistory(symbol, null, fromDate, toDate, null);
 	}
-
+	
 	@Override
-	public List<HistoricPrice> getHistory(String symbol, LocalDate fromDate, LocalDate toDate) {
+	public List<HistoricPrice> getPriceHistory(@Nonnull String symbol, @Nullable Interval interval, 
+			@Nullable LocalDate fromDate, @Nullable LocalDate toDate, @Nullable SessionFilter sessionFilter) {
+		Objects.requireNonNull(symbol);
+
 		if(fromDate != null && toDate != null && fromDate.isAfter(toDate))
 			throw new IllegalArgumentException("From date can not be after To date");
 
@@ -250,10 +219,15 @@ public class TradierRestClient implements TradierClient {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/history");
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 			httpBuilder.addQueryParameter("symbol", symbol);
-			if(fromDate != null && toDate != null) {
+			httpBuilder.addQueryParameter("interval", (interval == null) ?"daily" :interval.toString());
+			httpBuilder.addQueryParameter("session_filter", (interval == null) ?"all" :interval.toString());
+			if(fromDate != null) {
 				httpBuilder.addQueryParameter("start", isoDate(fromDate));
+			}
+			if(toDate != null) {
 				httpBuilder.addQueryParameter("end", isoDate(toDate));
 			}
+			
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(httpBuilder.build())
 					.get();
@@ -281,7 +255,7 @@ public class TradierRestClient implements TradierClient {
 				}
 				else {
 					HistoricPrice[] historicArray = mapper.treeToValue(dayNode, HistoricPrice[].class);
-					//direct mapping to List<> will not parse and will make List<LinkedHashMap<..>>. 
+					//direct mapping to List<> may not parse and will make List<LinkedHashMap<..>>. 
 					//Rather map to a object[] and then stream to list
 					if(historicArray.length > 0)
 						return Arrays.stream(historicArray).collect(Collectors.toList());
@@ -299,23 +273,27 @@ public class TradierRestClient implements TradierClient {
 	@Override
 	public Optional<Security> lookupSymbol(String symbol) {
 		List<SecurityType> types = new ArrayList<>();
-		types.add(SecurityType.stock);
-		types.add(SecurityType.option);
-		types.add(SecurityType.etf);
-		types.add(SecurityType.index);
-		return lookupSymbol(symbol, types);
+		List<ExchangeCode> exchanges = new ArrayList<>();
+		
+		return lookupSymbol(symbol, exchanges, types);
 	}
 
 	@Override
-	public Optional<Security> lookupSymbol(String symbol, List<SecurityType> types) {
+	public Optional<Security> lookupSymbol(@Nonnull String symbol, @Nonnull List<ExchangeCode> exchangeCodes, @Nonnull List<SecurityType> securityTypes) {
+		Objects.requireNonNull(symbol);
 		try {
-			String typesStr = types.stream().map(String::valueOf).collect(Collectors.joining(",")); 
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/lookup");
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-			httpBuilder.addQueryParameter("q", symbol)
-			//.addQueryParameter("exchanges", "Q,N")//can even filter by exchange
-			.addQueryParameter("types", typesStr);
+			httpBuilder.addQueryParameter("q", symbol);
+			if(! exchangeCodes.isEmpty())
+				httpBuilder.addQueryParameter("exchanges", exchangeCodes.stream()
+						.map(String::valueOf)
+						.collect(Collectors.joining(",")));
+			if(! securityTypes.isEmpty())
+				httpBuilder.addQueryParameter("types", securityTypes.stream()
+						.map(String::valueOf)
+						.collect(Collectors.joining(",")));
 
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(httpBuilder.build())
@@ -346,7 +324,7 @@ public class TradierRestClient implements TradierClient {
 				}
 				else {
 					Security[] securityArray = mapper.treeToValue(lookupNode, Security[].class);
-					//direct mapping to List<> will not parse and will make List<LinkedHashMap<..>>. 
+					//direct mapping to List<> may not parse and will make List<LinkedHashMap<..>>. 
 					//Rather map to a object[] and then stream to list
 					if(securityArray.length > 0) {
 						Optional<Security> securityOpt = Arrays.stream(securityArray)
@@ -367,7 +345,9 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public List<String> lookupOptionSymbolsFor(String underlyingStockSymbol) {
+	public List<String> lookupOptionSymbolsFor(@Nonnull String underlyingStockSymbol) {
+		Objects.requireNonNull(underlyingStockSymbol);
+		
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/lookup");
 
@@ -412,14 +392,15 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public Optional<Order> lookupOrder(long orderId) {
-		Order order = null;
+	public Optional<Order> getOrder(@Nonnull Long orderId, @Nullable Boolean includeTags) {
+		Objects.requireNonNull(orderId);
+		
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
 
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-			httpBuilder.addQueryParameter("includeTags", "true");
+			httpBuilder.addQueryParameter("includeTags", (includeTags == null) ?"false" : includeTags.toString());
 
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(httpBuilder.build())
@@ -440,7 +421,7 @@ public class TradierRestClient implements TradierClient {
 				JsonNode orderNode = jsonTree.findPath("order");
 
 				if(orderNode.isObject()) {
-					order = mapper.treeToValue(orderNode, Order.class);
+					Order order = mapper.treeToValue(orderNode, Order.class);
 					return Optional.of(order);
 				}
 			}
@@ -498,14 +479,14 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public List<Order> getOrders() {
+	public List<Order> getOrders(@Nullable Boolean includeTags) {
 		List<Order> orders = new ArrayList<>();
 
 		String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders", 
 				tradierProps.getProperty(K_TRADIER_ACCOUNTID));
 
 		HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
-		httpBuilder.addQueryParameter("includeTags", "true");
+		httpBuilder.addQueryParameter("includeTags", (includeTags == null) ?"false" :includeTags.toString());
 
 		Request.Builder requestBuilder = new Request.Builder()
 				.url(httpBuilder.build())
@@ -549,7 +530,6 @@ public class TradierRestClient implements TradierClient {
 	public Profile getUserProfile() {
 		try {
 			String url = tradierProps.getProperty(K_TRADIER_URL) + "/v1/user/profile";
-			//////////////////
 			HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
 
 			Request.Builder requestBuilder = new Request.Builder()
@@ -584,7 +564,48 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public Map<String, Object> getAccountBalances(String accountId) {
+	public Map<String, Object> getAccountCashBalances(@Nonnull String accountId) {
+		Balances balances = getAccountBalances(accountId);
+		
+		Map<String, Object> params = new HashMap<>();
+		if(balances != null) {
+			String accountType = balances.getAccountType().toString();
+			double totalCash = balances.getTotalCash();
+			double pendingCash = balances.getPendingCash();
+
+			double availableCash = 0;
+			if(balances.getCash() != null) {
+				availableCash = balances.getCash().getCashAvailable();
+			}
+			double stockBp, optionBp;
+			stockBp = optionBp = 0;
+			if(balances.getMargin() != null) {
+				stockBp = balances.getMargin().getStockBuyingPower();
+				optionBp = balances.getMargin().getOptionBuyingPower();
+			}
+			if(balances.getPdt() != null) {
+				stockBp = balances.getPdt().getStockBuyingPower();
+				optionBp = balances.getPdt().getOptionBuyingPower();
+			}
+
+			//common entries
+			params.put(KEY_ACCOUNT_ACCOUNT_TYPE, accountType);
+			params.put(KEY_ACCOUNT_TOTAL_CASH, totalCash);
+			params.put(KEY_ACCOUNT_PENDING_CASH, pendingCash);
+			//margin acct entries
+			params.put(KEY_ACCOUNT_STOCK_BP, stockBp);
+			params.put(KEY_ACCOUNT_OPTION_BP, optionBp);
+			//cash acct entries
+			params.put(KEY_ACCOUNT_CASH_AVAILABLE, availableCash);
+
+		}
+		return params;
+	}
+	
+	@Override
+	public Balances getAccountBalances(@Nonnull String accountId) {
+		Objects.requireNonNull(accountId);
+
 		Map<String, Object> params = new HashMap<>();
 
 		try {
@@ -607,36 +628,11 @@ public class TradierRestClient implements TradierClient {
 				final JsonNode jsonTree = mapper.readTree(responseBodyStr);    	    
 
 				JsonNode balancesNode = jsonTree.findPath("balances");
-				JsonNode marginNode = balancesNode.findPath("margin");
-				JsonNode cashNode = balancesNode.findPath("cash");
-				//JsonNode pdtNode = balancesNode.findPath("pdt");
 
-				String accountType = balancesNode.get(KEY_ACCOUNT_ACCOUNT_TYPE).asText();
-				double totalCash = balancesNode.get(KEY_ACCOUNT_TOTAL_CASH).asDouble();
-				double pendingCash = balancesNode.get(KEY_ACCOUNT_PENDING_CASH).asDouble();
-
-				double availableCash = 0;
-				if(! cashNode.isNull() && !cashNode.isMissingNode()) {
-					//interestingly cash account dont have the stock/option BP!!!
-					availableCash = cashNode.get(KEY_ACCOUNT_CASH_AVAILABLE).asDouble();
+				if(balancesNode.isObject()) {
+					Balances balances = mapper.treeToValue(balancesNode, Balances.class);
+					return balances;
 				}
-				double stockBp, optionBp;
-				stockBp = optionBp = 0;
-				if(marginNode != null) {
-					stockBp = marginNode.get(KEY_ACCOUNT_STOCK_BP).asDouble();
-					optionBp = marginNode.get(KEY_ACCOUNT_OPTION_BP).asDouble();
-				}
-				//look inside the PDT node?
-
-				//common entries
-				params.put(KEY_ACCOUNT_ACCOUNT_TYPE, accountType);
-				params.put(KEY_ACCOUNT_TOTAL_CASH, totalCash);
-				params.put(KEY_ACCOUNT_PENDING_CASH, pendingCash);
-				//margin acct entries
-				params.put(KEY_ACCOUNT_STOCK_BP, stockBp);
-				params.put(KEY_ACCOUNT_OPTION_BP, optionBp);
-				//cash acct entries
-				params.put(KEY_ACCOUNT_CASH_AVAILABLE, availableCash);
 			}
 			else
 				LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
@@ -644,11 +640,13 @@ public class TradierRestClient implements TradierClient {
 		catch(Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		return params;
+		return null;
 	}
 
 	@Override
-	public long cancelOrder(long orderId) {
+	public long cancelOrder(@Nonnull Long orderId) {
+		Objects.requireNonNull(orderId);
+		
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), orderId);
@@ -771,9 +769,11 @@ public class TradierRestClient implements TradierClient {
 		return 0;
 	}
 
+	//NOT yet complete as the response structure changes based on the request.
 	@Override
-	public List<LocalDate> getOptionExpieryDates(String underlyingSymbol) {
-
+	public List<LocalDate> getOptionExpieryDates(@Nonnull String underlyingSymbol) {
+		Objects.requireNonNull(underlyingSymbol);
+		
 		List<LocalDate> expireDates = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/expirations");
@@ -831,7 +831,10 @@ public class TradierRestClient implements TradierClient {
 	}
 	
 	@Override
-	public List<Option> getOptionChainFor(String underlyingSymbol, LocalDate expieryDate) {
+	public List<Option> getOptionChainFor(@Nonnull String underlyingSymbol, @Nonnull LocalDate expieryDate, @Nullable Boolean greeks) {
+		Objects.requireNonNull(underlyingSymbol);
+		Objects.requireNonNull(expieryDate);
+		
 		List<Option> optionQuotes = new ArrayList<>();
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/markets/options/chains");
@@ -840,7 +843,7 @@ public class TradierRestClient implements TradierClient {
 			httpBuilder
 			.addQueryParameter("symbol", underlyingSymbol)
 			.addQueryParameter("expiration", expieryDate.format(DateTimeFormatter.ISO_LOCAL_DATE))
-			.addQueryParameter("greeks", "true");
+			.addQueryParameter("greeks", (greeks == null) ?"true" :greeks.toString());
 
 			Request.Builder requestBuilder = new Request.Builder()
 					.url(httpBuilder.build())
@@ -880,7 +883,9 @@ public class TradierRestClient implements TradierClient {
 	}
 
 	@Override
-	public long modifyOrder(long existingOrderId, String orderType, String duration, Double price, Double stopPrice) {
+	public long modifyOrder(@Nonnull Long existingOrderId, @Nullable String orderType, @Nullable String duration, @Nullable Double price, @Nullable Double stopPrice) {
+		Objects.requireNonNull(existingOrderId);
+		
 		try {
 			String url = String.format(tradierProps.getProperty(K_TRADIER_URL) + "/v1/accounts/%s/orders/%s", 
 					tradierProps.getProperty(K_TRADIER_ACCOUNTID), existingOrderId);
@@ -888,8 +893,8 @@ public class TradierRestClient implements TradierClient {
 			Map<String, String> bodyParamMap = new HashMap<>();
 			Utils.addIfValid(bodyParamMap, "type", orderType);
 			Utils.addIfValid(bodyParamMap, "duration", duration);
-			Utils.addIfValid(bodyParamMap, "price", "" + price);
-			Utils.addIfValid(bodyParamMap, "stop", "" + stopPrice);
+			Utils.addIfValid(bodyParamMap, "price", price.toString());
+			Utils.addIfValid(bodyParamMap, "stop", stopPrice.toString());
 
 			FormBody.Builder formBody = new FormBody.Builder();
 			bodyParamMap.entrySet().forEach(entry -> formBody.add(entry.getKey(), entry.getValue()));

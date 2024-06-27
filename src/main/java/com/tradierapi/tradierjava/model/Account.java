@@ -14,7 +14,7 @@ public class Account {
     @JsonProperty("account_number")
     private String accountNumber;
     @JsonProperty("classification")
-    private String classification;
+    private Classification classification;
     @JsonProperty("date_created")
     private ZonedDateTime createDate;
     @JsonProperty("day_trader")
@@ -22,9 +22,9 @@ public class Account {
     @JsonProperty("option_level")
     private Integer optionLevel;
     @JsonProperty("status")
-    private String status;
+    private AccountStatus status;
     @JsonProperty("type")
-    private String type;
+    private AccountType type;
     @JsonProperty("last_update_date")
     private ZonedDateTime lastUpdateDate;
     
@@ -32,7 +32,7 @@ public class Account {
 		return accountNumber;
 	}
 
-	public String getClassification() {
+	public Classification getClassification() {
 		return classification;
 	}
 
@@ -48,11 +48,11 @@ public class Account {
 		return optionLevel;
 	}
 
-	public String getStatus() {
+	public AccountStatus getStatus() {
 		return status;
 	}
 
-	public String getType() {
+	public AccountType getType() {
 		return type;
 	}
 
@@ -75,17 +75,17 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		return Objects.equals(accountNumber, other.accountNumber)
-				&& Objects.equals(classification, other.classification) && Objects.equals(createDate, other.createDate)
-				&& Objects.equals(dayTrader, other.dayTrader) && Objects.equals(lastUpdateDate, other.lastUpdateDate)
-				&& Objects.equals(optionLevel, other.optionLevel) && Objects.equals(status, other.status)
-				&& Objects.equals(type, other.type);
-	}   
-	
+		return Objects.equals(accountNumber, other.accountNumber) && classification == other.classification
+				&& Objects.equals(createDate, other.createDate) && Objects.equals(dayTrader, other.dayTrader)
+				&& Objects.equals(lastUpdateDate, other.lastUpdateDate)
+				&& Objects.equals(optionLevel, other.optionLevel) && status == other.status && type == other.type;
+	}
+
 	@Override
 	public String toString() {
 		return "Account [accountNumber=" + accountNumber + ", classification=" + classification + ", createDate="
 				+ createDate + ", dayTrader=" + dayTrader + ", optionLevel=" + optionLevel + ", status=" + status
 				+ ", type=" + type + ", lastUpdateDate=" + lastUpdateDate + "]";
 	}
+
 }

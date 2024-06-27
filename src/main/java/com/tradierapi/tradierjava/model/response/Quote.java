@@ -1,4 +1,4 @@
-package com.tradierapi.tradierjava.model;
+package com.tradierapi.tradierjava.model.response;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,6 +7,9 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tradierapi.tradierjava.model.Greeks;
+import com.tradierapi.tradierjava.model.OptionType;
+import com.tradierapi.tradierjava.model.SecurityType;
 
 /**
  * @author deepak tripathy created on 05/24/2024

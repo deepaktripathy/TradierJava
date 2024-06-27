@@ -1,7 +1,11 @@
-package com.tradierapi.tradierjava.model;
+package com.tradierapi.tradierjava.model.request;
 
 import java.util.Map;
 
+import com.tradierapi.tradierjava.model.Duration;
+import com.tradierapi.tradierjava.model.EquityClass;
+import com.tradierapi.tradierjava.model.OptionSide;
+import com.tradierapi.tradierjava.model.OrderType;
 import com.tradierapi.tradierjava.utils.Utils;
 
 /**

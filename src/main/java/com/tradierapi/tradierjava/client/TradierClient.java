@@ -5,18 +5,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.tradierapi.tradierjava.model.EquityOrderRequest;
-import com.tradierapi.tradierjava.model.HistoricPrice;
-import com.tradierapi.tradierjava.model.Option;
-import com.tradierapi.tradierjava.model.OptionOrderRequest;
-import com.tradierapi.tradierjava.model.Order;
-import com.tradierapi.tradierjava.model.Position;
-import com.tradierapi.tradierjava.model.Profile;
-import com.tradierapi.tradierjava.model.Quote;
-import com.tradierapi.tradierjava.model.Security;
+import com.tradierapi.tradierjava.model.ExchangeCode;
 import com.tradierapi.tradierjava.model.SecurityType;
+import com.tradierapi.tradierjava.model.request.EquityOrderRequest;
+import com.tradierapi.tradierjava.model.request.OptionOrderRequest;
+import com.tradierapi.tradierjava.model.response.Balances;
+import com.tradierapi.tradierjava.model.response.HistoricPrice;
+import com.tradierapi.tradierjava.model.response.Interval;
+import com.tradierapi.tradierjava.model.response.Option;
+import com.tradierapi.tradierjava.model.response.Order;
+import com.tradierapi.tradierjava.model.response.Position;
+import com.tradierapi.tradierjava.model.response.Profile;
+import com.tradierapi.tradierjava.model.response.Quote;
+import com.tradierapi.tradierjava.model.response.Security;
+import com.tradierapi.tradierjava.model.response.SessionFilter;
 
 /**
  * Currently this works and returns data for a single account. Decide if the client should lock to the 
@@ -34,24 +39,33 @@ public interface TradierClient {
     public static final String KEY_ACCOUNT_STOCK_BP = "stock_buying_power";//in a Margin account
     public static final String KEY_ACCOUNT_OPTION_BP = "option_buying_power";//in a Margin account
 
+    /**
+     * Includes greeks for options only 
+     * */
     @Nullable
-    Quote getQuote(String symbol);
-
-    List<Quote> getQuotes(List<String> symbols);
+    Optional<Quote> getQuote(@Nonnull String symbol, @Nullable Boolean includeGreeks);
 
     /**
-     * If fromDate is after toDate or any of these are zero/negative, throws IllegalArgumentException
-     *  
-     * Note: from/to dates are epochMilliseconds not seconds.
+     * Includes greeks for options only 
      * */
-    List<HistoricPrice> getHistory(String symbol, long fromDateMillisFromEpoch, long toDateMillisFromEpoch);
+    List<Quote> getQuotes(@Nonnull List<String> symbols, @Nullable Boolean includeGreeks);
 
     /**
      * If fromDate is after toDate, throws IllegalArgumentException
      */ 
-    List<HistoricPrice> getHistory(String symbol, LocalDate fromDate, LocalDate toDate);
+    List<HistoricPrice> getPriceHistory(@Nonnull String symbol, @Nullable Interval interval, 
+    		@Nullable LocalDate fromDate, @Nullable LocalDate toDate, @Nullable SessionFilter sessionFilter);
 
-    List<HistoricPrice> getHistory(String symbol);
+    /** 
+     * Returns all the daily extennded session history as available between two dates
+     * */
+    List<HistoricPrice> getPriceHistory(@Nonnull String symbol, 
+    		@Nullable LocalDate fromDate, @Nullable LocalDate toDate);
+    
+    /** 
+     * Returns all the history as available
+     * */
+    List<HistoricPrice> getPriceHistory(@Nonnull String symbol);
     
     /**
      * Look up stocks, etfs, indices as well as individual option symbols.
@@ -59,13 +73,14 @@ public interface TradierClient {
      * Note: This will be extremely slow since this will do a huge lookup. It is suggested to 
      * use the overloaded method with a supplied type.
      * */
-    Optional<Security> lookupSymbol(String symbol);
+    Optional<Security> lookupSymbol(@Nonnull String symbol);
 
     /**
      * Look up stocks, etfs, indices as well as individual option symbols based on the 
      * supplied type.
      * */
-    Optional<Security> lookupSymbol(String symbol, List<SecurityType> types);
+    Optional<Security> lookupSymbol(@Nonnull String symbol, 
+    		@Nonnull List<ExchangeCode> exchangeCodes, @Nonnull List<SecurityType> types);
 
     /** 
      * Returns all the options traded for an underlying stock.
@@ -73,20 +88,21 @@ public interface TradierClient {
      * Note: This will be extremely slow since this will do a huge lookup. It is 
      * suggested to use the overloaded method with supplied type(s).
      * */
-    List<String> lookupOptionSymbolsFor(String underlyingSymbol);
+    List<String> lookupOptionSymbolsFor(@Nonnull String underlyingSymbol);
     
     /**
-     * Looks up an order by orderId
-     * 
+     * Gets an order by orderId
      */
-    Optional<Order> lookupOrder(long orderId);
+    Optional<Order> getOrder(@Nonnull Long orderId, @Nullable Boolean includeTags);
     
     /** 
      * Returns all the unfilled orders
      * */
-    List<Order> getOrders();
+    List<Order> getOrders(@Nullable Boolean includeTags);
 
-    /** Returns all the positions under an account */
+    /** 
+     * Returns all the positions under an account 
+     * */
     List<Position> getPositions();
 
     /**
@@ -108,22 +124,25 @@ public interface TradierClient {
      * 
      * TODO: Ask Tradier on why NOT quantity?
      * */
-    long modifyOrder(long orderId, String type, String duration, Double price, Double stopPrice);
+    long modifyOrder(@Nonnull Long orderId, @Nullable String type, @Nullable String duration, @Nullable Double price, @Nullable Double stopPrice);
     
     /**
      * Cancels an unfilled order.  
      * */
-    long cancelOrder(long orderId);
+    long cancelOrder(@Nonnull Long orderId);
     
-    /**
-     * Currently only support one account, so no need to pass accountId.
+    /** 
      * Returns these parameters: 
      * account_type, total_cash, cash_available, stock_buying_power, option_buying_power
      * */
-    Map<String, Object> getAccountBalances(String account);
+    Map<String, Object> getAccountCashBalances(@Nonnull String accountId);
 
     /**
-     * Currently only support one account, so no need to pass accountId.
+     * Returns the account balance for the supplied account
+     * */
+    Balances getAccountBalances(@Nonnull String account);
+
+    /**
      * Returns these parameters: 
      * account_type, total_cash, cash_available, stock_buying_power, option_buying_power
      * */
@@ -133,12 +152,12 @@ public interface TradierClient {
      * An option chain is all calls+puts for a single expiration. Since this may take a lot of resources, 
      * have another method to filter out these. 
      * */
-    List<Option> getOptionChainFor(String underlyingSymbol, LocalDate expieryDate);
+    List<Option> getOptionChainFor(@Nonnull String underlyingSymbol, @Nonnull LocalDate expieryDate, @Nullable Boolean greeks);
     
     /** 
      * Returns all the future option expiery dates for a stock
      * */
-    List<LocalDate> getOptionExpieryDates(String underlyingStockSymbol);
+    List<LocalDate> getOptionExpieryDates(@Nonnull String underlyingStockSymbol);
  
     /** 
      * Tradier returns single digit exchange codes in some of the responses. 

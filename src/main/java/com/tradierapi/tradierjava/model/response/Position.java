@@ -1,4 +1,4 @@
-package com.tradierapi.tradierjava.model;
+package com.tradierapi.tradierjava.model.response;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
