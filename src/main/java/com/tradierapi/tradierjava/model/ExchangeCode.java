@@ -6,6 +6,6 @@ public enum ExchangeCode {
 
 	/** NYSE */
 	N
-	//there may be more exchanges. Add
+	//there are more exchanges. Add
 	
 }

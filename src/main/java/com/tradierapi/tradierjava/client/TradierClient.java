@@ -169,9 +169,9 @@ public interface TradierClient {
 	/**
 	 * Tradier API site notes: You can only modify some of the parameters like type,
 	 * duration, price and stopPrice. You may not change the session of a pre/post
-	 * market session order. Send only the parameters you would like to adjust,
+	 * market session order. Send only the parameters you would like to adjust.
 	 * 
-	 * TODO: Ask Tradier on why NOT quantity?
+	 * TODO: Ask Tradier on why cannot modify quantity?
 	 */
 	long modifyOrder(@Nonnull Long orderId, @Nullable String type, @Nullable String duration, @Nullable Double price,
 			@Nullable Double stopPrice);

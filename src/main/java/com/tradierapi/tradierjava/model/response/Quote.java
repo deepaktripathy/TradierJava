@@ -97,8 +97,11 @@ public class Quote {
     private Greeks greeks;
 
     public Long getEpochMillisExpirationDate() throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.parse(this.expirationDate).getTime();
+       if(expirationDate != null) {
+           DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+           return df.parse(this.expirationDate).getTime();
+        }
+       return 0L;
     }
 
     public String getSymbol() {

@@ -49,6 +49,19 @@ public class Utils {
     	return ZonedDateTime.ofInstant(Instant.ofEpochMilli(millisecondsSinceEpoch), etZone);    
     }
 
+	public static String stripEndQuotes(final String quotedStr) {
+		if(quotedStr != null) {
+			String truncateStr = quotedStr;
+			if(truncateStr.startsWith("\""))
+				truncateStr = truncateStr.substring(1);
+			if(truncateStr.endsWith("\""))
+				truncateStr = truncateStr.substring(0, truncateStr.length() - 2);
+			
+			return truncateStr;
+		}
+		
+		return quotedStr;
+	}
 
     /**
      * Returns an ObjectMapper configured to handle new java.time & single list element. 
