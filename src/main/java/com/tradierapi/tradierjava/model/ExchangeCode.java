@@ -1,11 +1,11 @@
 package com.tradierapi.tradierjava.model;
 
 public enum ExchangeCode {
-	/** Nasdaq */
-	Q,
+   /** Nasdaq */
+   Q,
 
-	/** NYSE */
-	N
-	//there are more exchanges. Add
-	
+   /** NYSE */
+   N
+   // there are more exchanges. Add
+
 }

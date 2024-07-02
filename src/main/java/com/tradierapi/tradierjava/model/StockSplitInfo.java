@@ -14,75 +14,74 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StockSplitInfo {
 
-    @JsonProperty("share_class_id")
-    private String shareClassId;
+   @JsonProperty("share_class_id")
+   private String shareClassId;
 
-    /** ISO date format, ex: 1987-09-21 */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonProperty("ex_date")    
-    private LocalDate exDate;
-    
-    @JsonProperty("adjustment_factor")
-    private Double adjustmentFactor;
-    
-    @JsonProperty("split_from")
-    private Double splitFrom;
-    
-    @JsonProperty("split_to")
-    private Double splitTo;
-    
-    @JsonProperty("split_type")
-    private String splitType;
+   /** ISO date format, ex: 1987-09-21 */
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+   @JsonProperty("ex_date")
+   private LocalDate exDate;
 
-	public String getShareClassId() {
-		return shareClassId;
-	}
+   @JsonProperty("adjustment_factor")
+   private Double adjustmentFactor;
 
-	public LocalDate getExDate() {
-		return exDate;
-	}
+   @JsonProperty("split_from")
+   private Double splitFrom;
 
-	public Double getAdjustmentFactor() {
-		return adjustmentFactor;
-	}
+   @JsonProperty("split_to")
+   private Double splitTo;
 
-	public Double getSplitFrom() {
-		return splitFrom;
-	}
+   @JsonProperty("split_type")
+   private String splitType;
 
-	public Double getSplitTo() {
-		return splitTo;
-	}
+   public String getShareClassId() {
+      return shareClassId;
+   }
 
-	public String getSplitType() {
-		return splitType;
-	}
+   public LocalDate getExDate() {
+      return exDate;
+   }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(adjustmentFactor, exDate, shareClassId, splitFrom, splitTo, splitType);
-	}
+   public Double getAdjustmentFactor() {
+      return adjustmentFactor;
+   }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		StockSplitInfo other = (StockSplitInfo) obj;
-		return Double.doubleToLongBits(adjustmentFactor) == Double.doubleToLongBits(other.adjustmentFactor)
-				&& Objects.equals(exDate, other.exDate) && Objects.equals(shareClassId, other.shareClassId)
-				&& Double.doubleToLongBits(splitFrom) == Double.doubleToLongBits(other.splitFrom)
-				&& Double.doubleToLongBits(splitTo) == Double.doubleToLongBits(other.splitTo)
-				&& Objects.equals(splitType, other.splitType);
-	}
+   public Double getSplitFrom() {
+      return splitFrom;
+   }
 
-	@Override
-	public String toString() {
-		return "StockSplitInfo [shareClassId=" + shareClassId + ", exDate=" + exDate + ", adjustmentFactor="
-				+ adjustmentFactor + ", splitFrom=" + splitFrom + ", splitTo=" + splitTo + ", splitType=" + splitType
-				+ "]";
-	}    
+   public Double getSplitTo() {
+      return splitTo;
+   }
+
+   public String getSplitType() {
+      return splitType;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(adjustmentFactor, exDate, shareClassId, splitFrom, splitTo, splitType);
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (this == obj)
+         return true;
+      if (obj == null)
+         return false;
+      if (getClass() != obj.getClass())
+         return false;
+      StockSplitInfo other = (StockSplitInfo) obj;
+      return Double.doubleToLongBits(adjustmentFactor) == Double.doubleToLongBits(other.adjustmentFactor)
+            && Objects.equals(exDate, other.exDate) && Objects.equals(shareClassId, other.shareClassId)
+            && Double.doubleToLongBits(splitFrom) == Double.doubleToLongBits(other.splitFrom)
+            && Double.doubleToLongBits(splitTo) == Double.doubleToLongBits(other.splitTo)
+            && Objects.equals(splitType, other.splitType);
+   }
+
+   @Override
+   public String toString() {
+      return "StockSplitInfo [shareClassId=" + shareClassId + ", exDate=" + exDate + ", adjustmentFactor="
+            + adjustmentFactor + ", splitFrom=" + splitFrom + ", splitTo=" + splitTo + ", splitType=" + splitType + "]";
+   }
 }

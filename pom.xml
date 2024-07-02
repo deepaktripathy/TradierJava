@@ -6,7 +6,7 @@
 
     <groupId>com.tradierapi</groupId>
     <artifactId>tradierjava</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>simple-java-client</name>
@@ -43,6 +43,12 @@
     <version>1.9.21</version>
 </dependency>
 	
+   <!-- for debug logging-->
+   <dependency>
+       <groupId>com.squareup.okhttp3</groupId>
+       <artifactId>logging-interceptor</artifactId>
+       <version>5.0.0-alpha.12</version>
+   </dependency>
 	
 <!-- okHttp transitive dependency-->
 <dependency>
