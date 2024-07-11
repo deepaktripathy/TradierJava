@@ -1,6 +1,7 @@
 package com.tradierapi.tradierjava.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,13 @@ import com.tradierapi.tradierjava.client.account.response.Position;
 import com.tradierapi.tradierjava.client.marketdata.request.OptionStrikePricesRequest;
 import com.tradierapi.tradierjava.client.marketdata.response.Clock;
 import com.tradierapi.tradierjava.client.marketdata.response.HistoricPrice;
+import com.tradierapi.tradierjava.client.marketdata.response.Interval;
 import com.tradierapi.tradierjava.client.marketdata.response.MarketCalendar;
 import com.tradierapi.tradierjava.client.marketdata.response.Option;
 import com.tradierapi.tradierjava.client.marketdata.response.Quote;
 import com.tradierapi.tradierjava.client.marketdata.response.Security;
+import com.tradierapi.tradierjava.client.marketdata.response.SessionFilter;
+import com.tradierapi.tradierjava.client.marketdata.response.TimeSalesResponse;
 import com.tradierapi.tradierjava.client.trader.request.EquityOrderRequest;
 import com.tradierapi.tradierjava.client.trader.request.EquitySide;
 import com.tradierapi.tradierjava.client.trader.request.OptionOrderRequest;
@@ -129,6 +133,17 @@ public class TradierController {
       return new TradierAPI(tradierProps).marketData().getPriceHistory(symbol, fromDate, toDate);
    }
 
+   @GetMapping("/markets/timesales")
+   public TimeSalesResponse getTimesales(@RequestHeader HttpHeaders headers,
+         @RequestParam(value = "symbol", required = true) String symbol,
+         @RequestParam(value = "interval", required = false) Interval interval,
+         @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+         @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+         @RequestParam(value = "session_filter", required = false) SessionFilter sessionFilter) {
+      Properties tradierProps = buildProperties(headers);
+      return new TradierAPI(tradierProps).marketData().getTimeSales(symbol, interval, start, end, sessionFilter);
+   }
+   
    @GetMapping("/markets/clock")
    public Clock getClock(@RequestHeader HttpHeaders headers,
          @RequestParam(value = "delayed", required = false) Boolean delayed) {

@@ -2,6 +2,7 @@ package com.tradierapi.tradierjava.utils;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -40,6 +41,14 @@ public class Utils {
    public static String isoDate(LocalDate date) {
       // final long millisPerDay = 1000 * 60 * 60 * 24;
       return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+   }
+
+   /**
+    * Returns the String representation in DateTimeFormatter.ISO_LOCAL_DATE_TIME format
+    */
+   public static String isoDateTime(LocalDateTime dateTime) {
+      // final long millisPerDay = 1000 * 60 * 60 * 24;
+      return dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
    }
 
    /** Returns time since epoch to UTC time */

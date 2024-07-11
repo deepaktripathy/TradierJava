@@ -1,9 +1,11 @@
 package com.tradierapi.tradierjava.client.marketdata;
 
 import static com.tradierapi.tradierjava.utils.Utils.isoDate;
+import static com.tradierapi.tradierjava.utils.Utils.isoDateTime;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ import com.tradierapi.tradierjava.client.marketdata.response.Quote;
 import com.tradierapi.tradierjava.client.marketdata.response.Quotes;
 import com.tradierapi.tradierjava.client.marketdata.response.Security;
 import com.tradierapi.tradierjava.client.marketdata.response.SessionFilter;
+import com.tradierapi.tradierjava.client.marketdata.response.TimeSalesResponse;
 import com.tradierapi.tradierjava.model.ExchangeCode;
 import com.tradierapi.tradierjava.model.SecurityType;
 import com.tradierapi.tradierjava.utils.Utils;
@@ -200,7 +203,64 @@ public class MarketDataAPI {
       return new ArrayList<>();
    }
 
-   // NOT yet complete as the response structure changes based on the request.
+   public TimeSalesResponse getTimeSales(@Nonnull String symbol, @Nullable Interval interval,
+         @Nullable LocalDateTime start, @Nullable LocalDateTime end, @Nullable SessionFilter sessionFilter) {
+      Objects.requireNonNull(symbol);
+
+      if (start != null && end != null && start.isAfter(end))
+         throw new IllegalArgumentException("Start time can not be after end time");
+
+      try {
+         String url = String.format(baseUrl + "/v1/markets/timesales");
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+         httpBuilder.addQueryParameter("symbol", symbol);
+         httpBuilder.addQueryParameter("interval", (interval == null) ? "daily" : interval.toString());
+         httpBuilder.addQueryParameter("session_filter", (interval == null) ? "all" : interval.toString());
+         if (start != null) {
+            httpBuilder.addQueryParameter("start", isoDateTime(start));
+         }
+         if (end != null) {
+            httpBuilder.addQueryParameter("end", isoDateTime(end));
+         }
+
+         Request.Builder requestBuilder = new Request.Builder().url(httpBuilder.build()).get();
+         headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+         Request request = requestBuilder.build();
+
+         Response response = httpClient.newCall(request).execute();
+
+         ResponseBody responseBody = response.body();
+         int responseCode = response.code();
+         String responseBodyStr = responseBody.string();
+         if (responseCode == 200) {
+            ObjectMapper mapper = Utils.objectMapper();
+            final JsonNode jsonTree = mapper.readTree(responseBodyStr);
+//            JsonNode dayNode = jsonTree.findPath("history").findPath("day");
+
+            if (jsonTree.isNull() || jsonTree.isMissingNode())
+               return new TimeSalesResponse();
+
+            // Tradier returns single quote as an object while multi as an Array
+            if (jsonTree.isObject()) {
+               TimeSalesResponse timeSeries = mapper.treeToValue(jsonTree, TimeSalesResponse.class);
+               return timeSeries;
+            } else {
+               TimeSalesResponse timeSeries = mapper.treeToValue(jsonTree, TimeSalesResponse.class);
+               // direct mapping to List<> may not parse and will make List<LinkedHashMap<..>>.
+               // Rather map to a object[] and then stream to list
+//               if (historicArray.length > 0)
+//                  return Arrays.stream(historicArray).collect(Collectors.toList());
+               return timeSeries;
+            }
+         } else
+            LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+      } catch (IOException ex) {
+         throw new RuntimeException(ex);
+      }
+      return new TimeSalesResponse();
+   }
+
+   //TODO: NOT yet complete as the response structure changes based on the request.
    public List<LocalDate> getOptionExpieryDates(@Nonnull String underlyingSymbol) {
       Objects.requireNonNull(underlyingSymbol);
 
@@ -352,18 +412,18 @@ public class MarketDataAPI {
       return securities.isEmpty() ? Optional.empty() : Optional.of(securities.get(0));
    }
 
-   public List<Security> lookupSymbol(@Nonnull String symbol, @Nonnull List<ExchangeCode> exchangeCodes,
-         @Nonnull List<SecurityType> securityTypes) {
+   public List<Security> lookupSymbol(@Nonnull String symbol, @Nullable List<ExchangeCode> exchangeCodes,
+         @Nullable List<SecurityType> securityTypes) {
       Objects.requireNonNull(symbol);
       try {
          String url = String.format(baseUrl + "/v1/markets/lookup");
 
          HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
          httpBuilder.addQueryParameter("q", symbol);
-         if (!exchangeCodes.isEmpty())
+         if (exchangeCodes != null && !exchangeCodes.isEmpty())
             httpBuilder.addQueryParameter("exchanges",
                   exchangeCodes.stream().map(String::valueOf).collect(Collectors.joining(",")));
-         if (!securityTypes.isEmpty())
+         if (securityTypes != null && !securityTypes.isEmpty())
             httpBuilder.addQueryParameter("types",
                   securityTypes.stream().map(String::valueOf).collect(Collectors.joining(",")));
 
