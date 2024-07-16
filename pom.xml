@@ -6,7 +6,7 @@
 
     <groupId>com.tradierapi</groupId>
     <artifactId>tradierjava</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>simple-java-client</name>
@@ -123,6 +123,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+   				<classifier>boot</classifier>
+				</configuration> 
 			</plugin>
 		</plugins>
 	</build>
