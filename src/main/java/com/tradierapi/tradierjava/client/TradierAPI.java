@@ -88,7 +88,8 @@ public class TradierAPI {
    protected static Properties initProps() {
       try (InputStream in = TradierAPI.class.getClassLoader().getResourceAsStream("tradier-api-config.properties")) {
          Properties tradProperties = new Properties();
-         tradProperties.load(in);
+         if(in != null)
+            tradProperties.load(in);
          LOGGER.info("Properties loaded, keys: " + tradProperties.keySet());
          return tradProperties;
       } catch (IOException e) {

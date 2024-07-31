@@ -168,15 +168,18 @@ public class AccountAPI {
             ObjectMapper mapper = Utils.objectMapper();
             final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 
-            JsonNode positionNode = jsonTree.findPath("positions").findPath("position");
-            if (positionNode.isObject()) {
-               Position position = mapper.treeToValue(positionNode, Position.class);
-               positions.add(position);
-            } else {
-               List<Position> myPositions = mapper.treeToValue(jsonTree.findPath("positions"), Positions.class)
-                     .getPositions();
-               if (myPositions != null && !myPositions.isEmpty())
-                  positions.addAll(myPositions);
+            JsonNode positionsNode = jsonTree.findPath("positions");
+            if(! positionsNode.isNull() && positionsNode.isObject()) {
+               JsonNode positionNode = positionsNode.findPath("position");
+               if (positionNode.isObject()) {
+                  Position position = mapper.treeToValue(positionNode, Position.class);
+                  positions.add(position);
+               } else {
+                  List<Position> myPositions = mapper.treeToValue(jsonTree.findPath("positions"), Positions.class)
+                        .getPositions();
+                  if (myPositions != null && !myPositions.isEmpty())
+                     positions.addAll(myPositions);
+               }
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
@@ -248,15 +251,18 @@ public class AccountAPI {
             ObjectMapper mapper = Utils.objectMapper();
             final JsonNode jsonTree = mapper.readTree(responseBodyStr);
 
-            JsonNode orderNode = jsonTree.findPath("orders").findPath("order");
-            // Tradier returns single quote as an object while multi as an Array
-            if (orderNode.isObject()) {
-               Order order = mapper.treeToValue(orderNode, Order.class);
-               orders.add(order);
-            } else {
-               List<Order> myOrders = mapper.treeToValue(jsonTree.findPath("orders"), Orders.class).getOrders();
-               if (myOrders != null && !myOrders.isEmpty())
-                  orders.addAll(myOrders);
+            JsonNode ordersNode = jsonTree.findPath("orders");
+            if(! ordersNode.isNull() && ordersNode.isObject()) {
+               JsonNode orderNode = ordersNode.findPath("order");
+               // Tradier returns single quote as an object while multi as an Array
+               if (orderNode.isObject()) {
+                  Order order = mapper.treeToValue(orderNode, Order.class);
+                  orders.add(order);
+               } else {
+                  List<Order> myOrders = mapper.treeToValue(jsonTree.findPath("orders"), Orders.class).getOrders();
+                  if (myOrders != null && !myOrders.isEmpty())
+                     orders.addAll(myOrders);
+               }
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
