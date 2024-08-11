@@ -12,20 +12,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class Account {
+   
    @JsonProperty("account_number")
    private String accountNumber;
+   
    @JsonProperty("classification")
    private Classification classification;
+   
    @JsonProperty("date_created")
    private ZonedDateTime createDate;
+   
    @JsonProperty("day_trader")
    private Boolean dayTrader;
+   
    @JsonProperty("option_level")
    private Integer optionLevel;
+   
    @JsonProperty("status")
    private AccountStatus status;
+   
    @JsonProperty("type")
    private AccountType type;
+   
    @JsonProperty("last_update_date")
    private ZonedDateTime lastUpdateDate;
 

@@ -5,8 +5,9 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimeSalesResponse {
+   
    @JsonProperty("series") 
-   Series series;
+   private Series series;
 
    public Series getSeries() { 
       return this.series; 

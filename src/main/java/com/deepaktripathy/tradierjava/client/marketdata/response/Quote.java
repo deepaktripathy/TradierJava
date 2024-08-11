@@ -14,77 +14,109 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
+   
    @JsonProperty("symbol")
    private String symbol;
+   
    @JsonProperty("description")
    private String description;
+   
    @JsonProperty("exch")
    private String exchange;
+   
    @JsonProperty("type")
    private SecurityType securityType;
+   
    @JsonProperty("change")
    private Double change;
+   
    @JsonProperty("change_percentage")
    private Double percentChange;
+   
    /**
     * Current day's volume till now
     */
    @JsonProperty("volume")
    private Long dayVolume;
+   
    /**
     * 90 day (3-months) average volume of the security
     */
    @JsonProperty("average_volume")
    private Long averageVolume;
+   
    /**
     * Volume of the last price (instant)
     */
    @JsonProperty("last_volume")
    private Long lastVolume;
+   
    @JsonProperty("trade_date")
    private Long tradeDate;
+   
    @JsonProperty("open")
    private Double openPrice;
+   
    @JsonProperty("high")
    private Double highPrice;
+   
    @JsonProperty("low")
    private Double lowPrice;
+   
    @JsonProperty("close")
    private Double closePrice;
+   
    @JsonProperty("prevclose")
    private Double previousClosePrice;
+   
    @JsonProperty("week_52_high")
    private Double fiscalYearHigh;
+   
    @JsonProperty("week_52_low")
    private Double fiscalYearLow;
+   
    @JsonProperty("bid")
    private Double bid;
+   
    @JsonProperty("bidsize")
    private Integer bidSize;
+   
    @JsonProperty("bidexch")
    private String bidExchange;
+   
    @JsonProperty("bid_date")
    private Long bidDate;
+   
    @JsonProperty("ask")
    private Double ask;
+   
    @JsonProperty("asksize")
    private Integer askSize;
+   
    @JsonProperty("askexch")
    private String askExchange;
+   
    @JsonProperty("ask_date")
    private Long askDate;
+   
    @JsonProperty("open_interest")
    private Integer openInterest;
+   
    @JsonProperty("underlying")
    private String underlying;
+   
    @JsonProperty("strike")
    private Double strike;
+   
    @JsonProperty("contract_size")
    private Integer contractSize;
+   
    @JsonProperty("expiration_date")
    private String expirationDate;
+   
    @JsonProperty("expiration_type")
    private String expirationType;
+   
    @JsonProperty("option_type")
    private OptionType optionType;
 

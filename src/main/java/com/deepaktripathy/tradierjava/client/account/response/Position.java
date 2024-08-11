@@ -12,17 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Position {
 
-   @JsonProperty("cost_basis")
-   private Double costBasis;
-   @JsonProperty("date_acquired")
-   private ZonedDateTime dateAcquired;
    @JsonProperty("id")
    private Long id;
-   @JsonProperty("quantity")
-   private Double quantity;
+   
    @JsonProperty("symbol")
    private String symbol;
 
+   @JsonProperty("quantity")
+   private Double quantity;
+   
+   @JsonProperty("date_acquired")
+   private ZonedDateTime dateAcquired;
+   
+   @JsonProperty("cost_basis")
+   private Double costBasis;
+   
    public Long getId() {
       return id;
    }

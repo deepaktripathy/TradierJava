@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class CalendarDays {
+   
    @JsonProperty("day")
    private List<CalendarDay> days;
 

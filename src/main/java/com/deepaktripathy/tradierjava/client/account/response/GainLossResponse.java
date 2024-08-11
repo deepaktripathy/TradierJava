@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class GainLossResponse {
+   
    @JsonProperty("closed_position")
    private List<ClosedPosition> closedPositions;
 

@@ -17,6 +17,7 @@ public class Order {
 
    @JsonProperty("id")
    private Long id;
+   
    @JsonProperty("type")
    private OrderType orderType;
 
@@ -37,15 +38,19 @@ public class Order {
 
    @JsonProperty("price")
    private Double price;
+   
    @JsonProperty("avg_fill_price")
    private Double avgFillPrice;
 
    @JsonProperty("exec_quantity")
    private Double execQuantity;
+   
    @JsonProperty("last_fill_price")
    private Double lastFillPrice;
+   
    @JsonProperty("last_fill_quantity")
    private Double lastFillQuantity;
+   
    @JsonProperty("remaining_quantity")
    private Double remainingQuantity;
 

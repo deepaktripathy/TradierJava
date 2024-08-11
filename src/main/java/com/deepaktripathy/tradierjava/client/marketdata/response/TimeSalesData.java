@@ -6,24 +6,33 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimeSalesData {
+   
    @JsonProperty("time") 
-   Date time;
+   private Date time;
+   
    @JsonProperty("timestamp") 
-   int timestamp;
+   private Integer timestamp;
+   
    @JsonProperty("price") 
-   double price;
+   private Double price;
+   
    @JsonProperty("open") 
-   double myopen;
+   private Double open;
+   
    @JsonProperty("high") 
-   double high;
+   private Double high;
+   
    @JsonProperty("low") 
-   double low;
+   private Double low;
+   
    @JsonProperty("close") 
-   double close;
+   private Double close;
+   
    @JsonProperty("volume") 
-   int volume;
+   private Integer volume;
+   
    @JsonProperty("vwap") 
-   double vwap;
+   private Double vwap;
 
    public Date getTime() { 
       return this.time; 
@@ -32,67 +41,68 @@ public class TimeSalesData {
       this.time = time; 
    } 
 
-   public int getTimestamp() { 
+   public Integer getTimestamp() { 
       return this.timestamp; 
    } 
-   public void setTimestamp(int timestamp) { 
+   public void setTimestamp(Integer timestamp) { 
       this.timestamp = timestamp; 
    } 
 
-   public double getPrice() 
+   public Double getPrice() 
    { 
       return this.price; 
    } 
-   public void setPrice(double price) { 
+   public void setPrice(Double price) { 
       this.price = price; 
    } 
 
-   public double getMyopen() { 
-      return this.myopen; 
+   public Double getOpen() { 
+      return this.open; 
    } 
-   public void setMyopen(double myopen) { 
-      this.myopen = myopen; 
+   public void setOpen(Double open) { 
+      this.open = open; 
    } 
 
-   public double getHigh() { 
+   public Double getHigh() { 
       return this.high; 
    } 
-   public void setHigh(double high) { 
+   public void setHigh(Double high) { 
       this.high = high; 
    } 
 
-   public double getLow() { 
+   public Double getLow() { 
       return this.low; 
    } 
-   public void setLow(double low) { 
+   public void setLow(Double low) { 
       this.low = low; 
    } 
 
-   public double getClose() { 
+   public Double getClose() { 
       return this.close; 
    } 
-   public void setClose(double close) { 
+   public void setClose(Double close) { 
       this.close = close; 
    } 
 
-   public int getVolume() { 
+   public Integer getVolume() { 
       return this.volume; 
    } 
-   public void setVolume(int volume) { 
+   public void setVolume(Integer volume) { 
       this.volume = volume; 
    } 
 
-   public double getVwap() { 
+   public Double getVwap() { 
       return this.vwap; 
    } 
-   public void setVwap(double vwap) { 
+   public void setVwap(Double vwap) { 
       this.vwap = vwap; 
-   } 
-
+   }
+   
    @Override
    public int hashCode() {
-      return Objects.hash(close, high, low, myopen, price, time, timestamp, volume, vwap);
+      return Objects.hash(close, high, low, open, price, time, timestamp, volume, vwap);
    }
+   
    @Override
    public boolean equals(Object obj) {
       if (this == obj)
@@ -102,18 +112,17 @@ public class TimeSalesData {
       if (getClass() != obj.getClass())
          return false;
       TimeSalesData other = (TimeSalesData) obj;
-      return Double.doubleToLongBits(close) == Double.doubleToLongBits(other.close)
-            && Double.doubleToLongBits(high) == Double.doubleToLongBits(other.high)
-            && Double.doubleToLongBits(low) == Double.doubleToLongBits(other.low)
-            && Double.doubleToLongBits(myopen) == Double.doubleToLongBits(other.myopen)
-            && Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
-            && Objects.equals(time, other.time) && timestamp == other.timestamp && volume == other.volume
-            && Double.doubleToLongBits(vwap) == Double.doubleToLongBits(other.vwap);
+      return Objects.equals(close, other.close) && Objects.equals(high, other.high) && Objects.equals(low, other.low)
+            && Objects.equals(open, other.open) && Objects.equals(price, other.price)
+            && Objects.equals(time, other.time) && Objects.equals(timestamp, other.timestamp)
+            && Objects.equals(volume, other.volume) && Objects.equals(vwap, other.vwap);
    }
    
    @Override
    public String toString() {
-      return "TimeSalesData [time=" + time + ", timestamp=" + timestamp + ", price=" + price + ", myopen=" + myopen
+      return "TimeSalesData [time=" + time + ", timestamp=" + timestamp + ", price=" + price + ", open=" + open
             + ", high=" + high + ", low=" + low + ", close=" + close + ", volume=" + volume + ", vwap=" + vwap + "]";
-   }
+   } 
+
+   
 }

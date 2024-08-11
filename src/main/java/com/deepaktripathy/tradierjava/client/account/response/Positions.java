@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class Positions {
+   
    @JsonProperty("position")
    private List<Position> positions;
 

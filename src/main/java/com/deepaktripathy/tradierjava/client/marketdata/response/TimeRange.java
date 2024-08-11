@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class TimeRange {
+   
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
    @JsonProperty("start")
    private LocalTime start;

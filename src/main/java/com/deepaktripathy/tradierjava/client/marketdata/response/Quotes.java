@@ -2,6 +2,7 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 
 import java.util.List;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnmatchedSymbols;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  *
  */
-
-/*
- * result contains a 'unmatched_symbols' block if symbols are NOT valid.
- * Temporarily skip the unmatched_symbols. Later on get them back.
- */
-@JsonIgnoreProperties({ "unmatched_symbols" })
 public class Quotes {
+   
    @JsonProperty("quote")
    private List<Quote> quotes;
+
+   @JsonProperty("unmatched_symbols")
+   private UnmatchedSymbols unmatchedSymbols;
 
    public Quotes() {
    }

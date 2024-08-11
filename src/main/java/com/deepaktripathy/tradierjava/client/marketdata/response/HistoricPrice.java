@@ -9,16 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  */
 public class HistoricPrice {
+   
    @JsonProperty("date")
    private LocalDate date;
+   
    @JsonProperty("open")
    private Double open;
+   
    @JsonProperty("high")
    private Double high;
+   
    @JsonProperty("low")
    private Double low;
+   
    @JsonProperty("close")
    private Double close;
+   
    @JsonProperty("volume")
    private Long volume;
 

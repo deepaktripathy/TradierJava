@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class CalendarDay {
+   
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
    @JsonProperty("date")
    private LocalDate date;

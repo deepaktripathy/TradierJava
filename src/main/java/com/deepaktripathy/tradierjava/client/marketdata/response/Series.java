@@ -1,25 +1,28 @@
 package com.deepaktripathy.tradierjava.client.marketdata.response;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Series {
+   
    @JsonProperty("data") 
-   ArrayList<TimeSalesData> data;
+   private List<TimeSalesData> data;
 
-   public ArrayList<TimeSalesData> getData() { 
+   public List<TimeSalesData> getData() { 
       return this.data; 
    } 
-   public void setData(ArrayList<TimeSalesData> data) { 
+   public void setData(List<TimeSalesData> data) { 
       this.data = data; 
    }
-
+   
    @Override
    public int hashCode() {
       return Objects.hash(data);
    }
+   
    @Override
    public boolean equals(Object obj) {
       if (this == obj)
@@ -35,5 +38,6 @@ public class Series {
    @Override
    public String toString() {
       return "Series [data=" + data + "]";
-   } 
+   }
+
 }

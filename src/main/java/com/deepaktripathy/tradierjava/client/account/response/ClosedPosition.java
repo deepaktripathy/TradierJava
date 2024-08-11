@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class ClosedPosition {
+   
    // can only be this format: yyyy-mm-ddTHH:mm:ss.SSSZ
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-ddTHH:mm:ss.SSSZ")
    @JsonProperty("close_date")
