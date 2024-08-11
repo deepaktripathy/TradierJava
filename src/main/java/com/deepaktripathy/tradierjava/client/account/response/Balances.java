@@ -2,7 +2,7 @@ package com.deepaktripathy.tradierjava.client.account.response;
 
 import java.util.Objects;
 
-import com.deepaktripathy.tradierjava.model.AccountType;
+import com.deepaktripathy.tradierjava.client.model.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Balances {

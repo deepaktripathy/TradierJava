@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.deepaktripathy.tradierjava.model.Duration;
+import com.deepaktripathy.tradierjava.client.model.Duration;
 import com.deepaktripathy.tradierjava.utils.Utils;
 
 /**

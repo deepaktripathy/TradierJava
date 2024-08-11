@@ -3,8 +3,8 @@ package com.deepaktripathy.tradierjava.client.account.response;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.Duration;
 import com.deepaktripathy.tradierjava.client.trader.request.OrderType;
-import com.deepaktripathy.tradierjava.model.Duration;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

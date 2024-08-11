@@ -41,15 +41,15 @@ import com.deepaktripathy.tradierjava.client.marketdata.response.Quote;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Security;
 import com.deepaktripathy.tradierjava.client.marketdata.response.SessionFilter;
 import com.deepaktripathy.tradierjava.client.marketdata.response.TimeSalesResponse;
+import com.deepaktripathy.tradierjava.client.model.Duration;
+import com.deepaktripathy.tradierjava.client.model.ExchangeCode;
+import com.deepaktripathy.tradierjava.client.model.SecurityType;
 import com.deepaktripathy.tradierjava.client.trader.request.EquityOrderRequest;
 import com.deepaktripathy.tradierjava.client.trader.request.EquitySide;
 import com.deepaktripathy.tradierjava.client.trader.request.OptionOrderRequest;
 import com.deepaktripathy.tradierjava.client.trader.request.OptionSide;
 import com.deepaktripathy.tradierjava.client.trader.request.OrderType;
 import com.deepaktripathy.tradierjava.client.user.response.Profile;
-import com.deepaktripathy.tradierjava.model.Duration;
-import com.deepaktripathy.tradierjava.model.ExchangeCode;
-import com.deepaktripathy.tradierjava.model.SecurityType;
 
 @RestController
 public class TradierController {

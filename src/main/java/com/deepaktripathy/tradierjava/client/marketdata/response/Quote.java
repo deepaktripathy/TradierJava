@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
-import com.deepaktripathy.tradierjava.model.SecurityType;
+import com.deepaktripathy.tradierjava.client.model.SecurityType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
