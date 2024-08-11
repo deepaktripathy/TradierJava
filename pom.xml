@@ -1,101 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.tradierapi</groupId>
-    <artifactId>tradierjava</artifactId>
-	<version>0.1.2-SNAPSHOT</version>
+   <groupId>com.deepaktripathy</groupId>
+	<artifactId>tradierjava</artifactId>
+	<version>0.1.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>simple-java-client</name>
+	<name>tradier-java-client</name>
 	<description>A simple Java wrapper for Tradier stock trading API</description>
-	
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
-    <properties>
-    	<java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
 
-    <dependencies>
-	<dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-lang3</artifactId>
-	</dependency>
-	<dependency>
-	    <groupId>com.squareup.okhttp3</groupId>
-	    <artifactId>okhttp</artifactId>
-	    <version>5.0.0-alpha.12</version>
-	</dependency>
+	<properties>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
 
-<!-- The 5.xx-alpha.12 uses okio-jvm 4.7.0 that uses following kotlin-stdlib -->
-<dependency>
-    <groupId>org.jetbrains.kotlin</groupId>
-    <artifactId>kotlin-stdlib</artifactId>
-    <version>1.9.21</version>
-</dependency>
-	
-   <!-- for debug logging-->
-   <dependency>
-       <groupId>com.squareup.okhttp3</groupId>
-       <artifactId>logging-interceptor</artifactId>
-       <version>5.0.0-alpha.12</version>
-   </dependency>
-	
-<!-- okHttp transitive dependency-->
-<dependency>
-    <groupId>com.fasterxml.jackson.module</groupId>
-    <artifactId>jackson-module-kotlin</artifactId>
-</dependency>
-	
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-jsr310</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-jdk8</artifactId>
-      </dependency>
-      <!-- For javax.annotation.Nullable
-      It seems the jetbrains annotations are included transitively. So, we may not need this and
-      can use the jetbrains annotations instead.
-      -->
-      <dependency>
-	    <groupId>com.google.code.findbugs</groupId>
-	    <artifactId>jsr305</artifactId>
-	    <version>3.0.2</version>
-	  </dependency>
-      <dependency>
-      	<groupId>org.slf4j</groupId>
-      	<artifactId>slf4j-api</artifactId>
-      	<!-- ->version>1.7.30</version-->
-    </dependency>
-    
-      <!-- For BOOT integration
-      	Changed JAVA version to 17 since copying similar libraries. 
-      	Later move it back to 11 after adjusting the libraries. 
-      -->
-    <dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>5.0.0-alpha.12</version>
+		</dependency>
+		<!-- The 5.xx-alpha.12 uses okio-jvm 4.7.0 that uses following kotlin-stdlib -->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>1.9.21</version>
+		</dependency>
+		<!-- for debug logging -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>logging-interceptor</artifactId>
+			<version>5.0.0-alpha.12</version>
+		</dependency>
+		<!-- okHttp transitive dependency -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-kotlin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+		</dependency>
+		<!-- For javax.annotation.Nullable It seems the jetbrains annotations are 
+			included transitively. So, we may not need this and can use the jetbrains 
+			annotations instead. -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<!-- ->version>1.7.30</version -->
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -115,17 +105,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-           
-    </dependencies>
-    
-    <build>
+	</dependencies>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-   				<classifier>boot</classifier>
-				</configuration> 
+					<classifier>boot</classifier>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

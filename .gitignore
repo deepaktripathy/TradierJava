@@ -53,3 +53,6 @@ Thumbs.db
 # Config files
 allocator.props
 derby.properties
+
+#Others
+CHANGELOG.txt
