@@ -6,14 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.SecurityType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author deepak tripathy created on 05/24/2024
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Quote {
+public class Quote extends UnrecognizedFieldsCollector {
    
    @JsonProperty("symbol")
    private String symbol;

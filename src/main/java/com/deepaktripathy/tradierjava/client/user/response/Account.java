@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.AccountType;
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  *
  */
-public class Account {
+public class Account extends UnrecognizedFieldsCollector {
    
    @JsonProperty("account_number")
    private String accountNumber;

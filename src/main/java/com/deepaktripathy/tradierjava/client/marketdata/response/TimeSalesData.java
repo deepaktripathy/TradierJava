@@ -3,9 +3,10 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 import java.util.Date;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TimeSalesData {
+public class TimeSalesData extends UnrecognizedFieldsCollector {
    
    @JsonProperty("time") 
    private Date time;

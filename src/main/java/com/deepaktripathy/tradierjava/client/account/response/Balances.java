@@ -3,9 +3,10 @@ package com.deepaktripathy.tradierjava.client.account.response;
 import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.AccountType;
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Balances {
+public class Balances extends UnrecognizedFieldsCollector {
 
    @JsonProperty("option_short_value")
    private Double optionShortValue;

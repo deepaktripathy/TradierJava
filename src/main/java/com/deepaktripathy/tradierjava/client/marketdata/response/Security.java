@@ -2,6 +2,7 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  *
  */
-public class Security {
+public class Security extends UnrecognizedFieldsCollector {
 
    @JsonProperty("symbol")
    private String symbol;

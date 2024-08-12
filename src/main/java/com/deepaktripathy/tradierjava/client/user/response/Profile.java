@@ -3,6 +3,7 @@ package com.deepaktripathy.tradierjava.client.user.response;
 import java.util.List;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  *
  */
-public class Profile {
+public class Profile extends UnrecognizedFieldsCollector {
    
    @JsonProperty("id")
    private String id;

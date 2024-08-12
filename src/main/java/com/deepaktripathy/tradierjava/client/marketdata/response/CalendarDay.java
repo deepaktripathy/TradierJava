@@ -3,6 +3,7 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 06/26/2024
  *
  */
-public class CalendarDay {
+public class CalendarDay extends UnrecognizedFieldsCollector {
    
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
    @JsonProperty("date")

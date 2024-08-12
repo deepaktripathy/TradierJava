@@ -2,15 +2,19 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines a calendar of makret days
+ * Defines a calendar of matket days
  * 
  * @author deepak tripathy created on 06/26/2024
  *
  */
-public class MarketCalendar {
+public class MarketCalendar extends UnrecognizedFieldsCollector {
+
+   @JsonProperty("days")
+   private CalendarDays days;
 
    @JsonProperty("month")
    private Integer month;
@@ -18,8 +22,13 @@ public class MarketCalendar {
    @JsonProperty("year")
    private Integer year;
 
-   @JsonProperty("days")
-   private CalendarDays days;
+   public CalendarDays getDays() {
+      return days;
+   }
+
+   public void setDays(CalendarDays days) {
+      this.days = days;
+   }
 
    public Integer getMonth() {
       return month;
@@ -35,14 +44,6 @@ public class MarketCalendar {
 
    public void setYear(Integer year) {
       this.year = year;
-   }
-
-   public CalendarDays getDays() {
-      return days;
-   }
-
-   public void setDays(CalendarDays days) {
-      this.days = days;
    }
 
    @Override
@@ -64,7 +65,7 @@ public class MarketCalendar {
 
    @Override
    public String toString() {
-      return "Calendar [month=" + month + ", year=" + year + ", days=" + days + "]";
+      return "MarketCalendar [days=" + days + ", month=" + month + ", year=" + year + "]";
    }
 
 }

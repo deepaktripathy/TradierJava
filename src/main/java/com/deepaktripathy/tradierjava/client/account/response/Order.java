@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.Duration;
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.deepaktripathy.tradierjava.client.trader.request.OrderType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 05/24/2024
  *
  */
-public class Order {
+public class Order extends UnrecognizedFieldsCollector {
 
    @JsonProperty("id")
    private Long id;

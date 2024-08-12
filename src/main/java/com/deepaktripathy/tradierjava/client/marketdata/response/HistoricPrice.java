@@ -3,12 +3,13 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author deepak tripathy created on 05/24/2024
  */
-public class HistoricPrice {
+public class HistoricPrice extends UnrecognizedFieldsCollector {
    
    @JsonProperty("date")
    private LocalDate date;

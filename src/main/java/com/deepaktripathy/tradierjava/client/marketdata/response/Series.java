@@ -1,6 +1,5 @@
 package com.deepaktripathy.tradierjava.client.marketdata.response;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

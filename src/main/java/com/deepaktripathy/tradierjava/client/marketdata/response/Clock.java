@@ -4,10 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Clock {
+public class Clock extends UnrecognizedFieldsCollector {
 
    @JsonProperty("date")
    private LocalDate date;

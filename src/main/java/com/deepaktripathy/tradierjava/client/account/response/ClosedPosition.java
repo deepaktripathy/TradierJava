@@ -3,6 +3,7 @@ package com.deepaktripathy.tradierjava.client.account.response;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak tripathy created on 06/26/2024
  *
  */
-public class ClosedPosition {
+public class ClosedPosition extends UnrecognizedFieldsCollector {
    
    // can only be this format: yyyy-mm-ddTHH:mm:ss.SSSZ
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-ddTHH:mm:ss.SSSZ")

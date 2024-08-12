@@ -2,6 +2,7 @@ package com.deepaktripathy.tradierjava.client.account.response;
 
 import java.util.Objects;
 
+import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author deepak
  *
  */
-public class CashBalance {
+public class CashBalance extends UnrecognizedFieldsCollector {
 
    @JsonProperty("cash_available")
    private Double cashAvailable;

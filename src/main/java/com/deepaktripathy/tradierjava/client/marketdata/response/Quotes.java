@@ -3,7 +3,6 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 import java.util.List;
 
 import com.deepaktripathy.tradierjava.client.model.response.UnmatchedSymbols;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
