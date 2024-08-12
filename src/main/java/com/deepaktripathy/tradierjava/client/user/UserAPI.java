@@ -65,6 +65,7 @@ public class UserAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (Exception ex) {
          throw new RuntimeException(ex);
       }

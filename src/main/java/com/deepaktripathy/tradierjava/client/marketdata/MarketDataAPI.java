@@ -132,6 +132,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (Exception ex) {
          throw new RuntimeException(ex);
       }
@@ -197,6 +198,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -254,6 +256,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -306,6 +309,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (Exception ex) {
          throw new RuntimeException(ex);
       }
@@ -351,6 +355,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (Exception ex) {
          throw new RuntimeException(ex);
       }
@@ -398,6 +403,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (Exception ex) {
          throw new RuntimeException(ex);
       }
@@ -459,6 +465,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -500,6 +507,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -548,6 +556,7 @@ public class MarketDataAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -588,6 +597,7 @@ public class MarketDataAPI {
             // this can never be an array.
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -631,6 +641,7 @@ public class MarketDataAPI {
             // this can never be an array.
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }

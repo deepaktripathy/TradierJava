@@ -68,6 +68,9 @@ public class Quote extends UnrecognizedFieldsCollector {
    @JsonProperty("prevclose")
    private Double previousClosePrice;
    
+   @JsonProperty("last")
+   private Double lastPrice;
+   
    @JsonProperty("week_52_high")
    private Double fiscalYearHigh;
    
@@ -121,6 +124,9 @@ public class Quote extends UnrecognizedFieldsCollector {
 
    @JsonProperty("root_symbol")
    private String rootSymbol;
+
+   @JsonProperty("root_symbols")
+   private String rootSymbols;
 
    @JsonProperty("greeks")
    private Greeks greeks;
@@ -203,6 +209,10 @@ public class Quote extends UnrecognizedFieldsCollector {
       return this.previousClosePrice;
    }
 
+   public Double getLastPrice() {
+      return this.lastPrice;
+   }
+
    public Double getFiscalYearHigh() {
       return this.fiscalYearHigh;
    }
@@ -273,23 +283,35 @@ public class Quote extends UnrecognizedFieldsCollector {
       return this.optionType;
    }
 
+   public String getRootSymbol() {
+      return rootSymbol;
+   }
+   
+   public String getRootSymbols() {
+      return rootSymbols;
+   }
+   
    public Greeks getGreeks() {
       return greeks;
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(ask, askDate, askExchange, askSize, averageVolume, bid, bidDate, bidExchange, bidSize, change,
-            closePrice, contractSize, dayVolume, description, exchange, expirationDate, expirationType, fiscalYearHigh,
-            fiscalYearLow, greeks, highPrice, lastVolume, lowPrice, openInterest, openPrice, optionType, percentChange,
-            previousClosePrice, rootSymbol, securityType, strike, symbol, tradeDate, underlying);
+      final int prime = 31;
+      int result = super.hashCode();
+      result = prime * result + Objects.hash(ask, askDate, askExchange, askSize, averageVolume, bid, bidDate,
+            bidExchange, bidSize, change, closePrice, contractSize, dayVolume, description, exchange, expirationDate,
+            expirationType, fiscalYearHigh, fiscalYearLow, greeks, highPrice, lastPrice, lastVolume, lowPrice,
+            openInterest, openPrice, optionType, percentChange, previousClosePrice, rootSymbol, rootSymbols,
+            securityType, strike, symbol, tradeDate, underlying);
+      return result;
    }
 
    @Override
    public boolean equals(Object obj) {
       if (this == obj)
          return true;
-      if (obj == null)
+      if (!super.equals(obj))
          return false;
       if (getClass() != obj.getClass())
          return false;
@@ -305,14 +327,15 @@ public class Quote extends UnrecognizedFieldsCollector {
             && Objects.equals(expirationType, other.expirationType)
             && Objects.equals(fiscalYearHigh, other.fiscalYearHigh)
             && Objects.equals(fiscalYearLow, other.fiscalYearLow) && Objects.equals(greeks, other.greeks)
-            && Objects.equals(highPrice, other.highPrice) && Objects.equals(lastVolume, other.lastVolume)
-            && Objects.equals(lowPrice, other.lowPrice) && Objects.equals(openInterest, other.openInterest)
-            && Objects.equals(openPrice, other.openPrice) && Objects.equals(optionType, other.optionType)
-            && Objects.equals(percentChange, other.percentChange)
+            && Objects.equals(highPrice, other.highPrice) && Objects.equals(lastPrice, other.lastPrice)
+            && Objects.equals(lastVolume, other.lastVolume) && Objects.equals(lowPrice, other.lowPrice)
+            && Objects.equals(openInterest, other.openInterest) && Objects.equals(openPrice, other.openPrice)
+            && optionType == other.optionType && Objects.equals(percentChange, other.percentChange)
             && Objects.equals(previousClosePrice, other.previousClosePrice)
-            && Objects.equals(rootSymbol, other.rootSymbol) && securityType == other.securityType
-            && Objects.equals(strike, other.strike) && Objects.equals(symbol, other.symbol)
-            && Objects.equals(tradeDate, other.tradeDate) && Objects.equals(underlying, other.underlying);
+            && Objects.equals(rootSymbol, other.rootSymbol) && Objects.equals(rootSymbols, other.rootSymbols)
+            && securityType == other.securityType && Objects.equals(strike, other.strike)
+            && Objects.equals(symbol, other.symbol) && Objects.equals(tradeDate, other.tradeDate)
+            && Objects.equals(underlying, other.underlying);
    }
 
    @Override
@@ -321,13 +344,13 @@ public class Quote extends UnrecognizedFieldsCollector {
             + securityType + ", change=" + change + ", percentChange=" + percentChange + ", dayVolume=" + dayVolume
             + ", averageVolume=" + averageVolume + ", lastVolume=" + lastVolume + ", tradeDate=" + tradeDate
             + ", openPrice=" + openPrice + ", highPrice=" + highPrice + ", lowPrice=" + lowPrice + ", closePrice="
-            + closePrice + ", previousClosePrice=" + previousClosePrice + ", fiscalYearHigh=" + fiscalYearHigh
-            + ", fiscalYearLow=" + fiscalYearLow + ", bid=" + bid + ", bidSize=" + bidSize + ", bidExchange="
-            + bidExchange + ", bidDate=" + bidDate + ", ask=" + ask + ", askSize=" + askSize + ", askExchange="
-            + askExchange + ", askDate=" + askDate + ", openInterest=" + openInterest + ", underlying=" + underlying
-            + ", strike=" + strike + ", contractSize=" + contractSize + ", expirationDate=" + expirationDate
-            + ", expirationType=" + expirationType + ", optionType=" + optionType + ", rootSymbol=" + rootSymbol
-            + ", greeks=" + greeks + "]";
+            + closePrice + ", previousClosePrice=" + previousClosePrice + ", lastPrice=" + lastPrice
+            + ", fiscalYearHigh=" + fiscalYearHigh + ", fiscalYearLow=" + fiscalYearLow + ", bid=" + bid + ", bidSize="
+            + bidSize + ", bidExchange=" + bidExchange + ", bidDate=" + bidDate + ", ask=" + ask + ", askSize="
+            + askSize + ", askExchange=" + askExchange + ", askDate=" + askDate + ", openInterest=" + openInterest
+            + ", underlying=" + underlying + ", strike=" + strike + ", contractSize=" + contractSize
+            + ", expirationDate=" + expirationDate + ", expirationType=" + expirationType + ", optionType=" + optionType
+            + ", rootSymbol=" + rootSymbol + ", rootSymbols=" + rootSymbols + ", greeks=" + greeks + "]";
    }
 
 }

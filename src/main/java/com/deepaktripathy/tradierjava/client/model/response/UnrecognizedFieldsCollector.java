@@ -17,10 +17,9 @@ public abstract class UnrecognizedFieldsCollector {
    @JsonAnySetter
    private void setUnrecognizedFields(String key, Object value) {
        this.unrecognizedFields.put(key, value);
-//       LOGGER.warn("Unrecognized field found under class: " + this.getClass().getName() 
-//             + ", field: " + key + "::" + value + ", type: " + value.getClass().getSimpleName());
+       String valueClass = (value == null) ?"null" :value.getClass().getSimpleName();
        System.out.println("Unrecognized field found under class: " + this.getClass().getName() 
-             + ", field: " + key + ", type: " + value.getClass().getSimpleName());
+             + ", field: " + key + ", type: " + valueClass);
    }
    
    /** 

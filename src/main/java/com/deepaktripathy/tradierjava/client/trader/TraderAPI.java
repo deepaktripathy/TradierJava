@@ -72,6 +72,7 @@ public class TraderAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -110,6 +111,7 @@ public class TraderAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -147,6 +149,7 @@ public class TraderAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
@@ -193,6 +196,7 @@ public class TraderAPI {
             }
          } else
             LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
       } catch (IOException ex) {
          throw new RuntimeException(ex);
       }
