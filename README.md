@@ -20,7 +20,7 @@ Followings are implemented:
 - Modify order.
 
 Yet to be added:
-- Fundamental data.
+- Fundamental data (BETA).
 - Streaming quotes.
 - Error handling.
 - Test cases.

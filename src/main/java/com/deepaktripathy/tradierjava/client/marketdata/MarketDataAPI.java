@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.deepaktripathy.tradierjava.client.fundamental.FundamentalAPI;
 import com.deepaktripathy.tradierjava.client.marketdata.request.OptionStrikePricesRequest;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Clock;
 import com.deepaktripathy.tradierjava.client.marketdata.response.HistoricPrice;
@@ -50,8 +51,10 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
+ * The MarketData endpoint is in Beta Mode as of 08/11/24 and can only be accessed with a 
+ * prod key and to be used with caution.
  * 
- * @author deepak tripathy created on 07/02/2024
+ * @author deepak tripathy created on 08/11/2024
  *
  */
 public class MarketDataAPI {
@@ -62,6 +65,8 @@ public class MarketDataAPI {
    private OkHttpClient httpClient;
    private Map<String, String> headers = new HashMap<String, String>();
 
+   private FundamentalAPI fundamental;
+   
    public MarketDataAPI(String baseUrl, String apiSecretKey, OkHttpClient okHttpClient) {
 
       this.baseUrl = baseUrl;
@@ -70,6 +75,22 @@ public class MarketDataAPI {
 
       headers.put("Authorization", "Bearer " + apiKey);
       headers.put("Accept", "application/json");
+   }
+
+   /**
+    * Returns the FundamentalAPI providing company fundamental data endpoints
+    * '/markets/fundamentals'
+    * 
+    * NOTES: 
+    * 1. As of 08/11/2024, the Tradier Fundamental API is in Beta. So there may be future changes.
+    * 2. The Fundamental API is offered only to Production user/account and would need a prod key. 
+    * 3. The response structure is too long and may need to be reorganized to shorten those.
+    */
+   public synchronized FundamentalAPI fundamental() {
+      if (fundamental == null) {
+         fundamental = new FundamentalAPI(baseUrl, apiKey, httpClient);
+      }
+      return fundamental;
    }
 
    public Optional<Quote> getQuote(@Nonnull String symbol, @Nullable Boolean includeGreeks) {
