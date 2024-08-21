@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ValuationRatios extends UnrecognizedFieldsCollector {
 
-    @JsonProperty("1st_year_estimated_e_p_s_growth")
+      @JsonProperty("1st_year_estimated_e_p_s_growth")
     private Double firstYearEstimatedEpsGrowth;
 
     @JsonProperty("2nd_year_estimated_e_p_s_growth")
@@ -292,80 +292,4 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
 
     @JsonProperty("working_capital_per_share5_yr_avg")
     private Double workingCapitalPerShare5YrAvg;
-
-    @JsonProperty("e_v_to_f_c_f1_year_growth")
-    private Double eVToFCF1YearGrowth;
-
-    @JsonProperty("e_v_to_f_c_f3_year_growth")
-    private Double eVToFCF3YearGrowth;
-
-    @JsonProperty("e_v_to_f_c_f3_yr_avg")
-    private Double eVToFCF3YrAvg;
-
-    @JsonProperty("e_v_to_f_c_f3_yr_avg_change")
-    private Double eVToFCF3YrAvgChange;
-
-    @JsonProperty("e_v_to_f_c_f5_year_growth")
-    private Double eVToFCF5YearGrowth;
-
-    @JsonProperty("e_v_to_revenue10_year_growth")
-    private Double eVToRevenue10YearGrowth;
-
-    @JsonProperty("e_v_to_revenue1_year_growth")
-    private Double eVToRevenue1YearGrowth;
-
-    @JsonProperty("e_v_to_revenue3_year_growth")
-    private Double eVToRevenue3YearGrowth;
-
-    @JsonProperty("e_v_to_revenue3_yr_avg")
-    private Double eVToRevenue3YrAvg;
-
-    @JsonProperty("e_v_to_revenue3_yr_avg_change")
-    private Double eVToRevenue3YrAvgChange;
-
-    @JsonProperty("e_v_to_revenue5_year_growth")
-    private Double eVToRevenue5YearGrowth;
-
-    @JsonProperty("e_v_to_total_assets10_year_growth")
-    private Double eVToTotalAssets10YearGrowth;
-
-    @JsonProperty("e_v_to_total_assets1_year_growth")
-    private Double eVToTotalAssets1YearGrowth;
-
-    @JsonProperty("e_v_to_total_assets3_year_growth")
-    private Double eVToTotalAssets3YearGrowth;
-
-    @JsonProperty("e_v_to_total_assets3_yr_avg")
-    private Double eVToTotalAssets3YrAvg;
-
-    @JsonProperty("e_v_to_total_assets3_yr_avg_change")
-    private Double eVToTotalAssets3YrAvgChange;
-
-    @JsonProperty("e_v_to_total_assets5_year_growth")
-    private Double eVToTotalAssets5YearGrowth;
-    
-    @JsonProperty("e_v_to_e_b_i_t3_yr_avg")
-    private Double eVToEBIT3YrAvg;
-
-    @JsonProperty("e_v_to_e_b_i_t3_yr_avg_change")
-    private Double eVToEBIT3YrAvgChange;
-
-    @JsonProperty("e_v_to_e_b_i_t_d_a10_year_growth")
-    private Double eVToEBITDA10YearGrowth;
-
-    @JsonProperty("e_v_to_e_b_i_t_d_a3_year_growth")
-    private Double eVToEBITDA3YearGrowth;
-
-    @JsonProperty("e_v_to_e_b_i_t_d_a3_yr_avg")
-    private Double eVToEBITDA3YrAvg;
-
-    @JsonProperty("e_v_to_e_b_i_t_d_a3_yr_avg_change")
-    private Double eVToEBITDA3YrAvgChange;
-
-    @JsonProperty("e_v_to_e_b_i_t_d_a5_year_growth")
-    private Double eVToEBITDA5YearGrowth;
-
-    @JsonProperty("e_v_to_f_c_f10_year_growth")
-    private Double eVToFCF10YearGrowth;
-
 }

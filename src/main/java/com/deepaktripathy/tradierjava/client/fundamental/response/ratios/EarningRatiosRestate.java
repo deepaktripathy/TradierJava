@@ -1,7 +1,14 @@
 package com.deepaktripathy.tradierjava.client.fundamental.response.ratios; 
 
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period10y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period1y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period3m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period3y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period5y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period6m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earningrestate.Period9m;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
-import com.fasterxml.jackson.annotation.JsonProperty; 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EarningRatiosRestate extends UnrecognizedFieldsCollector {
 

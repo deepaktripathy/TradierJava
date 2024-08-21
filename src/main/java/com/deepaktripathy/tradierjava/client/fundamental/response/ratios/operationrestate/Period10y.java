@@ -1,69 +1,40 @@
-package com.deepaktripathy.tradierjava.client.fundamental.response.ratios;
+package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationrestate;
 
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Period10y extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("share_class_id") 
-   private String shareClassId;
-   
+
+
+
+
+public class Period10y extends UnrecognizedFieldsCollector {
    @JsonProperty("as_of_date") 
    private String asOfDate;
-
-   @JsonProperty("fiscal_year_end") 
-   private String fiscalYearEnd;
-   
-   @JsonProperty("period") 
-   private String period;
-
-   @JsonProperty("report_type") 
-   private String reportType;
-   
-   @JsonProperty("book_value_per_share_growth") 
-   private Double bookValuePerShareGrowth;
-   
-   @JsonProperty("diluted_cont_e_p_s_growth") 
-   private Double dilutedContEpsGrowth;
-
-   @JsonProperty("diluted_e_p_s_growth") 
-   private Double dilutedEpsGrowth;
-   
-   @JsonProperty("equity_per_share_growth") 
-   private Double equityPerShareGrowth;
-
-   @JsonProperty("normalized_basic_e_p_s_growth") 
-   private Double normalizedBasicEpsGrowth;
-   
-   @JsonProperty("normalized_diluted_e_p_s_growth") 
-   private Double normalizedDilutedEpsGrowth;
-
-   @JsonProperty("d_p_s_growth") 
-   private Double dpsGrowth;
-
-   @JsonProperty("f_c_f_per_share_growth") 
-   private Double fcfPerShareGrowth;
-   
-   @JsonProperty("c_f_o_growth3_month_avg") 
-   private Double cFOGrowth3MonthAvg;
    
    @JsonProperty("capital_expenditure_annual5_yr_growth") 
    private Double capitalExpenditureAnnual5YrGrowth;
    
    @JsonProperty("cash_ratio_growth") 
    private Double cashRatioGrowth;
+
+   @JsonProperty("c_f_o_growth3_month_avg") 
+   private Double cFOGrowth3MonthAvg;
    
    @JsonProperty("company_id") 
    private String companyID;
    
    @JsonProperty("current_ratio_growth") 
    private Double currentRatioGrowth;
-   
+
    @JsonProperty("e_b_i_t_d_a_growth") 
    private Double eBITDAGrowth;
-   
+
    @JsonProperty("f_c_f_growth3_month_avg") 
    private Double fCFGrowth3MonthAvg;
+   
+   @JsonProperty("fiscal_year_end") 
+   private String fiscalYearEnd;
    
    @JsonProperty("gross_profit_annual5_yr_growth") 
    private Double grossProfitAnnual5YrGrowth;
@@ -79,6 +50,12 @@ public class Period10y extends UnrecognizedFieldsCollector {
    
    @JsonProperty("operation_revenue_growth3_month_avg") 
    private Double operationRevenueGrowth3MonthAvg;
+   
+   @JsonProperty("period") 
+   private String period;
+   
+   @JsonProperty("report_type") 
+   private String reportType;
    
    @JsonProperty("revenue_growth") 
    private Double revenueGrowth;

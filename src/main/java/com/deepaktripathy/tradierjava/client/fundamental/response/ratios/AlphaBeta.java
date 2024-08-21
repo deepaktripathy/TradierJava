@@ -1,8 +1,14 @@
 package com.deepaktripathy.tradierjava.client.fundamental.response.ratios; 
+
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta.Period120m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta.Period36m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta.Period48m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta.Period60m;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
-import com.fasterxml.jackson.annotation.JsonProperty; 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AlphaBeta extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("period_36m") 
    private Period36m period36Mo;
 

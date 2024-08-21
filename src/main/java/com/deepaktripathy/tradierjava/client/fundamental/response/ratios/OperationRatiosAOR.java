@@ -1,7 +1,14 @@
 package com.deepaktripathy.tradierjava.client.fundamental.response.ratios; 
 
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period10y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period1y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period3m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period3y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period5y;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period6m;
+import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationaor.Period9m;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
-import com.fasterxml.jackson.annotation.JsonProperty; 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OperationRatiosAOR extends UnrecognizedFieldsCollector {
 
@@ -25,5 +32,4 @@ public class OperationRatiosAOR extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_10y") 
    private Period10y period10Yr;
-
 }
