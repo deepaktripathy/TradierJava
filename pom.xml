@@ -6,7 +6,7 @@
 
    <groupId>com.deepaktripathy</groupId>
 	<artifactId>tradierjava</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>tradier-java-client</name>

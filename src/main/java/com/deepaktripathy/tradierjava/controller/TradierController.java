@@ -111,7 +111,7 @@ public class TradierController {
    public List<LocalDate> getOptionExpieryDates(@RequestHeader HttpHeaders headers,
          @RequestParam(value = "symbol") String symbol) {
       Properties tradierProps = buildProperties(headers);
-      return new TradierAPI(tradierProps).marketData().getOptionExpieryDates(symbol);
+      return new TradierAPI(tradierProps).marketData().getOptionExpiryDates(symbol);
    }
 
    @GetMapping("/markets/options/lookup")

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.deepaktripathy.tradierjava.client.fundamental.FundamentalAPI;
 import com.deepaktripathy.tradierjava.client.marketdata.request.OptionStrikePricesRequest;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Clock;
+import com.deepaktripathy.tradierjava.client.marketdata.response.ExpirationsResponse;
 import com.deepaktripathy.tradierjava.client.marketdata.response.HistoricPrice;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Interval;
 import com.deepaktripathy.tradierjava.client.marketdata.response.MarketCalendar;
@@ -285,7 +286,7 @@ public class MarketDataAPI {
    }
 
    //TODO: NOT yet complete as the response structure changes based on the request.
-   public List<LocalDate> getOptionExpieryDates(@Nonnull String underlyingSymbol) {
+   public List<LocalDate> getOptionExpiryDates(@Nonnull String underlyingSymbol) {
       Objects.requireNonNull(underlyingSymbol);
 
       List<LocalDate> expireDates = new ArrayList<>();
@@ -335,6 +336,54 @@ public class MarketDataAPI {
          throw new RuntimeException(ex);
       }
       return expireDates;
+   }
+   
+   /**
+    * Returns all of these details: strikes, contractSize & expirationType from all the exchange roots */
+   // NOT yet complete as the response structure changes based on the request.
+   public ExpirationsResponse getOptionExpirations(@Nonnull String underlyingSymbol) {
+      Objects.requireNonNull(underlyingSymbol);
+
+      try {
+         String url = String.format(baseUrl + "/v1/markets/options/expirations");
+
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+         httpBuilder.addQueryParameter("symbol", underlyingSymbol)
+                .addQueryParameter("strikes", "true")
+                .addQueryParameter("contractSize", "true")
+                .addQueryParameter("expirationType", "true")
+               .addQueryParameter("includeAllRoots", "true");
+
+         Request.Builder requestBuilder = new Request.Builder().url(httpBuilder.build()).get();
+         headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+         Request request = requestBuilder.build();
+
+         Response response = httpClient.newCall(request).execute();
+
+         ResponseBody responseBody = response.body();
+         int responseCode = response.code();
+         String responseBodyStr = responseBody.string();
+         if (responseCode == 200) {
+            ObjectMapper mapper = Utils.objectMapper();
+            final JsonNode jsonTree = mapper.readTree(responseBodyStr);
+
+            if (jsonTree.isNull() || jsonTree.isMissingNode())
+               return new ExpirationsResponse();
+
+            if (jsonTree.isObject()) {
+               ExpirationsResponse timeSeries = mapper.treeToValue(jsonTree, ExpirationsResponse.class);
+               return timeSeries;
+            } else {
+               ExpirationsResponse expirationsResponse = mapper.treeToValue(jsonTree, ExpirationsResponse.class);
+               return expirationsResponse;
+            }
+         } else
+            LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
+      } catch (Exception ex) {
+         throw new RuntimeException(ex);
+      }
+      return new ExpirationsResponse();
    }
 
    public List<Option> getOptionChainFor(@Nonnull String underlyingSymbol, @Nonnull LocalDate expieryDate,
