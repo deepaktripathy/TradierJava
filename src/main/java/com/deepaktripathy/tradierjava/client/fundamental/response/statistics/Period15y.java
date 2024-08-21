@@ -10,14 +10,14 @@ import lombok.ToString;
 @ToString
 public class Period15y extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("share_class_id") 
-   private String shareClassId;
-   
    @JsonProperty("as_of_date") 
    private String asOfDate;
    
    @JsonProperty("period") 
    private String period;
+   
+   @JsonProperty("share_class_id") 
+   private String shareClassId;
    
    @JsonProperty("total_return") 
    private Double totalReturn;

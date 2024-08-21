@@ -12,15 +12,15 @@ import lombok.ToString;
 @ToString
 public class StatisticsRoot extends UnrecognizedFieldsCollector {
 
+   @JsonProperty("error") 
+   private String error;
+   
    @JsonProperty("request") 
    private String request;
-   
-   @JsonProperty("type") 
-   private String type;
 
    @JsonProperty("results") 
    private List<Result> results;
 
-   @JsonProperty("error") 
-   private String error;
+   @JsonProperty("type") 
+   private String type;
 }

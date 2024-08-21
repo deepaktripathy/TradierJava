@@ -58,6 +58,12 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("cash_equivalents") 
    private Double cashEquivalents;
 
+   @JsonProperty("common_stock_equity")
+   private Double common_stock_equity;
+
+   @JsonProperty("common_stock")
+   private Double commonStock;
+
    @JsonProperty("com_tre_sha_num") 
    private Double comTreShaNum;
 
@@ -94,8 +100,23 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("current_liabilities") 
    private Double currentLiabilities;
 
+   @JsonProperty("current_notes_payable")
+   private Double currentNotesPayable;
+
+   @JsonProperty("current_provisions") 
+   private Double currentProvisions;
+
    @JsonProperty("defined_pension_benefit")
    private Double definedPensionBenefit;
+
+   @JsonProperty("dividends_payable") 
+   private Double dividendsPayable;
+
+   @JsonProperty("duefrom_related_parties_current")
+   private Double duefrom_related_parties_current;
+
+   @JsonProperty("dueto_related_parties_current")
+   private Double dueto_related_parties_current;
 
    @JsonProperty("employee_benefits") 
    private Double employeeBenefits;
@@ -133,6 +154,9 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("income_tax_payable") 
    private Double incomeTaxPayable;
 
+   @JsonProperty("interest_payable") 
+   private Double interestPayable;
+
    @JsonProperty("inventory") 
    private Double inventory;
 
@@ -154,6 +178,12 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("liabilities_heldfor_sale_non_current")
    private Double liabilitiesHeldforSaleNonCurrent;
 
+   @JsonProperty("line_of_credit") 
+   private Double lineOfCredit;
+
+   @JsonProperty("loans_receivable") 
+   private Double loansReceivable;
+
    @JsonProperty("long_term_capital_lease_obligation") 
    private Double longTermCapitalLeaseObligation;
 
@@ -168,6 +198,9 @@ public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("long_term_provisions")
    private Double longTermProvisions;
+
+   @JsonProperty("machinery_furniture_equipment")
+   private Double machinery_furniture_equipment;
 
    @JsonProperty("minority_interest")
    private Double minorityInterest;
@@ -208,6 +241,15 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("ordinary_shares_number")
    private Double ordinarySharesNumber;
 
+   @JsonProperty("other_equity_interest")
+   private Double other_equity_interest;
+
+   @JsonProperty("other_inventories")
+   private Double other_inventories;
+
+   @JsonProperty("other_payable")
+   private Double other_payable;
+
    @JsonProperty("other_current_assets")
    private Double otherCurrentAssets;
 
@@ -222,6 +264,9 @@ public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("other_intangible_assets")
    private Double otherIntangibleAssets;
+
+   @JsonProperty("other_investments") 
+   private Double otherInvestments;
 
    @JsonProperty("other_non_current_assets")
    private Double otherNonCurrentAssets;
@@ -253,6 +298,12 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("period_ending_date")
    private String periodEndingDate;
 
+   @JsonProperty("preferred_stock")
+   private Double preferred_stock;
+
+   @JsonProperty("preferred_securities_outside_stock_equity") 
+   private Double preferredSecuritiesOutsideStockEquity;
+
    @JsonProperty("prepaid_assets") 
    private Double prepaidAssets;
 
@@ -273,34 +324,34 @@ public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("retained_earnings")
    private Double retainedEarnings;
-
+   
    @JsonProperty("share_issued")
    private Double shareIssued;
-
+   
    @JsonProperty("stockholders_equity")
    private Double stockholdersEquity;
-
+   
    @JsonProperty("tangible_book_value")
    private Double tangibleBookValue;
-
+   
    @JsonProperty("total_assets") 
    private Double totalAssets;
-
+   
    @JsonProperty("total_capitalization")
    private Double totalCapitalization;
-
+   
    @JsonProperty("total_debt")
    private Double totalDebt;
-
+   
    @JsonProperty("total_equity")
    private Double totalEquity;
-
+   
    @JsonProperty("total_equity_gross_minority_interest")
    private Double totalEquityGrossMinorityInterest;
-
+   
    @JsonProperty("total_liabilities_net_minority_interest")
    private Double totalLiabilitiesNetMinorityInterest;
-
+   
    @JsonProperty("total_non_current_assets") 
    private Double totalNonCurrentAssets;
 
@@ -315,64 +366,13 @@ public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("treasury_shares_number")
    private Double treasurySharesNumber;
-
+   
    @JsonProperty("treasury_stock")
    private Double treasuryStock;
-
+   
    @JsonProperty("working_capital")
    private Double workingCapital;
-
+   
    @JsonProperty("work_in_process") 
    private Double workInProcess;
-   
-   @JsonProperty("common_stock")
-   private Double commonStock;
-   
-   @JsonProperty("common_stock_equity")
-   private Double common_stock_equity;
-   
-   @JsonProperty("duefrom_related_parties_current")
-   private Double duefrom_related_parties_current;
-   
-   @JsonProperty("dueto_related_parties_current")
-   private Double dueto_related_parties_current;
-   
-   @JsonProperty("machinery_furniture_equipment")
-   private Double machinery_furniture_equipment;
-   
-   @JsonProperty("other_equity_interest")
-   private Double other_equity_interest;
-   
-   @JsonProperty("other_inventories")
-   private Double other_inventories;
-   
-   @JsonProperty("other_payable")
-   private Double other_payable;
-   
-   @JsonProperty("preferred_stock")
-   private Double preferred_stock;
-   
-   @JsonProperty("current_notes_payable")
-   private Double currentNotesPayable;
-
-   @JsonProperty("current_provisions") 
-   private Double currentProvisions;
-
-   @JsonProperty("dividends_payable") 
-   private Double dividendsPayable;
-
-   @JsonProperty("interest_payable") 
-   private Double interestPayable;
-
-   @JsonProperty("line_of_credit") 
-   private Double lineOfCredit;
-   
-   @JsonProperty("loans_receivable") 
-   private Double loansReceivable;
-   
-   @JsonProperty("other_investments") 
-   private Double otherInvestments;
-   
-   @JsonProperty("preferred_securities_outside_stock_equity") 
-   private Double preferredSecuritiesOutsideStockEquity;
 }

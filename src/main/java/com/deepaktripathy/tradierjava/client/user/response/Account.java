@@ -31,6 +31,9 @@ public class Account extends UnrecognizedFieldsCollector {
    @JsonProperty("day_trader")
    private Boolean dayTrader;
    
+   @JsonProperty("last_update_date")
+   private ZonedDateTime lastUpdateDate;
+   
    @JsonProperty("option_level")
    private Integer optionLevel;
    
@@ -39,7 +42,4 @@ public class Account extends UnrecognizedFieldsCollector {
    
    @JsonProperty("type")
    private AccountType type;
-   
-   @JsonProperty("last_update_date")
-   private ZonedDateTime lastUpdateDate;
 }

@@ -9,12 +9,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Result extends UnrecognizedFieldsCollector {
-   @JsonProperty("type") 
-   private String type;
-   
    @JsonProperty("id") 
    private String id;
    
    @JsonProperty("tables") 
    Tables tables;
+   
+   @JsonProperty("type") 
+   private String type;
 }

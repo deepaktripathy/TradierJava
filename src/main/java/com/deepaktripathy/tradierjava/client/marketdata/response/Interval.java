@@ -9,8 +9,8 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 public enum Interval {
    /** Daily interval */
    daily,
-   /** weekly interval */
-   weekly,
    /** monthly interval */
-   monthly
+   monthly,
+   /** weekly interval */
+   weekly
 }

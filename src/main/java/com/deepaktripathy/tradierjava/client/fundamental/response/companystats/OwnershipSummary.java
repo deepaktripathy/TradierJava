@@ -10,12 +10,6 @@ import lombok.ToString;
 @ToString
 public class OwnershipSummary extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("share_class_id")
-   private String shareClassId;
-
-   @JsonProperty("as_of_date")
-   private String asOfDate;
-
    @JsonProperty("13_f_holder_number")
    private Integer _13fHolderNumber;
 
@@ -43,17 +37,17 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    @JsonProperty("13_f_shares_sold")
    private Integer _13fSharesSold;
 
-   @JsonProperty("13_f_total_market_value")
-   private Object _13fTtalMarketValue;
-
    @JsonProperty("13_f_total_shares_bought_by_new_owners")
    private Integer _13fTotalSharesBoughtByNewOwners;
 
    @JsonProperty("13_f_total_shares_sold_out")
    private Integer _13fTotalSharesSoldOut;
 
-   @JsonProperty("float")
-   private Integer myfloat;
+   @JsonProperty("13_f_total_market_value")
+   private Object _13fTtalMarketValue;
+
+   @JsonProperty("as_of_date")
+   private String asOfDate;
 
    @JsonProperty("fund_company_number_of_existing_owner_buying")
    private Integer fundCompanyNumberOfExistingOwnerBuying;
@@ -76,6 +70,9 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    @JsonProperty("fund_company_total_shares_sold_out")
    private Integer fundCompanyTotalSharesSoldOut;
 
+   @JsonProperty("insider_percent_owned")
+   private Integer insiderPercentOwned;
+
    @JsonProperty("insider_shares_bought")
    private Integer insiderSharesBought;
 
@@ -84,13 +81,10 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
 
    @JsonProperty("insider_shares_sold")
    private Integer insiderSharesSold;
-   
-   @JsonProperty("insider_percent_owned")
-   private Integer insiderPercentOwned;
 
    @JsonProperty("institution_holder_number")
    private Integer institutionHolderNumber;
-
+   
    @JsonProperty("institution_percent_held")
    private Double institutionPercentHeld;
 
@@ -103,6 +97,9 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    @JsonProperty("institution_shares_sold")
    private Integer institutionSharesSold;
 
+   @JsonProperty("float")
+   private Integer myfloat;
+
    @JsonProperty("number_of_insider_buys")
    private Integer numberOfInsiderBuys;
 
@@ -111,6 +108,12 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
 
    @JsonProperty("quoted_shares_outstanding")
    private Integer quotedSharesOutstanding;
+
+   @JsonProperty("reasonof_shares_change")
+   private String reasonofSharesChange;
+
+   @JsonProperty("share_class_id")
+   private String shareClassId;
 
    @JsonProperty("share_class_level_shares_outstanding_balance_sheet")
    private Integer shareClassLevelSharesOutstandingBalanceSheet;
@@ -129,7 +132,4 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
 
    @JsonProperty("un_quoted_shares_outstanding")
    private Integer unQuotedSharesOutstanding;
-
-   @JsonProperty("reasonof_shares_change")
-   private String reasonofSharesChange;
 }

@@ -16,15 +16,15 @@ import lombok.ToString;
 @ToString
 public class Security extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("symbol")
-   private String symbol;
+   @JsonProperty("description")
+   private String description;
 
    @JsonProperty("exchange")
    private String exchange;
 
+   @JsonProperty("symbol")
+   private String symbol;
+
    @JsonProperty("type")
    private String type;
-
-   @JsonProperty("description")
-   private String description;
 }

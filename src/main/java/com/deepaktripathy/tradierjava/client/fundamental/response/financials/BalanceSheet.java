@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 public class BalanceSheet extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("period_3m") 
-   private Period3m period3Mo;  
-   
    @JsonProperty("period_12m") 
-   private Period3m period12Mo;
+   private Period3m period12Mo;  
+   
+   @JsonProperty("period_3m") 
+   private Period3m period3Mo;
 }

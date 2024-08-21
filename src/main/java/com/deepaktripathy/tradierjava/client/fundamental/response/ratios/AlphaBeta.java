@@ -14,6 +14,9 @@ import lombok.ToString;
 @ToString
 public class AlphaBeta extends UnrecognizedFieldsCollector {
    
+   @JsonProperty("period_120m") 
+   private Period120m period120Mo;
+
    @JsonProperty("period_36m") 
    private Period36m period36Mo;
 
@@ -22,7 +25,4 @@ public class AlphaBeta extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_60m") 
    private Period60m period60Mo;
-
-   @JsonProperty("period_120m") 
-   private Period120m period120Mo;
 }

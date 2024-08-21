@@ -12,9 +12,6 @@ public class MergersAndAcquisition extends UnrecognizedFieldsCollector {
    @JsonProperty("acquired_company_id")
    private String acquiredCompanyId;
 
-   @JsonProperty("parent_company_id")
-   private String parentCompanyId;
-
    @JsonProperty("cash_amount")
    private Double cashAmount;
 
@@ -26,7 +23,10 @@ public class MergersAndAcquisition extends UnrecognizedFieldsCollector {
 
    @JsonProperty("notes")
    private String notes;
-   
+
    @JsonProperty("number_of_shares")
    private String numberOrShares;
+   
+   @JsonProperty("parent_company_id")
+   private String parentCompanyId;
 }

@@ -12,18 +12,18 @@ import lombok.ToString;
 @ToString
 public class Tables extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("operation_ratios_restate") 
-   private List<OperationRatiosRestate> operationRatiosRestate;
-
-   @JsonProperty("operation_ratios_a_o_r") 
-   private List<OperationRatiosAOR> operationRatiosAOR;
+   @JsonProperty("alpha_beta") 
+   private AlphaBeta alphaBeta;
 
    @JsonProperty("earning_ratios_restate") 
    private List<EarningRatiosRestate> earningRatiosRestate;
 
+   @JsonProperty("operation_ratios_a_o_r") 
+   private List<OperationRatiosAOR> operationRatiosAOR;
+
+   @JsonProperty("operation_ratios_restate") 
+   private List<OperationRatiosRestate> operationRatiosRestate;
+
    @JsonProperty("valuation_ratios") 
    private ValuationRatios valuationRatios;
-
-   @JsonProperty("alpha_beta") 
-   private AlphaBeta alphaBeta;
 }

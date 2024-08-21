@@ -16,9 +16,9 @@ public class Period1y extends UnrecognizedFieldsCollector {
    @JsonProperty("period") 
    private String period;
    
-   @JsonProperty("total_return")
-   private Double totalReturn;
-   
    @JsonProperty("share_class_id")
    private String shareClassId;
+   
+   @JsonProperty("total_return")
+   private Double totalReturn;
 }

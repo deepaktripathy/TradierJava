@@ -17,17 +17,14 @@ import lombok.ToString;
 @ToString
 public class EarningRatiosRestate extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("period_3m") 
-   private Period3m period3Mo;
-
-   @JsonProperty("period_6m") 
-   private Period6m period6Mo;
-
-   @JsonProperty("period_9m") 
-   private Period9m period9Mo;
+   @JsonProperty("period_10y") 
+   private Period10y period10Yr;
 
    @JsonProperty("period_1y") 
    private Period1y period1Yr;
+
+   @JsonProperty("period_3m") 
+   private Period3m period3Mo;
 
    @JsonProperty("period_3y") 
    private Period3y period3Yr;
@@ -35,6 +32,9 @@ public class EarningRatiosRestate extends UnrecognizedFieldsCollector {
    @JsonProperty("period_5y") 
    private Period5y period5Yr;
 
-   @JsonProperty("period_10y") 
-   private Period10y period10Yr;
+   @JsonProperty("period_6m") 
+   private Period6m period6Mo;
+
+   @JsonProperty("period_9m") 
+   private Period9m period9Mo;
 }

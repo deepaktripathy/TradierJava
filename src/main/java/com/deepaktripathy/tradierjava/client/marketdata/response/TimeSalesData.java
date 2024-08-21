@@ -12,17 +12,8 @@ import lombok.ToString;
 @ToString
 public class TimeSalesData extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("time") 
-   private Date time;
-   
-   @JsonProperty("timestamp") 
-   private Integer timestamp;
-   
-   @JsonProperty("price") 
-   private Double price;
-   
-   @JsonProperty("open") 
-   private Double open;
+   @JsonProperty("close") 
+   private Double close;
    
    @JsonProperty("high") 
    private Double high;
@@ -30,8 +21,17 @@ public class TimeSalesData extends UnrecognizedFieldsCollector {
    @JsonProperty("low") 
    private Double low;
    
-   @JsonProperty("close") 
-   private Double close;
+   @JsonProperty("open") 
+   private Double open;
+   
+   @JsonProperty("price") 
+   private Double price;
+   
+   @JsonProperty("time") 
+   private Date time;
+   
+   @JsonProperty("timestamp") 
+   private Integer timestamp;
    
    @JsonProperty("volume") 
    private Integer volume;

@@ -20,16 +20,16 @@ public class Clock extends UnrecognizedFieldsCollector {
    @JsonProperty("description")
    private String description;
 
-   @JsonProperty("state")
-   private State state;
-
-   @JsonProperty("timestamp")
-   private Long timestamp;
-
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
    @JsonProperty("next_change")
    private LocalTime nextChange;
 
    @JsonProperty("next_state")
    private State nextState;
+
+   @JsonProperty("state")
+   private State state;
+
+   @JsonProperty("timestamp")
+   private Long timestamp;
 }

@@ -7,7 +7,7 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
  *
  */
 public enum SessionFilter {
-   open,
+   all,
 
-   all
+   open
 }

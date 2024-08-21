@@ -10,29 +10,29 @@ import lombok.ToString;
 @ToString
 public class ValuationRatios extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("1st_year_estimated_e_p_s_growth")
-   private Double firstYearEstimatedEpsGrowth;
+   @JsonProperty("as_of_date")
+   private String asOfDate;
 
-   @JsonProperty("2nd_year_estimated_e_p_s_growth")
-   private Double secondYearEstimatedEpsGrowth;
+   @JsonProperty("book_value_per_share")
+   private Double bookValuePerShare;
 
-   @JsonProperty("2_years_forward_earning_yield")
-   private Double twoYearsForwardEarningYield;
-
-   @JsonProperty("2_years_forward_p_e_ratio")
-   private Double twoYearsForwardPeRatio;
-
-   @JsonProperty("2_yrs_e_v_to_forward_e_b_i_t")
-   private Double twoYrsEvToForwardEbit;
-
-   @JsonProperty("2_yrs_e_v_to_forward_e_b_i_t_d_a")
-   private Double twoYrsEvToForwardEbitDa;
+   @JsonProperty("book_value_yield")
+   private Double bookValueYield;
 
    @JsonProperty("buy_back_yield")
    private Double buyBackYield;
 
    @JsonProperty("c_a_p_e_ratio")
    private Double capeRatio;
+
+   @JsonProperty("cash_return")
+   private Double cashReturn;
+
+   @JsonProperty("c_f_o_per_share")
+   private Double cfOPerShare;
+
+   @JsonProperty("c_f_yield")
+   private Double cfYield;
 
    @JsonProperty("dividend_rate")
    private Double dividendRate;
@@ -42,6 +42,9 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
 
    @JsonProperty("div_yield5_year")
    private Double divYield5Year;
+
+   @JsonProperty("earning_yield")
+   private Double earningYield;
 
    @JsonProperty("e_vto_e_b_i_t")
    private Double evToEbit;
@@ -64,11 +67,26 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
    @JsonProperty("e_vto_pre_tax_income")
    private Double evToPreTaxIncome;
 
+   @JsonProperty("e_vto_revenue")
+   private Double evToRevenue;
+
+   @JsonProperty("e_vto_total_assets")
+   private Double evToTotalAssets;
+
    @JsonProperty("expected_dividend_growth_rate")
    private Double expectedDividendGrowthRate;
 
+   @JsonProperty("f_c_f_per_share")
+   private Double fcfPerShare;
+
    @JsonProperty("f_c_f_ratio")
    private Double fcfRatio;
+
+   @JsonProperty("f_c_f_yield")
+   private Double fcfYield;
+
+   @JsonProperty("1st_year_estimated_e_p_s_growth")
+   private Double firstYearEstimatedEpsGrowth;
 
    @JsonProperty("forward_calculation_style")
    private String forwardCalculationStyle;
@@ -94,8 +112,32 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
    @JsonProperty("normalized_p_e_ratio")
    private Double normalizedPeRatio;
 
+   @JsonProperty("payout_ratio")
+   private Double payoutRatio;
+
+   @JsonProperty("p_b_ratio")
+   private Double pbRatio;
+
    @JsonProperty("p_b_ratio10_year_growth")
    private Double pbRatio10YearGrowth;
+
+   @JsonProperty("p_b_ratio1_year_growth")
+   private Double pbRatio1YearGrowth;
+
+   @JsonProperty("p_b_ratio3_year_growth")
+   private Double pbRatio3YearGrowth;
+
+   @JsonProperty("p_b_ratio3_yr_avg")
+   private Double pbRatio3YrAvg;
+
+   @JsonProperty("p_b_ratio3_yr_avg_change")
+   private Double pbRatio3YrAvgChange;
+
+   @JsonProperty("p_b_ratio5_year_growth")
+   private Double pbRatio5YearGrowth;
+
+   @JsonProperty("p_cash_ratio3_yr_avg")
+   private Double pcashRatio3YrAvg;
 
    @JsonProperty("p_c_f_ratio")
    private Double pcfRatio;
@@ -172,86 +214,20 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
    @JsonProperty("p_f_c_f_ratio5_year_growth")
    private Double pfCfRatio5YearGrowth;
 
-   @JsonProperty("priceto_e_b_i_t_d_a")
-   private Double priceToEbitda;
-
-   @JsonProperty("p_s_ratio10_year_growth")
-   private Double psRatio10YearGrowth;
-
-   @JsonProperty("ratio_p_e5_year_average")
-   private Double ratioPe5YearAverage;
-
-   @JsonProperty("total_yield")
-   private Double totalYield;
-
-   @JsonProperty("share_class_id")
-   private String shareClassId;
-
-   @JsonProperty("as_of_date")
-   private String asOfDate;
-
-   @JsonProperty("book_value_per_share")
-   private Double bookValuePerShare;
-
-   @JsonProperty("book_value_yield")
-   private Double bookValueYield;
-
-   @JsonProperty("cash_return")
-   private Double cashReturn;
-
-   @JsonProperty("c_f_o_per_share")
-   private Double cfOPerShare;
-
-   @JsonProperty("c_f_yield")
-   private Double cfYield;
-
-   @JsonProperty("earning_yield")
-   private Double earningYield;
-
-   @JsonProperty("e_vto_revenue")
-   private Double evToRevenue;
-
-   @JsonProperty("e_vto_total_assets")
-   private Double evToTotalAssets;
-
-   @JsonProperty("f_c_f_per_share")
-   private Double fcfPerShare;
-
-   @JsonProperty("f_c_f_yield")
-   private Double fcfYield;
-
-   @JsonProperty("payout_ratio")
-   private Double payoutRatio;
-
-   @JsonProperty("p_b_ratio")
-   private Double pbRatio;
-
-   @JsonProperty("p_b_ratio1_year_growth")
-   private Double pbRatio1YearGrowth;
-
-   @JsonProperty("p_b_ratio3_year_growth")
-   private Double pbRatio3YearGrowth;
-
-   @JsonProperty("p_b_ratio3_yr_avg")
-   private Double pbRatio3YrAvg;
-
-   @JsonProperty("p_b_ratio3_yr_avg_change")
-   private Double pbRatio3YrAvgChange;
-
-   @JsonProperty("p_b_ratio5_year_growth")
-   private Double pbRatio5YearGrowth;
-
-   @JsonProperty("p_cash_ratio3_yr_avg")
-   private Double pcashRatio3YrAvg;
-
    @JsonProperty("price_change1_m")
    private Double priceChange1M;
 
    @JsonProperty("priceto_cash_ratio")
    private Double priceToCashRatio;
 
+   @JsonProperty("priceto_e_b_i_t_d_a")
+   private Double priceToEbitda;
+
    @JsonProperty("p_s_ratio")
    private Double psRatio;
+
+   @JsonProperty("p_s_ratio10_year_growth")
+   private Double psRatio10YearGrowth;
 
    @JsonProperty("p_s_ratio1_year_growth")
    private Double psRatio1YearGrowth;
@@ -268,11 +244,20 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
    @JsonProperty("p_s_ratio5_year_growth")
    private Double psRatio5YearGrowth;
 
+   @JsonProperty("ratio_p_e5_year_average")
+   private Double ratioPe5YearAverage;
+
    @JsonProperty("sales_per_share")
    private Double salesPerShare;
 
    @JsonProperty("sales_yield")
    private Double salesYield;
+
+   @JsonProperty("2nd_year_estimated_e_p_s_growth")
+   private Double secondYearEstimatedEpsGrowth;
+
+   @JsonProperty("share_class_id")
+   private String shareClassId;
 
    @JsonProperty("sustainable_growth_rate")
    private Double sustainableGrowthRate;
@@ -288,6 +273,21 @@ public class ValuationRatios extends UnrecognizedFieldsCollector {
 
    @JsonProperty("total_asset_per_share")
    private Double totalAssetPerShare;
+
+   @JsonProperty("total_yield")
+   private Double totalYield;
+
+   @JsonProperty("2_years_forward_earning_yield")
+   private Double twoYearsForwardEarningYield;
+
+   @JsonProperty("2_years_forward_p_e_ratio")
+   private Double twoYearsForwardPeRatio;
+
+   @JsonProperty("2_yrs_e_v_to_forward_e_b_i_t")
+   private Double twoYrsEvToForwardEbit;
+
+   @JsonProperty("2_yrs_e_v_to_forward_e_b_i_t_d_a")
+   private Double twoYrsEvToForwardEbitDa;
 
    @JsonProperty("working_capital_per_share")
    private Double workingCapitalPerShare;

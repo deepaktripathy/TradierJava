@@ -7,11 +7,11 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
  * 
  */
 public enum State {
-   premarket,
+   closed,
 
    open,
 
    postmarket,
 
-   closed
+   premarket
 }

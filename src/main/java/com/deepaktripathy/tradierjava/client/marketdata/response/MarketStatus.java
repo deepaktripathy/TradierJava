@@ -10,7 +10,7 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
  *
  */
 public enum MarketStatus {
-   open,
+   closed,
 
-   closed
+   open
 }

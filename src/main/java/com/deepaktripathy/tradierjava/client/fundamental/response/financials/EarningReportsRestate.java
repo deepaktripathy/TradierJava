@@ -7,17 +7,22 @@ import com.deepaktripathy.tradierjava.client.fundamental.response.financials.ear
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EarningReportsRestate extends UnrecognizedFieldsCollector {
-   
-   @JsonProperty("period_3m") 
-   private Period3m period3Mo;
-   
-   @JsonProperty("period_6m") 
-   private Period6m period6Mo;
+import lombok.Getter;
+import lombok.ToString;
 
-   @JsonProperty("period_9m") 
-   private Period9m period9Mo;
+@Getter
+@ToString
+public class EarningReportsRestate extends UnrecognizedFieldsCollector {
    
    @JsonProperty("period_12m") 
    private Period12m period12Mo;
+   
+   @JsonProperty("period_3m") 
+   private Period3m period3Mo;
+
+   @JsonProperty("period_6m") 
+   private Period6m period6Mo;
+   
+   @JsonProperty("period_9m") 
+   private Period9m period9Mo;
 }

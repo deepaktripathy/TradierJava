@@ -19,6 +19,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
    @JsonProperty("amortization_of_intangibles")
    private Double amortizationOfIntangibles;
 
+   @JsonProperty("amortization_of_securities") 
+   private Double amortizationOfSecurities;
+
    @JsonProperty("asset_impairment_charge") 
    private Double assetImpairmentCharge;
 
@@ -43,6 +46,18 @@ public class Period6m extends UnrecognizedFieldsCollector {
    @JsonProperty("cash_flow_from_continuing_operating_activities") 
    private Double cashFlowFromContinuingOperatingActivities;
 
+   @JsonProperty("cash_flow_from_discontinued_operation") 
+   private Double cashFlowFromDiscontinuedOperation;
+
+   @JsonProperty("cash_from_discontinued_financing_activities")
+   private Double cashFromDiscontinuedFinancingActivities;
+
+   @JsonProperty("cash_from_discontinued_investing_activities") 
+   private Double cashFromDiscontinuedInvestingActivities;
+
+   @JsonProperty("cash_from_discontinued_operating_activities") 
+   private Double cashFromDiscontinuedOperatingActivities;
+
    @JsonProperty("c_f_file_date") 
    private String cfFileDate;
 
@@ -54,6 +69,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("change_in_income_tax_payable") 
    private Double changeInIncomeTaxPayable;
+
+   @JsonProperty("change_in_interest_payable") 
+   private Double changeInInterestPayable;
 
    @JsonProperty("change_in_inventory") 
    private Double changeInInventory;
@@ -94,6 +112,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
    @JsonProperty("common_stock_dividend_paid") 
    private Double commonStockDividendPaid;
 
+   @JsonProperty("common_stock_issuance") 
+   private Double commonStockIssuance;
+
    @JsonProperty("common_stock_payments") 
    private Double commonStockPayments;
 
@@ -117,6 +138,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("depreciation_and_amortization") 
    private Double depreciationAndAmortization;
+
+   @JsonProperty("earnings_losses_from_equity_investments") 
+   private Double earningsLossesFromEquityInvestments;
 
    @JsonProperty("effect_of_exchange_rate_changes") 
    private Double effectOfExchangeRateChanges;
@@ -142,6 +166,12 @@ public class Period6m extends UnrecognizedFieldsCollector {
    @JsonProperty("free_cash_flow") 
    private Double freeCashFlow;
 
+   @JsonProperty("gain_loss_on_investment_securities")
+   private Double gainLossOnInvestmentSecurities;
+
+   @JsonProperty("gain_loss_on_sale_of_business")
+   private Double gainLossOnSaleOfBusiness;
+
    @JsonProperty("income_tax_paid_supplemental_data") 
    private Double incomeTaxPaidSupplementalData;
 
@@ -150,6 +180,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("investing_cash_flow") 
    private Double investingCashFlow;
+
+   @JsonProperty("issuance_of_capital_stock") 
+   private Double issuanceOfCapitalStock;
 
    @JsonProperty("issuance_of_debt") 
    private Double issuanceOfDebt;
@@ -166,11 +199,17 @@ public class Period6m extends UnrecognizedFieldsCollector {
    @JsonProperty("net_common_stock_issuance") 
    private Double netCommonStockIssuance;
 
+   @JsonProperty("net_foreign_currency_exchange_gain_loss") 
+   private Double netForeignCurrencyExchangeGainLoss;
+
    @JsonProperty("net_income_from_continuing_operations") 
    private Double netIncomeFromContinuingOperations;
 
    @JsonProperty("net_intangibles_purchase_and_sale") 
    private Double netIntangiblesPurchaseAndSale;
+
+   @JsonProperty("net_investment_purchase_and_sale") 
+   private Double netInvestmentPurchaseAndSale;
 
    @JsonProperty("net_issuance_payments_of_debt") 
    private Double netIssuancePaymentsOfDebt;
@@ -186,6 +225,9 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("net_p_p_e_purchase_and_sale") 
    private Double netPPEPurchaseAndSale;
+
+   @JsonProperty("net_preferred_stock_issuance") 
+   private Double netPreferredStockIssuance;
 
    @JsonProperty("net_short_term_debt_issuance") 
    private Double netShortTermDebtIssuance;
@@ -207,34 +249,37 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period") 
    private String period;
-
+   
    @JsonProperty("period_ending_date")
    private String periodEndingDate;
-
+   
+   @JsonProperty("preferred_stock_payments") 
+   private Double preferredStockPayments;
+   
    @JsonProperty("proceeds_from_stock_option_exercised") 
    private Double proceedsFromStockOptionExercised;
-
+   
    @JsonProperty("provisionand_write_offof_assets") 
    private Double provisionAndWriteOffOfAssets;
-
+   
    @JsonProperty("purchase_of_business") 
    private Double purchaseOfBusiness;
-
+   
    @JsonProperty("purchase_of_intangibles") 
    private Double purchaseOfIntangibles;
-
+   
    @JsonProperty("purchase_of_investment") 
    private Double purchaseOfInvestment;
-
+   
    @JsonProperty("purchase_of_p_p_e") 
    private Double purchaseOfPPE;
-
+   
    @JsonProperty("repayment_of_debt")
    private Double repaymentOfDebt;
-
+   
    @JsonProperty("report_type") 
    private String reportType;
-
+   
    @JsonProperty("repurchase_of_capital_stock") 
    private Double repurchaseOfCapitalStock;
 
@@ -243,61 +288,16 @@ public class Period6m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("sale_of_investment") 
    private Double saleOfInvestment;
-
+   
    @JsonProperty("sale_of_p_p_e") 
    private Double saleOfPPE;
-
+   
    @JsonProperty("stock_based_compensation")
    private Double stockBasedCompensation;
-   
-   @JsonProperty("cash_flow_from_discontinued_operation") 
-   private Double cashFlowFromDiscontinuedOperation;
-   
-   @JsonProperty("cash_from_discontinued_financing_activities")
-   private Double cashFromDiscontinuedFinancingActivities;
-   
-   @JsonProperty("cash_from_discontinued_investing_activities") 
-   private Double cashFromDiscontinuedInvestingActivities;
-   
-   @JsonProperty("cash_from_discontinued_operating_activities") 
-   private Double cashFromDiscontinuedOperatingActivities;
-   
-   @JsonProperty("earnings_losses_from_equity_investments") 
-   private Double earningsLossesFromEquityInvestments;
-   
-   @JsonProperty("gain_loss_on_investment_securities")
-   private Double gainLossOnInvestmentSecurities;
-   
-   @JsonProperty("gain_loss_on_sale_of_business")
-   private Double gainLossOnSaleOfBusiness;
-   
-   @JsonProperty("net_investment_purchase_and_sale") 
-   private Double netInvestmentPurchaseAndSale;
-   
-   @JsonProperty("net_preferred_stock_issuance") 
-   private Double netPreferredStockIssuance;
-   
-   @JsonProperty("preferred_stock_payments") 
-   private Double preferredStockPayments;
-   
+
    @JsonProperty("taxes_refund_paid") 
    private Double taxesRefundPaid;
 
-   @JsonProperty("amortization_of_securities") 
-   private Double amortizationOfSecurities;
-
-   @JsonProperty("change_in_interest_payable") 
-   private Double changeInInterestPayable;
-   
-   @JsonProperty("net_foreign_currency_exchange_gain_loss") 
-   private Double netForeignCurrencyExchangeGainLoss;
-   
    @JsonProperty("unrealized_gain_loss_on_investment_securities") 
    private Double unrealizedGainLossOnInvestmentSecurities;
-
-   @JsonProperty("issuance_of_capital_stock") 
-   private Double issuanceOfCapitalStock;
-
-   @JsonProperty("common_stock_issuance") 
-   private Double commonStockIssuance;
 }

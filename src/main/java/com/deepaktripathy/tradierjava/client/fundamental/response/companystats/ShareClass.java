@@ -13,17 +13,14 @@ public class ShareClass extends UnrecognizedFieldsCollector {
    @JsonProperty("company_id")
    private String companyId;
 
-   @JsonProperty("share_class_id")
-   private String shareClassId;
-
-   @JsonProperty("share_class_description")
-   private String shareClassDescription;
-   
    @JsonProperty("conversion_ratio")
    private Integer conversionRatio;
 
    @JsonProperty("currency_id")
    private String currencyId;
+   
+   @JsonProperty("c_u_s_i_p")
+   private String cusip;
 
    @JsonProperty("delisting_date")
    private String delistingDate;
@@ -39,6 +36,12 @@ public class ShareClass extends UnrecognizedFieldsCollector {
 
    @JsonProperty("i_p_o_date")
    private String ipoDate;
+
+   @JsonProperty("i_p_o_offer_price")
+   private Integer ipoOfferPrice;
+
+   @JsonProperty("i_p_o_offer_price_range")
+   private String ipoOfferPriceRange;
 
    @JsonProperty("is_depositary_receipt")
    boolean isDepositaryReceipt;
@@ -61,21 +64,18 @@ public class ShareClass extends UnrecognizedFieldsCollector {
    @JsonProperty("security_type")
    private String securityType;
 
+   @JsonProperty("share_class_description")
+   private String shareClassDescription;
+
+   @JsonProperty("share_class_id")
+   private String shareClassId;
+   
    @JsonProperty("share_class_status")
    private String shareClassStatus;
 
    @JsonProperty("symbol")
    private String symbol;
 
-   @JsonProperty("c_u_s_i_p")
-   private String cusip;
-   
    @JsonProperty("trading_status")
    boolean tradingStatus;
-
-   @JsonProperty("i_p_o_offer_price")
-   private Integer ipoOfferPrice;
-
-   @JsonProperty("i_p_o_offer_price_range")
-   private String ipoOfferPriceRange;
 }

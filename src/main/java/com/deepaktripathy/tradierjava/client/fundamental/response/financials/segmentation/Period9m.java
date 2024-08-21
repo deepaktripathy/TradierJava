@@ -10,18 +10,18 @@ import lombok.ToString;
 @ToString
 public class Period9m extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("company_id") 
-   private String companyId;
-
    @JsonProperty("as_of_date") 
    private String asOfDate;
 
-   @JsonProperty("period") 
-   private String period;
+   @JsonProperty("company_id") 
+   private String companyId;
 
    @JsonProperty("operating_income") 
    private Double operatingIncome;
 
    @JsonProperty("operating_revenue") 
    private Double operatingRevenue;
+
+   @JsonProperty("period") 
+   private String period;
 }

@@ -11,32 +11,32 @@ package com.deepaktripathy.tradierjava.client.user.response;
  */
 public enum Classification {
 
-   /** Missing in the doc, added here */
-   individual,
-
-   individual_cash,
+   custodial_cash,
 
    entity_cash,
 
    entity_margin,
 
-   individual_margin,
+   /** Missing in the doc, added here */
+   individual,
 
-   joint_margin_survivor,
+   individual_cash,
+
+   individual_margin,
 
    joint_cash_survivor,
 
-   traditional_ira,
+   joint_margin_survivor,
 
-   roth_ira,
+   joint_margin_tenant,
 
    rollover_ira,
 
+   roth_ira,
+
    sep_ira,
 
-   custodial_cash,
+   traditional_ira,
 
-   traditional_sep_ira,
-
-   joint_margin_tenant
+   traditional_sep_ira
 }

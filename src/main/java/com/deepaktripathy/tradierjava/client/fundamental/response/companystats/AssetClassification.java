@@ -10,11 +10,11 @@ import lombok.ToString;
 @ToString
 public class AssetClassification extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("company_id")
-   private String companyId;
-
    @JsonProperty("c_a_n_n_a_i_c_s")
    private Integer cannaics;
+
+   @JsonProperty("company_id")
+   private String companyId;
 
    @JsonProperty("financial_health_grade")
    private String financialHealthGrade;

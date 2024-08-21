@@ -12,8 +12,11 @@ import lombok.ToString;
 @ToString
 public class Tables extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("segmentation") 
-   private Segmentation segmentation;
+   @JsonProperty("earning_reports_a_o_r") 
+   private List<EarningReportsAOR> earningReportsAOR;
+
+   @JsonProperty("earning_reports_restate") 
+   private List<EarningReportsRestate> earningReportsRestate;
 
    @JsonProperty("financial_statements_restate") 
    private FinancialStatementsRestate financialStatementsRestate;
@@ -21,9 +24,6 @@ public class Tables extends UnrecognizedFieldsCollector {
    @JsonProperty("historical_returns") 
    private HistoricalReturns historicalReturns;
 
-   @JsonProperty("earning_reports_restate") 
-   private List<EarningReportsRestate> earningReportsRestate;
-
-   @JsonProperty("earning_reports_a_o_r") 
-   private List<EarningReportsAOR> earningReportsAOR;
+   @JsonProperty("segmentation") 
+   private Segmentation segmentation;
 }

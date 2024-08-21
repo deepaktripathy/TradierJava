@@ -10,11 +10,11 @@ import lombok.ToString;
 @ToString
 public class CompanyProfile extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("company_id")
-   private String companyId;
-
    @JsonProperty("average_employee_number")
    private Integer averageEmployeeNumber;
+
+   @JsonProperty("company_id")
+   private String companyId;
 
    @JsonProperty("contact_email")
    private String contactEmail;
@@ -25,12 +25,12 @@ public class CompanyProfile extends UnrecognizedFieldsCollector {
    @JsonProperty("is_head_office_same_with_registered_office_flag")
    boolean isHeadOfficeSameWithRegisteredOfficeFlag;
 
-   @JsonProperty("total_employee_number")
-   private Integer totalEmployeeNumber;
-
-   @JsonProperty("TotalEmployeeNumber.asOfDate")
-   private String totalEmployeeNumberAsOfDate;
-   
    @JsonProperty("registered_address")
    RegisteredAddress registeredAddress;
+
+   @JsonProperty("total_employee_number")
+   private Integer totalEmployeeNumber;
+   
+   @JsonProperty("TotalEmployeeNumber.asOfDate")
+   private String totalEmployeeNumberAsOfDate;
 }

@@ -23,18 +23,18 @@ public class CalendarDay extends UnrecognizedFieldsCollector {
    @JsonProperty("date")
    private LocalDate date;
 
-   @JsonProperty("status")
-   private MarketStatus status;
-
    @JsonProperty("description")
    private String description;
-
-   @JsonProperty("premarket")
-   private TimeRange premarket;
 
    @JsonProperty("open")
    private TimeRange open;
 
    @JsonProperty("postmarket")
    private TimeRange postmarket;
+
+   @JsonProperty("premarket")
+   private TimeRange premarket;
+
+   @JsonProperty("status")
+   private MarketStatus status;
 }

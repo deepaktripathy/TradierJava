@@ -19,29 +19,17 @@ import lombok.ToString;
 @ToString
 public class Quote extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("symbol")
-   private String symbol;
+   @JsonProperty("ask")
+   private Double ask;
    
-   @JsonProperty("description")
-   private String description;
+   @JsonProperty("ask_date")
+   private Long askDate;
    
-   @JsonProperty("exch")
-   private String exchange;
+   @JsonProperty("askexch")
+   private String askExchange;
    
-   @JsonProperty("type")
-   private SecurityType securityType;
-   
-   @JsonProperty("change")
-   private Double change;
-   
-   @JsonProperty("change_percentage")
-   private Double percentChange;
-   
-   /**
-    * Current day's volume till now
-    */
-   @JsonProperty("volume")
-   private Long dayVolume;
+   @JsonProperty("asksize")
+   private Integer askSize;
    
    /**
     * 90 day (3-months) average volume of the security
@@ -49,74 +37,38 @@ public class Quote extends UnrecognizedFieldsCollector {
    @JsonProperty("average_volume")
    private Long averageVolume;
    
-   /**
-    * Volume of the last price (instant)
-    */
-   @JsonProperty("last_volume")
-   private Long lastVolume;
-   
-   @JsonProperty("trade_date")
-   private Long tradeDate;
-   
-   @JsonProperty("open")
-   private Double openPrice;
-   
-   @JsonProperty("high")
-   private Double highPrice;
-   
-   @JsonProperty("low")
-   private Double lowPrice;
-   
-   @JsonProperty("close")
-   private Double closePrice;
-   
-   @JsonProperty("prevclose")
-   private Double previousClosePrice;
-   
-   @JsonProperty("last")
-   private Double lastPrice;
-   
-   @JsonProperty("week_52_high")
-   private Double fiscalYearHigh;
-   
-   @JsonProperty("week_52_low")
-   private Double fiscalYearLow;
-   
    @JsonProperty("bid")
    private Double bid;
-   
-   @JsonProperty("bidsize")
-   private Integer bidSize;
-   
-   @JsonProperty("bidexch")
-   private String bidExchange;
    
    @JsonProperty("bid_date")
    private Long bidDate;
    
-   @JsonProperty("ask")
-   private Double ask;
+   @JsonProperty("bidexch")
+   private String bidExchange;
    
-   @JsonProperty("asksize")
-   private Integer askSize;
+   @JsonProperty("bidsize")
+   private Integer bidSize;
    
-   @JsonProperty("askexch")
-   private String askExchange;
+   @JsonProperty("change")
+   private Double change;
    
-   @JsonProperty("ask_date")
-   private Long askDate;
-   
-   @JsonProperty("open_interest")
-   private Integer openInterest;
-   
-   @JsonProperty("underlying")
-   private String underlying;
-   
-   @JsonProperty("strike")
-   private Double strike;
+   @JsonProperty("close")
+   private Double closePrice;
    
    @JsonProperty("contract_size")
    private Integer contractSize;
+   
+   /**
+    * Current day's volume till now
+    */
+   @JsonProperty("volume")
+   private Long dayVolume;
+   
+   @JsonProperty("description")
+   private String description;
+   
+   @JsonProperty("exch")
+   private String exchange;
    
    @JsonProperty("expiration_date")
    private String expirationDate;
@@ -124,17 +76,65 @@ public class Quote extends UnrecognizedFieldsCollector {
    @JsonProperty("expiration_type")
    private String expirationType;
    
-   @JsonProperty("option_type")
-   private OptionType optionType;
-
-   @JsonProperty("root_symbol")
-   private String rootSymbol;
-
-   @JsonProperty("root_symbols")
-   private String rootSymbols;
-
+   @JsonProperty("week_52_high")
+   private Double fiscalYearHigh;
+   
+   @JsonProperty("week_52_low")
+   private Double fiscalYearLow;
+   
    @JsonProperty("greeks")
    private Greeks greeks;
+   
+   @JsonProperty("high")
+   private Double highPrice;
+   
+   @JsonProperty("last")
+   private Double lastPrice;
+   
+   /**
+    * Volume of the last price (instant)
+    */
+   @JsonProperty("last_volume")
+   private Long lastVolume;
+   
+   @JsonProperty("low")
+   private Double lowPrice;
+   
+   @JsonProperty("open_interest")
+   private Integer openInterest;
+   
+   @JsonProperty("open")
+   private Double openPrice;
+   
+   @JsonProperty("option_type")
+   private OptionType optionType;
+   
+   @JsonProperty("change_percentage")
+   private Double percentChange;
+   
+   @JsonProperty("prevclose")
+   private Double previousClosePrice;
+   
+   @JsonProperty("root_symbol")
+   private String rootSymbol;
+   
+   @JsonProperty("root_symbols")
+   private String rootSymbols;
+   
+   @JsonProperty("type")
+   private SecurityType securityType;
+   
+   @JsonProperty("strike")
+   private Double strike;
+
+   @JsonProperty("symbol")
+   private String symbol;
+
+   @JsonProperty("trade_date")
+   private Long tradeDate;
+
+   @JsonProperty("underlying")
+   private String underlying;
 
    public Long getEpochMillisExpirationDate() throws ParseException {
       if (expirationDate != null) {

@@ -10,17 +10,8 @@ import lombok.ToString;
 @ToString
 public class OwnershipDetail extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("share_class_id")
-   private String shareClassId;
-
    @JsonProperty("as_of_date")
    private String asOfDate;
-
-   @JsonProperty("owner_id")
-   private String ownerId;
-
-   @JsonProperty("owner_type")
-   private String ownerType;
 
    @JsonProperty("currencyof_market_value")
    private String currencyofMarketValue;
@@ -34,8 +25,14 @@ public class OwnershipDetail extends UnrecognizedFieldsCollector {
    @JsonProperty("owner_c_i_k")
    private Integer ownerCIK;
 
+   @JsonProperty("owner_id")
+   private String ownerId;
+
    @JsonProperty("owner_name")
    private String ownerName;
+
+   @JsonProperty("owner_type")
+   private String ownerType;
 
    @JsonProperty("percentage_in_portfolio")
    private Double percentageInPortfolio;
@@ -45,6 +42,9 @@ public class OwnershipDetail extends UnrecognizedFieldsCollector {
 
    @JsonProperty("share_change")
    private Integer shareChange;
+
+   @JsonProperty("share_class_id")
+   private String shareClassId;
 
    @JsonProperty("share_class_level_percentage_ownership")
    private Double shareClassLevelPercentageOwnership;

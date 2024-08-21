@@ -11,17 +11,17 @@ import lombok.ToString;
 @ToString
 public class CompanyStatisticsRoot{
    
+   @JsonProperty("error")
+   private String error;
+
    @JsonProperty("request")
    private String request;
-
-   @JsonProperty("type")
-   private String type;
 
    @JsonProperty("results")
    private List<Result> results;
 
-   @JsonProperty("error")
-   private String error;
+   @JsonProperty("type")
+   private String type;
 }
 
 

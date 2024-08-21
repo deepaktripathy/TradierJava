@@ -9,14 +9,14 @@ import lombok.ToString;
 @ToString
 public class SplitStat extends UnrecognizedFieldsCollector {
    
-    @JsonProperty("share_class_id")
-    private String shareClassId;
+    @JsonProperty("adjustment_factor")
+    double adjustmentFactor;
     
     @JsonProperty("ex_date")
     private String exDate;
 
-    @JsonProperty("adjustment_factor")
-    double adjustmentFactor;
+    @JsonProperty("share_class_id")
+    private String shareClassId;
 
     @JsonProperty("split_from")
     double splitFrom;

@@ -10,9 +10,6 @@ import lombok.ToString;
 @ToString
 public class ShareClassProfile extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("share_class_id")
-   private String shareClassId;
-
    @JsonProperty("enterprise_value")
    private Object enterpriseValue;
 
@@ -30,6 +27,9 @@ public class ShareClassProfile extends UnrecognizedFieldsCollector {
 
    @JsonProperty("ReasonofSharesChange.asOfDate")
    private String reasonofSharesChangeAsOfDate;
+
+   @JsonProperty("share_class_id")
+   private String shareClassId;
 
    @JsonProperty("share_class_level_shares_outstanding")
    private Long shareClassLevelSharesOutstanding;

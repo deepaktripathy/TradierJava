@@ -10,17 +10,14 @@ import lombok.ToString;
 @ToString
 public class CorporateCalendar extends UnrecognizedFieldsCollector {
 
-   @JsonProperty("company_id") 
-   private String companyId;
-   
    @JsonProperty("begin_date_time") 
    private String beginDateTime;
    
+   @JsonProperty("company_id") 
+   private String companyId;
+   
    @JsonProperty("end_date_time") 
    private String endDateTime;
-   
-   @JsonProperty("event_type") 
-   private Integer eventType;
    
    @JsonProperty("estimated_date_for_next_event") 
    private String estimatedDateForNextEvent;
@@ -36,6 +33,9 @@ public class CorporateCalendar extends UnrecognizedFieldsCollector {
    
    @JsonProperty("event_status") 
    private String eventStatus;
+   
+   @JsonProperty("event_type") 
+   private Integer eventType;
    
    @JsonProperty("time_zone") 
    private String timeZone;

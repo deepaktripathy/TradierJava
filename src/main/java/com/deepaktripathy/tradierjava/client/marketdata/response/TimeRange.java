@@ -16,33 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TimeRange {
    
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-   @JsonProperty("start")
-   private LocalTime start;
-
-   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
    @JsonProperty("end")
    private LocalTime end;
 
-   public LocalTime getStart() {
-      return start;
-   }
-
-   public void setStart(LocalTime start) {
-      this.start = start;
-   }
-
-   public LocalTime getEnd() {
-      return end;
-   }
-
-   public void setEnd(LocalTime end) {
-      this.end = end;
-   }
-
-   @Override
-   public int hashCode() {
-      return Objects.hash(end, start);
-   }
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+   @JsonProperty("start")
+   private LocalTime start;
 
    @Override
    public boolean equals(Object obj) {
@@ -54,6 +33,27 @@ public class TimeRange {
          return false;
       TimeRange other = (TimeRange) obj;
       return Objects.equals(end, other.end) && Objects.equals(start, other.start);
+   }
+
+   public LocalTime getEnd() {
+      return end;
+   }
+
+   public LocalTime getStart() {
+      return start;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(end, start);
+   }
+
+   public void setEnd(LocalTime end) {
+      this.end = end;
+   }
+
+   public void setStart(LocalTime start) {
+      this.start = start;
    }
 
    @Override

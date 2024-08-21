@@ -12,11 +12,11 @@ import lombok.ToString;
 @ToString
 public class Tables extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("company_profile")
-   private CompanyProfile companyProfile;
-
    @JsonProperty("asset_classification")
    private AssetClassification assetClassification;
+
+   @JsonProperty("company_profile")
+   private CompanyProfile companyProfile;
 
    @JsonProperty("historical_asset_classification")
    private HistoricalAssetClassification historicalAssetClassification;
@@ -24,15 +24,15 @@ public class Tables extends UnrecognizedFieldsCollector {
    @JsonProperty("long_descriptions")
    private String longDescriptions;
 
-   @JsonProperty("ownership_summary")
-   private OwnershipSummary ownershipSummary;
-
-   @JsonProperty("share_class_profile")
-   private ShareClassProfile shareClassProfile;
-
    @JsonProperty("ownership_details")
    private List<OwnershipDetail> ownershipDetails;
 
+   @JsonProperty("ownership_summary")
+   private OwnershipSummary ownershipSummary;
+
    @JsonProperty("share_class")
    private ShareClass shareClass;
+
+   @JsonProperty("share_class_profile")
+   private ShareClassProfile shareClassProfile;
 }

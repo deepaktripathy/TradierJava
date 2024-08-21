@@ -18,12 +18,12 @@ import lombok.ToString;
 @ToString
 public class Profile extends UnrecognizedFieldsCollector {
    
-   @JsonProperty("id")
-   private String id;
-   
-   @JsonProperty("name")
-   private String name;
-
    @JsonProperty("account")
    private List<Account> accounts;
+   
+   @JsonProperty("id")
+   private String id;
+
+   @JsonProperty("name")
+   private String name;
 }

@@ -22,6 +22,9 @@ public class Headquarter extends UnrecognizedFieldsCollector {
    @JsonProperty("country")
    private String country;
 
+   @JsonProperty("fax")
+   private String fax;
+
    @JsonProperty("homepage")
    private String homepage;
 
@@ -33,7 +36,4 @@ public class Headquarter extends UnrecognizedFieldsCollector {
 
    @JsonProperty("province")
    private String province;
-
-   @JsonProperty("fax")
-   private String fax;
 }

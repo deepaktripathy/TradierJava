@@ -16,9 +16,6 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("as_of_date") 
    private String asOfDate;
 
-   @JsonProperty("reported_normalized_basic_e_p_s")
-   private Double reportedNormalizedBasicEPS;
-
    @JsonProperty("basic_average_shares") 
    private Double basicAverageShares;
 
@@ -82,6 +79,12 @@ public class Period3m extends UnrecognizedFieldsCollector {
    @JsonProperty("period_ending_date")
    private String periodEndingDate;
 
+   @JsonProperty("reported_normalized_basic_e_p_s")
+   private Double reportedNormalizedBasicEPS;
+
+   @JsonProperty("reported_normalized_diluted_e_p_s") 
+   private Double reportedNormalizedDilutedEPS;
+
    @JsonProperty("report_type")
    private String reportType;
 
@@ -90,7 +93,4 @@ public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("total_dividend_per_share") 
    private Double totalDividendPerShare;
-
-   @JsonProperty("reported_normalized_diluted_e_p_s") 
-   private Double reportedNormalizedDilutedEPS;
 }

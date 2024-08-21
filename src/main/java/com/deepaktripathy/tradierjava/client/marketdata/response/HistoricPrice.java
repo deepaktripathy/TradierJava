@@ -16,11 +16,11 @@ import lombok.ToString;
 @ToString
 public class HistoricPrice extends UnrecognizedFieldsCollector {
    
+   @JsonProperty("close")
+   private Double close;
+   
    @JsonProperty("date")
    private LocalDate date;
-   
-   @JsonProperty("open")
-   private Double open;
    
    @JsonProperty("high")
    private Double high;
@@ -28,8 +28,8 @@ public class HistoricPrice extends UnrecognizedFieldsCollector {
    @JsonProperty("low")
    private Double low;
    
-   @JsonProperty("close")
-   private Double close;
+   @JsonProperty("open")
+   private Double open;
    
    @JsonProperty("volume")
    private Long volume;

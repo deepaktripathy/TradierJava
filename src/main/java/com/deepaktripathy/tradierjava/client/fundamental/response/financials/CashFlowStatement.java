@@ -14,15 +14,15 @@ import lombok.ToString;
 @ToString
 public class CashFlowStatement extends UnrecognizedFieldsCollector {
 
+   @JsonProperty("period_12m") 
+   private Period12m period12Mo;
+
    @JsonProperty("period_3m") 
    private Period3m period3Mo;
 
    @JsonProperty("period_6m") 
    private Period6m period6Mo;
-
+   
    @JsonProperty("period_9m") 
    private Period9m period9Mo;
-   
-   @JsonProperty("period_12m") 
-   private Period12m period12Mo;
 }

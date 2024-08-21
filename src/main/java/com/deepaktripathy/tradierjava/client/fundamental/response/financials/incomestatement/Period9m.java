@@ -37,8 +37,14 @@ public class Period9m extends UnrecognizedFieldsCollector {
    @JsonProperty("fiscal_year_end_change")
    private Boolean fiscalYearEndChange;
 
+   @JsonProperty("form_type")
+   private String formType;
+
    @JsonProperty("gross_profit") 
    private Double grossProfit;
+
+   @JsonProperty("impairment_of_capital_assets")
+   private Double impairmentOfCapitalAssets;
 
    @JsonProperty("interest_expense") 
    private Double interestExpense;
@@ -51,6 +57,9 @@ public class Period9m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("interest_income_non_operating") 
    private Double interestIncomeNonOperating;
+
+   @JsonProperty("i_s_file_date") 
+   private String isFileDate;
 
    @JsonProperty("minority_interests")
    private Double minorityInterests;
@@ -142,9 +151,12 @@ public class Period9m extends UnrecognizedFieldsCollector {
    @JsonProperty("tax_provision") 
    private Double taxProvision;
 
-   @JsonProperty("total_expenses") 
-   private Double totalExpenses;
+   @JsonProperty("tax_rate_for_calcs")
+   private Double taxRateForCalcs;
 
+   @JsonProperty("total_expenses") 
+   private Double totalExpenses;  
+   
    @JsonProperty("total_operating_income_as_reported") 
    private Double totalOperatingIncomeAsReported;
 
@@ -155,17 +167,5 @@ public class Period9m extends UnrecognizedFieldsCollector {
    private Double totalUnusualItems;
 
    @JsonProperty("total_unusual_items_excluding_goodwill") 
-   private Double totalUnusualItemsExcludingGoodwill;  
-   
-   @JsonProperty("i_s_file_date") 
-   private String isFileDate;
-
-   @JsonProperty("tax_rate_for_calcs")
-   private Double taxRateForCalcs;
-
-   @JsonProperty("form_type")
-   private String formType;
-
-   @JsonProperty("impairment_of_capital_assets")
-   private Double impairmentOfCapitalAssets;
+   private Double totalUnusualItemsExcludingGoodwill;
 }
