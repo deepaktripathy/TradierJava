@@ -10,6 +10,11 @@ import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.earning
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class EarningRatiosRestate extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_3m") 
@@ -32,10 +37,4 @@ public class EarningRatiosRestate extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_10y") 
    private Period10y period10Yr;
-
-   @Override
-   public String toString() {
-      return "EarningRatiosRestate [period3Mo=" + period3Mo + ", period9Mo=" + period9Mo + ", period1Yr=" + period1Yr
-            + ", period3Yr=" + period3Yr + ", period5Yr=" + period5Yr + ", period10Yr=" + period10Yr + "]";
-   }
 }

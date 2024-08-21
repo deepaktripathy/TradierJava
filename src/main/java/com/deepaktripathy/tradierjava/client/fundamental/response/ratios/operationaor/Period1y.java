@@ -2,6 +2,11 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operat
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period1y extends UnrecognizedFieldsCollector {
    
    @JsonProperty("as_of_date")
@@ -139,8 +144,6 @@ public class Period1y extends UnrecognizedFieldsCollector {
    @JsonProperty("payment_turnover")
    private Double paymentTurnover;
 
-   //////////////////////////////////////////
-   
    @JsonProperty("period")
    private String period;
 
@@ -191,5 +194,4 @@ public class Period1y extends UnrecognizedFieldsCollector {
    
    @JsonProperty("working_capital_turnover_ratio")
    private Double workingCapitalTurnoverRatio;
-   
 }

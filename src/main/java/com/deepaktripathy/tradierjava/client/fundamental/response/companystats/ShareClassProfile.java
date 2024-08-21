@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.companystats;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class ShareClassProfile extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("share_class_id")
    private String shareClassId;
 
@@ -42,5 +48,4 @@ public class ShareClassProfile extends UnrecognizedFieldsCollector {
 
    @JsonProperty("SharesOutstandingWithBalanceSheetEndingDate.asOfDate")
    private String sharesOutstandingWithBalanceSheetEndingDateAsOfDate;
-
 }

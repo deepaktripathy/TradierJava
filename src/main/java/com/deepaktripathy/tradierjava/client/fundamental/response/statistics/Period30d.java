@@ -3,6 +3,11 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.statistics;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period30d extends UnrecognizedFieldsCollector {
    @JsonProperty("share_class_id") 
    private String shareClassId;
@@ -15,10 +20,4 @@ public class Period30d extends UnrecognizedFieldsCollector {
    
    @JsonProperty("average_volume") 
    private Double averageVolume;
-
-   @Override
-   public String toString() {
-      return "Period30d [shareClassId=" + shareClassId + ", asOfDate=" + asOfDate + ", period=" + period
-            + ", averageVolume=" + averageVolume + "]";
-   }
 }

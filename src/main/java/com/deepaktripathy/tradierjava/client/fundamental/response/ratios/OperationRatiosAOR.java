@@ -10,6 +10,11 @@ import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operati
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class OperationRatiosAOR extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_3m") 

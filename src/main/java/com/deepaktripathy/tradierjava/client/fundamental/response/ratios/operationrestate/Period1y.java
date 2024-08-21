@@ -1,7 +1,13 @@
-package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationrestate; 
+package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operationrestate;
+
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period1y extends UnrecognizedFieldsCollector {
 
    @JsonProperty("as_of_date")
@@ -99,94 +105,94 @@ public class Period1y extends UnrecognizedFieldsCollector {
 
    @JsonProperty("interest_coverage")
    private Double interestCoverage;
-   
+
    @JsonProperty("inventory_turnover")
    private Double inventoryTurnover;
-   
+
    @JsonProperty("long_term_debt_equity_ratio") 
    private Double longTermDebtEquityRatio;
-   
+
    @JsonProperty("long_term_debt_total_capital_ratio") 
    private Double longTermDebtTotalCapitalRatio;
-   
+
    @JsonProperty("net_income_cont_ops_growth") 
    private Double netIncomeContOpsGrowth;
-   
+
    @JsonProperty("net_income_growth") 
    private Double netIncomeGrowth;
-   
+
    @JsonProperty("net_incomes_per_employee")
    private Double netIncomesPerEmployee;
-   
+
    @JsonProperty("net_margin")
    private Double netMargin;
-   
+
    @JsonProperty("normalized_net_profit_margin")
    private Double normalizedNetProfitMargin;
-   
+
    @JsonProperty("normalized_r_o_i_c")
    private Double normalizedROIC;
-   
+
    @JsonProperty("operation_income_growth")
    private Double operationIncomeGrowth;
-   
+
    @JsonProperty("operation_margin")
    private Double operationMargin;
-   
+
    @JsonProperty("operation_revenue_growth3_month_avg")
    private Double operationRevenueGrowth3MonthAvg;
-   
+
    @JsonProperty("payment_turnover")
    private Double paymentTurnover;
-   
+
    @JsonProperty("period")
    private String period;
-   
+
    @JsonProperty("pretax_margin")
    private Double pretaxMargin;
-   
+
    @JsonProperty("quick_ratio") 
    private Double quickRatio;
-   
+
    @JsonProperty("receivable_turnover")
    private Double receivableTurnover;
-   
+
    @JsonProperty("report_type")
    private String reportType;
-   
+
    @JsonProperty("revenue_growth") 
    private Double revenueGrowth;
-   
+
    @JsonProperty("r_o_a")
    private Double roa;
-   
+
    @JsonProperty("r_o_e")
    private Double roe;
-   
+
    @JsonProperty("r_o_i_c")
    private Double roic;
-   
+
    @JsonProperty("sales_per_employee")
    private Double salesPerEmployee;
-   
+
    @JsonProperty("stockholders_equity_growth")
    private Double stockholdersEquityGrowth;
-   
+
    @JsonProperty("tax_rate")
    private Double taxRate;
-   
+
    @JsonProperty("total_assets_growth") 
    private Double totalAssetsGrowth;
-   
+
    @JsonProperty("total_debt_equity_ratio")
    private Double totalDebtEquityRatio;
-   
+
    @JsonProperty("total_debt_equity_ratio_growth")
    private Double totalDebtEquityRatioGrowth;
-   
+
    @JsonProperty("total_liabilities_growth")
    private Double totalLiabilitiesGrowth;
-   
+
    @JsonProperty("working_capital_turnover_ratio")
    private Double workingCapitalTurnoverRatio;
 }

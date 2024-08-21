@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.statistics;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class PriceStatistics extends UnrecognizedFieldsCollector {
+
    @JsonProperty("period_30d") 
    private Period30d period30d;
    
@@ -24,13 +30,4 @@ public class PriceStatistics extends UnrecognizedFieldsCollector {
    
    @JsonProperty("period_10y") 
    private Period10y period10yr;
-
-   @Override
-   public String toString() {
-      return "PriceStatistics [period30d=" + period30d + ", period60d=" + period60d + ", period90d=" + period90d
-            + ", period1yr=" + period1yr + ", period3yr=" + period3yr + ", period5yr=" + period5yr + ", period10yr="
-            + period10yr + "]";
-   }
-   
-   
 }

@@ -3,15 +3,20 @@ package com.deepaktripathy.tradierjava.client.marketdata.response;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.SecurityType;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * @author deepak tripathy created on 05/24/2024
  */
+
+@Getter
+@ToString
 public class Quote extends UnrecognizedFieldsCollector {
    
    @JsonProperty("symbol")
@@ -138,219 +143,4 @@ public class Quote extends UnrecognizedFieldsCollector {
       }
       return 0L;
    }
-
-   public String getSymbol() {
-      return this.symbol;
-   }
-
-   public String getDescription() {
-      return this.description;
-   }
-
-   public String getExchange() {
-      return this.exchange;
-   }
-
-   public SecurityType getSecurityType() {
-      return this.securityType;
-   }
-
-   public Double getChange() {
-      return this.change;
-   }
-
-   public Double getPercentChange() {
-      return this.percentChange;
-   }
-
-   /**
-    * Current day's volume till now
-    */
-   public Long getDayVolume() {
-      return this.dayVolume;
-   }
-
-   /**
-    * 90 day (3-months) average volume of the security
-    */
-   public Long getAverageVolume() {
-      return this.averageVolume;
-   }
-
-   /**
-    * Volume of the last price (instant)
-    */
-   public Long getLastVolume() {
-      return this.lastVolume;
-   }
-
-   /** Milliseconds since Epoch */
-   public Long getTradeDate() {
-      return this.tradeDate;
-   }
-
-   public Double getOpenPrice() {
-      return this.openPrice;
-   }
-
-   public Double getHighPrice() {
-      return this.highPrice;
-   }
-
-   public Double getLowPrice() {
-      return this.lowPrice;
-   }
-
-   public Double getClosePrice() {
-      return this.closePrice;
-   }
-
-   public Double getPreviousClosePrice() {
-      return this.previousClosePrice;
-   }
-
-   public Double getLastPrice() {
-      return this.lastPrice;
-   }
-
-   public Double getFiscalYearHigh() {
-      return this.fiscalYearHigh;
-   }
-
-   public Double getFiscalYearLow() {
-      return this.fiscalYearLow;
-   }
-
-   public Double getBid() {
-      return this.bid;
-   }
-
-   public Integer getBidSize() {
-      return this.bidSize;
-   }
-
-   public String getBidExchange() {
-      return this.bidExchange;
-   }
-
-   /** Milliseconds since Epoch */
-   public Long getBidDate() {
-      return this.bidDate;
-   }
-
-   public Double getAsk() {
-      return this.ask;
-   }
-
-   public Integer getAskSize() {
-      return this.askSize;
-   }
-
-   public String getAskExchange() {
-      return this.askExchange;
-   }
-
-   /** Milliseconds since Epoch */
-   public Long getAskDate() {
-      return this.askDate;
-   }
-
-   public Integer getOpenInterest() {
-      return this.openInterest;
-   }
-
-   public String getUnderlying() {
-      return this.underlying;
-   }
-
-   public Double getStrike() {
-      return this.strike;
-   }
-
-   public Integer getContractSize() {
-      return this.contractSize;
-   }
-
-   public String getExpirationDate() {
-      return this.expirationDate;
-   }
-
-   public String getExpirationType() {
-      return this.expirationType;
-   }
-
-   public OptionType getOptionType() {
-      return this.optionType;
-   }
-
-   public String getRootSymbol() {
-      return rootSymbol;
-   }
-   
-   public String getRootSymbols() {
-      return rootSymbols;
-   }
-   
-   public Greeks getGreeks() {
-      return greeks;
-   }
-
-   @Override
-   public int hashCode() {
-      final int prime = 31;
-      int result = super.hashCode();
-      result = prime * result + Objects.hash(ask, askDate, askExchange, askSize, averageVolume, bid, bidDate,
-            bidExchange, bidSize, change, closePrice, contractSize, dayVolume, description, exchange, expirationDate,
-            expirationType, fiscalYearHigh, fiscalYearLow, greeks, highPrice, lastPrice, lastVolume, lowPrice,
-            openInterest, openPrice, optionType, percentChange, previousClosePrice, rootSymbol, rootSymbols,
-            securityType, strike, symbol, tradeDate, underlying);
-      return result;
-   }
-
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj)
-         return true;
-      if (!super.equals(obj))
-         return false;
-      if (getClass() != obj.getClass())
-         return false;
-      Quote other = (Quote) obj;
-      return Objects.equals(ask, other.ask) && Objects.equals(askDate, other.askDate)
-            && Objects.equals(askExchange, other.askExchange) && Objects.equals(askSize, other.askSize)
-            && Objects.equals(averageVolume, other.averageVolume) && Objects.equals(bid, other.bid)
-            && Objects.equals(bidDate, other.bidDate) && Objects.equals(bidExchange, other.bidExchange)
-            && Objects.equals(bidSize, other.bidSize) && Objects.equals(change, other.change)
-            && Objects.equals(closePrice, other.closePrice) && Objects.equals(contractSize, other.contractSize)
-            && Objects.equals(dayVolume, other.dayVolume) && Objects.equals(description, other.description)
-            && Objects.equals(exchange, other.exchange) && Objects.equals(expirationDate, other.expirationDate)
-            && Objects.equals(expirationType, other.expirationType)
-            && Objects.equals(fiscalYearHigh, other.fiscalYearHigh)
-            && Objects.equals(fiscalYearLow, other.fiscalYearLow) && Objects.equals(greeks, other.greeks)
-            && Objects.equals(highPrice, other.highPrice) && Objects.equals(lastPrice, other.lastPrice)
-            && Objects.equals(lastVolume, other.lastVolume) && Objects.equals(lowPrice, other.lowPrice)
-            && Objects.equals(openInterest, other.openInterest) && Objects.equals(openPrice, other.openPrice)
-            && optionType == other.optionType && Objects.equals(percentChange, other.percentChange)
-            && Objects.equals(previousClosePrice, other.previousClosePrice)
-            && Objects.equals(rootSymbol, other.rootSymbol) && Objects.equals(rootSymbols, other.rootSymbols)
-            && securityType == other.securityType && Objects.equals(strike, other.strike)
-            && Objects.equals(symbol, other.symbol) && Objects.equals(tradeDate, other.tradeDate)
-            && Objects.equals(underlying, other.underlying);
-   }
-
-   @Override
-   public String toString() {
-      return "Quote [symbol=" + symbol + ", description=" + description + ", exchange=" + exchange + ", securityType="
-            + securityType + ", change=" + change + ", percentChange=" + percentChange + ", dayVolume=" + dayVolume
-            + ", averageVolume=" + averageVolume + ", lastVolume=" + lastVolume + ", tradeDate=" + tradeDate
-            + ", openPrice=" + openPrice + ", highPrice=" + highPrice + ", lowPrice=" + lowPrice + ", closePrice="
-            + closePrice + ", previousClosePrice=" + previousClosePrice + ", lastPrice=" + lastPrice
-            + ", fiscalYearHigh=" + fiscalYearHigh + ", fiscalYearLow=" + fiscalYearLow + ", bid=" + bid + ", bidSize="
-            + bidSize + ", bidExchange=" + bidExchange + ", bidDate=" + bidDate + ", ask=" + ask + ", askSize="
-            + askSize + ", askExchange=" + askExchange + ", askDate=" + askDate + ", openInterest=" + openInterest
-            + ", underlying=" + underlying + ", strike=" + strike + ", contractSize=" + contractSize
-            + ", expirationDate=" + expirationDate + ", expirationType=" + expirationType + ", optionType=" + optionType
-            + ", rootSymbol=" + rootSymbol + ", rootSymbols=" + rootSymbols + ", greeks=" + greeks + "]";
-   }
-
 }

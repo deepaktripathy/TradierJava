@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.ca
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period12m extends UnrecognizedFieldsCollector {
+
    @JsonProperty("accession_number")
    private String accessionNumber;
 
@@ -300,66 +306,4 @@ public class Period12m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("unrealized_gain_loss_on_investment_securities") 
    private Double unrealizedGainLossOnInvestmentSecurities;
-
-   @Override
-   public String toString() {
-      return "Period12m [accessionNumber=" + accessionNumber + ", amortization=" + amortization
-            + ", amortizationOfIntangibles=" + amortizationOfIntangibles + ", amortizationOfSecurities="
-            + amortizationOfSecurities + ", assetImpairmentCharge=" + assetImpairmentCharge + ", beginningCashPosition="
-            + beginningCashPosition + ", capExPeported=" + capExPeported + ", capitalExpenditure=" + capitalExpenditure
-            + ", cashDividendsPaid=" + cashDividendsPaid + ", cashFlowFromContinuingFinancingActivities="
-            + cashFlowFromContinuingFinancingActivities + ", cashFlowFromContinuingInvestingActivities="
-            + cashFlowFromContinuingInvestingActivities + ", cashFlowFromContinuingOperatingActivities="
-            + cashFlowFromContinuingOperatingActivities + ", cashFlowFromDiscontinuedOperation="
-            + cashFlowFromDiscontinuedOperation + ", cashFromDiscontinuedFinancingActivities="
-            + cashFromDiscontinuedFinancingActivities + ", cashFromDiscontinuedInvestingActivities="
-            + cashFromDiscontinuedInvestingActivities + ", cashFromDiscontinuedOperatingActivities="
-            + cashFromDiscontinuedOperatingActivities + ", cfFileDate=" + cfFileDate + ", changeInAccountPayable="
-            + changeInAccountPayable + ", changeInAccruedExpense=" + changeInAccruedExpense
-            + ", changeInIncomeTaxPayable=" + changeInIncomeTaxPayable + ", changeInInterestPayable="
-            + changeInInterestPayable + ", changeInInventory=" + changeInInventory + ", changeInOtherCurrentAssets="
-            + changeInOtherCurrentAssets + ", changeInOtherCurrentLiabilities=" + changeInOtherCurrentLiabilities
-            + ", changeInOtherWorkingCapital=" + changeInOtherWorkingCapital + ", changeInPayable=" + changeInPayable
-            + ", changeInPayablesAndAccruedExpense=" + changeInPayablesAndAccruedExpense + ", changeInPrepaidAssets="
-            + changeInPrepaidAssets + ", changeInReceivables=" + changeInReceivables + ", changeInTaxPayable="
-            + changeInTaxPayable + ", changeInWorkingCapital=" + changeInWorkingCapital
-            + ", changesInAccountReceivables=" + changesInAccountReceivables + ", changesInCash=" + changesInCash
-            + ", commonStockDividendPaid=" + commonStockDividendPaid + ", commonStockIssuance=" + commonStockIssuance
-            + ", commonStockPayments=" + commonStockPayments + ", currencyId=" + currencyId + ", deferredIncomeTax="
-            + deferredIncomeTax + ", deferredTax=" + deferredTax + ", depletion=" + depletion + ", depreciation="
-            + depreciation + ", depreciationAmortizationDepletion=" + depreciationAmortizationDepletion
-            + ", depreciationAndAmortization=" + depreciationAndAmortization + ", earningsLossesFromEquityInvestments="
-            + earningsLossesFromEquityInvestments + ", effectOfExchangeRateChanges=" + effectOfExchangeRateChanges
-            + ", endCashPosition=" + endCashPosition + ", fileDate=" + fileDate + ", financingCashFlow="
-            + financingCashFlow + ", fiscalYearEnd=" + fiscalYearEnd + ", fiscalYearEndChange=" + fiscalYearEndChange
-            + ", formType=" + formType + ", freeCashFlow=" + freeCashFlow + ", gainLossOnInvestmentSecurities="
-            + gainLossOnInvestmentSecurities + ", gainLossOnSaleOfBusiness=" + gainLossOnSaleOfBusiness
-            + ", gainLossOnSaleOfPPE=" + gainLossOnSaleOfPPE + ", incomeTaxPaidSupplementalData="
-            + incomeTaxPaidSupplementalData + ", interestPaidSupplementalData=" + interestPaidSupplementalData
-            + ", investingCashFlow=" + investingCashFlow + ", issuanceOfCapitalStock=" + issuanceOfCapitalStock
-            + ", issuanceOfDebt=" + issuanceOfDebt + ", longTermDebtIssuance=" + longTermDebtIssuance
-            + ", longTermDebtPayments=" + longTermDebtPayments + ", netBusinessPurchaseAndSale="
-            + netBusinessPurchaseAndSale + ", netCommonStockIssuance=" + netCommonStockIssuance
-            + ", netForeignCurrencyExchangeGainLoss=" + netForeignCurrencyExchangeGainLoss
-            + ", netIncomeFromContinuingOperations=" + netIncomeFromContinuingOperations
-            + ", netIntangiblesPurchaseAndSale=" + netIntangiblesPurchaseAndSale + ", netInvestmentPurchaseAndSale="
-            + netInvestmentPurchaseAndSale + ", netIssuancePaymentsOfDebt=" + netIssuancePaymentsOfDebt
-            + ", netLongTermDebtIssuance=" + netLongTermDebtIssuance + ", netOtherFinancingCharges="
-            + netOtherFinancingCharges + ", netOtherInvestingChanges=" + netOtherInvestingChanges
-            + ", netPPEPurchaseAndSale=" + netPPEPurchaseAndSale + ", netPreferredStockIssuance="
-            + netPreferredStockIssuance + ", netShortTermDebtIssuance=" + netShortTermDebtIssuance
-            + ", numberOfShareHolders=" + numberOfShareHolders + ", operatingCashFlow=" + operatingCashFlow
-            + ", operatingGainsLosses=" + operatingGainsLosses + ", otherNonCashItems=" + otherNonCashItems
-            + ", pensionAndEmployeeBenefitExpense=" + pensionAndEmployeeBenefitExpense + ", period=" + period
-            + ", periodEndingDate=" + periodEndingDate + ", preferredStockPayments=" + preferredStockPayments
-            + ", proceedsFromStockOptionExercised=" + proceedsFromStockOptionExercised
-            + ", provisionAndWriteOffOfAssets=" + provisionAndWriteOffOfAssets + ", purchaseOfBusiness="
-            + purchaseOfBusiness + ", purchaseOfIntangibles=" + purchaseOfIntangibles + ", purchaseOfInvestment="
-            + purchaseOfInvestment + ", purchaseOfPPE=" + purchaseOfPPE + ", repaymentOfDebt=" + repaymentOfDebt
-            + ", reportType=" + reportType + ", repurchaseOfCapitalStock=" + repurchaseOfCapitalStock
-            + ", saleOfBusiness=" + saleOfBusiness + ", saleOfIntangibles=" + saleOfIntangibles + ", saleOfInvestment="
-            + saleOfInvestment + ", saleOfPPE=" + saleOfPPE + ", stockBasedCompensation=" + stockBasedCompensation
-            + ", taxesRefundPaid=" + taxesRefundPaid + ", unrealizedGainLossOnInvestmentSecurities="
-            + unrealizedGainLossOnInvestmentSecurities + "]";
-   }
 }

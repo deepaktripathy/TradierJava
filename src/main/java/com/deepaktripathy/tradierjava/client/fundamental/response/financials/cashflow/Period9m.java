@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.ca
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period9m extends UnrecognizedFieldsCollector {
+
    @JsonProperty("asset_impairment_charge") 
    private Double assetImpairmentCharge;
 

@@ -2,7 +2,11 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.ba
 
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 
-public class Period12m extends UnrecognizedFieldsCollector {
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@ToString
+public class Period12m extends UnrecognizedFieldsCollector {
 
 }

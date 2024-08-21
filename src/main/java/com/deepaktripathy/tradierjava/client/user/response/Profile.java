@@ -1,16 +1,21 @@
 package com.deepaktripathy.tradierjava.client.user.response;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * 
  * @author deepak tripathy created on 05/24/2024
  *
  */
+
+@Getter
+@ToString
 public class Profile extends UnrecognizedFieldsCollector {
    
    @JsonProperty("id")
@@ -21,39 +26,4 @@ public class Profile extends UnrecognizedFieldsCollector {
 
    @JsonProperty("account")
    private List<Account> accounts;
-
-   public String getId() {
-      return id;
-   }
-
-   public String getName() {
-      return name;
-   }
-
-   public List<Account> getAccounts() {
-      return accounts;
-   }
-
-   @Override
-   public int hashCode() {
-      return Objects.hash(accounts, id, name);
-   }
-
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj)
-         return true;
-      if (obj == null)
-         return false;
-      if (getClass() != obj.getClass())
-         return false;
-      Profile other = (Profile) obj;
-      return Objects.equals(accounts, other.accounts) && Objects.equals(id, other.id)
-            && Objects.equals(name, other.name);
-   }
-
-   @Override
-   public String toString() {
-      return "Profile [id=" + id + ", name=" + name + ", accounts=" + accounts + "]";
-   }
 }

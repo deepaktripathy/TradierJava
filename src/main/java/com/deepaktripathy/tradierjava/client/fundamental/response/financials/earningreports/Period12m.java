@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.ea
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period12m extends UnrecognizedFieldsCollector {
+
    @JsonProperty("as_of_date") 
    private String asOfDate;
 
@@ -84,23 +90,5 @@ public class Period12m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("accession_number")
    private String accessionNumber;
-
-   @Override
-   public String toString() {
-      return "Period12m [asOfDate=" + asOfDate + ", basicAverageShares=" + basicAverageShares
-            + ", basicContinuousOperations=" + basicContinuousOperations + ", basicDiscontinuousOperations="
-            + basicDiscontinuousOperations + ", basicEPS=" + basicEPS + ", continuingAndDiscontinuedBasicEPS="
-            + continuingAndDiscontinuedBasicEPS + ", continuingAndDiscontinuedDilutedEPS="
-            + continuingAndDiscontinuedDilutedEPS + ", currencyID=" + currencyID + ", diluted_average_shares="
-            + diluted_average_shares + ", dilutedContinuousOperations=" + dilutedContinuousOperations
-            + ", dilutedDiscontinuousOperations=" + dilutedDiscontinuousOperations + ", dilutedEPS=" + dilutedEPS
-            + ", dividendCoverageRatio=" + dividendCoverageRatio + ", dividendPerShare=" + dividendPerShare
-            + ", fileDate=" + fileDate + ", fiscalYearEnd=" + fiscalYearEnd + ", fiscalYearEndChange="
-            + fiscalYearEndChange + ", formType=" + formType + ", normalizedBasicEPS=" + normalizedBasicEPS
-            + ", normalizedDilutedEPS=" + normalizedDilutedEPS + ", period=" + period + ", periodEndingDate="
-            + periodEndingDate + ", reportType=" + reportType + ", shareClassID=" + shareClassID
-            + ", totalDividendPerShare=" + totalDividendPerShare + ", reportedNormalizedDilutedEPS="
-            + reportedNormalizedDilutedEPS + ", accessionNumber=" + accessionNumber + "]";
-   }
 }
 

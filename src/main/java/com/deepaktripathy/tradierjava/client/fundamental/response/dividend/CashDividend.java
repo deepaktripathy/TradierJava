@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.dividend;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class CashDividend extends UnrecognizedFieldsCollector {
+
    @JsonProperty("share_class_id") 
    private String shareClassId;
    
@@ -30,12 +36,4 @@ public class CashDividend extends UnrecognizedFieldsCollector {
    
    @JsonProperty("record_date") 
    private String recordDate;
-
-   @Override
-   public String toString() {
-      return "CashDividend [shareClassId=" + shareClassId + ", dividendType=" + dividendType + ", exDate=" + exDate
-            + ", cashAmount=" + cashAmount + ", currencyId=" + currencyId + ", declarationDate=" + declarationDate
-            + ", frequency=" + frequency + ", payDate=" + payDate + ", recordDate=" + recordDate + "]";
-   }
-   
 }

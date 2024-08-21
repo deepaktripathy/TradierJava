@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.in
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period12m extends UnrecognizedFieldsCollector {
+
    @JsonProperty("accession_number")
    private String accessionNumber;
 
@@ -234,51 +240,4 @@ public class Period12m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("write_off") 
    private Double writeOff;
-
-   @Override
-   public String toString() {
-      return "Period12m [accessionNumber=" + accessionNumber + ", amortization=" + amortization
-            + ", amortizationOfIntangibles=" + amortizationOfIntangibles + ", averageDilutionEarn="
-            + averageDilutionEarn + ", costOfRevenue=" + costOfRevenue + ", currencyID=" + currencyID
-            + ", depreciation=" + depreciation + ", depreciationAmortizationDepletion="
-            + depreciationAmortizationDepletion + ", depreciationAndAmortization=" + depreciationAndAmortization
-            + ", dilutedNIAvailtoComStockholders=" + dilutedNIAvailtoComStockholders + ", earningsFromEquityInterest="
-            + earningsFromEquityInterest + ", earningsfromEquityInterestNetOfTax=" + earningsfromEquityInterestNetOfTax
-            + ", eBIT=" + eBIT + ", eBITDA=" + eBITDA + ", fileDate=" + fileDate + ", fiscalYearEnd=" + fiscalYearEnd
-            + ", fiscalYearEndChange=" + fiscalYearEndChange + ", formType=" + formType + ", gain_on_sale_of_business="
-            + gain_on_sale_of_business + ", gainLossOnSaleOfBusiness=" + gainLossOnSaleOfBusiness
-            + ", gainOnSaleOfSecurity=" + gainOnSaleOfSecurity + ", generalAndAdministrativeExpense="
-            + generalAndAdministrativeExpense + ", grossProfit=" + grossProfit + ", impairmentOfCapitalAssets="
-            + impairmentOfCapitalAssets + ", insuranceAndClaims=" + insuranceAndClaims + ", interestExpense="
-            + interestExpense + ", interestExpenseNonOperating=" + interestExpenseNonOperating + ", interestIncome="
-            + interestIncome + ", interestIncomeNonOperating=" + interestIncomeNonOperating + ", isFileDate="
-            + isFileDate + ", minorityInterests=" + minorityInterests + ", netIncome=" + netIncome
-            + ", netIncomeCommonStockholders=" + netIncomeCommonStockholders + ", netIncomeContinuousOperations="
-            + netIncomeContinuousOperations + ", netIncomeDiscontinuousOperations=" + netIncomeDiscontinuousOperations
-            + ", netIncomeFromContinuingAndDiscontinuedOperation=" + netIncomeFromContinuingAndDiscontinuedOperation
-            + ", netIncomeFromContinuingOperationNetMinorityInterest="
-            + netIncomeFromContinuingOperationNetMinorityInterest + ", netIncomeIncludingNoncontrollingInterests="
-            + netIncomeIncludingNoncontrollingInterests + ", netInterestIncome=" + netInterestIncome
-            + ", netNonOperatingInterestIncomeExpense=" + netNonOperatingInterestIncomeExpense + ", normalizedEBITDA="
-            + normalizedEBITDA + ", normalizedIncome=" + normalizedIncome + ", normalizedPreTaxIncome="
-            + normalizedPreTaxIncome + ", numberOfShareHolders=" + numberOfShareHolders + ", operatingExpense="
-            + operatingExpense + ", operatingIncome=" + operatingIncome + ", operatingRevenue=" + operatingRevenue
-            + ", otherGnA=" + otherGnA + ", otherIncomeExpense=" + otherIncomeExpense
-            + ", otherNonOperatingIncomeExpenses=" + otherNonOperatingIncomeExpenses + ", otherOperatingExpenses="
-            + otherOperatingExpenses + ", otherTaxes=" + otherTaxes + ", period=" + period + ", periodEndingDate="
-            + periodEndingDate + ", pretaxIncome=" + pretaxIncome + ", provisionForDoubtfulAccounts="
-            + provisionForDoubtfulAccounts + ", reconciledCostOfRevenue=" + reconciledCostOfRevenue
-            + ", reconciledDepreciation=" + reconciledDepreciation + ", rentAndLandingFees=" + rentAndLandingFees
-            + ", rentExpenseSupplemental=" + rentExpenseSupplemental + ", reportType=" + reportType
-            + ", researchAndDevelopment=" + researchAndDevelopment + ", restructuringAndMergernAcquisition="
-            + restructuringAndMergernAcquisition + ", salariesAndWages=" + salariesAndWages
-            + ", sellingAndMarketingExpense=" + sellingAndMarketingExpense + ", sellingGeneralAndAdministration="
-            + sellingGeneralAndAdministration + ", specialIncomeCharges=" + specialIncomeCharges
-            + ", taxEffectOfUnusualItems=" + taxEffectOfUnusualItems + ", taxProvision=" + taxProvision
-            + ", taxRateForCalcs=" + taxRateForCalcs + ", totalExpenses=" + totalExpenses
-            + ", totalOperatingIncomeAsReported=" + totalOperatingIncomeAsReported + ", totalOtherFinanceCost="
-            + totalOtherFinanceCost + ", totalRevenue=" + totalRevenue + ", totalUnusualItems=" + totalUnusualItems
-            + ", totalUnusualItemsExcludingGoodwill=" + totalUnusualItemsExcludingGoodwill + ", writeOff=" + writeOff
-            + "]";
-   }
 }

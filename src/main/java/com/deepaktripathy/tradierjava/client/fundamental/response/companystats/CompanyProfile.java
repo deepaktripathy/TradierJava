@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.companystats;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class CompanyProfile extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("company_id")
    private String companyId;
 
@@ -24,9 +30,7 @@ public class CompanyProfile extends UnrecognizedFieldsCollector {
 
    @JsonProperty("TotalEmployeeNumber.asOfDate")
    private String totalEmployeeNumberAsOfDate;
-
    
    @JsonProperty("registered_address")
    RegisteredAddress registeredAddress;
-
 }

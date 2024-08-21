@@ -1,7 +1,13 @@
-package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta; 
+package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabeta;
+
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period48m extends UnrecognizedFieldsCollector {
    
    @JsonProperty("alpha") 

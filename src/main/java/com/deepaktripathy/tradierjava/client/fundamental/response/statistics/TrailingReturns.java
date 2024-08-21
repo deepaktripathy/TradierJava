@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.statistics;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class TrailingReturns extends UnrecognizedFieldsCollector {
+
    @JsonProperty("period_1d") 
    private Period1d period1d;
    
@@ -42,13 +48,4 @@ public class TrailingReturns extends UnrecognizedFieldsCollector {
    
    @JsonProperty("y_t_d") 
    private YTD yTD;
-
-   @Override
-   public String toString() {
-      return "TrailingReturns [period1d=" + period1d + ", period5d=" + period5d + ", period1m=" + period1m
-            + ", period3m=" + period3m + ", period6m=" + period6m + ", period1y=" + period1y + ", period3y=" + period3y
-            + ", period5y=" + period5y + ", period10y=" + period10y + ", period15y=" + period15y + ", mTD=" + mTD
-            + ", qTD=" + qTD + ", yTD=" + yTD + "]";
-   }
-   
 }

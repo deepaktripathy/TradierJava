@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.companystats;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class ShareClass extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("company_id")
    private String companyId;
 
@@ -72,7 +78,4 @@ public class ShareClass extends UnrecognizedFieldsCollector {
 
    @JsonProperty("i_p_o_offer_price_range")
    private String ipoOfferPriceRange;
-
-   
-
 }

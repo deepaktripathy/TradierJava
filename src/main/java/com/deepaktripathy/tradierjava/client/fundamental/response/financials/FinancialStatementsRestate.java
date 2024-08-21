@@ -5,6 +5,11 @@ import java.util.List;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class FinancialStatementsRestate extends UnrecognizedFieldsCollector {
  
    @JsonProperty("company_id") 
@@ -21,10 +26,4 @@ public class FinancialStatementsRestate extends UnrecognizedFieldsCollector {
    
    @JsonProperty("income_statement") 
    private List<IncomeStatement> incomeStatement;
-
-   @Override
-   public String toString() {
-      return "FinancialStatementsRestate [companyId=" + companyId + ", asOfDate=" + asOfDate + ", balanceSheet="
-            + balanceSheet + ", cashFlowStatement=" + cashFlowStatement + ", incomeStatement=" + incomeStatement + "]";
-   }   
 }

@@ -3,11 +3,6 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.ratios.operat
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-
-
-
-
 public class Period9m extends UnrecognizedFieldsCollector {
    
    @JsonProperty("as_of_date") 
@@ -57,5 +52,4 @@ public class Period9m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("tax_rate") 
    private Double taxRate;
-
 }

@@ -3,7 +3,13 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.companystats;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class OwnershipDetail extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("share_class_id")
    private String shareClassId;
 
@@ -44,6 +50,5 @@ public class OwnershipDetail extends UnrecognizedFieldsCollector {
    private Double shareClassLevelPercentageOwnership;
       
    @JsonProperty("status")
-   private String status;
-   
+   private String status;   
 }

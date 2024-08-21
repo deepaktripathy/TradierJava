@@ -7,6 +7,11 @@ import com.deepaktripathy.tradierjava.client.fundamental.response.ratios.alphabe
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class AlphaBeta extends UnrecognizedFieldsCollector {
    
    @JsonProperty("period_36m") 
@@ -20,10 +25,4 @@ public class AlphaBeta extends UnrecognizedFieldsCollector {
 
    @JsonProperty("period_120m") 
    private Period120m period120Mo;
-
-   @Override
-   public String toString() {
-      return "AlphaBeta [period120Mo=" + period120Mo + ", period36Mo=" + period36Mo + ", period48Mo=" + period48Mo
-            + ", period60Mo=" + period60Mo + "]";
-   }
 }

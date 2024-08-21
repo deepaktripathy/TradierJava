@@ -5,7 +5,13 @@ import java.util.List;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class FinancialsRoot extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("request") 
    private String request;
 
@@ -17,12 +23,4 @@ public class FinancialsRoot extends UnrecognizedFieldsCollector {
    
    @JsonProperty("error") 
    private String error;
-
-   @Override
-   public String toString() {
-      return "FinancialsRoot [request=" + request + ", type=" + type + ", results=" + results + ", error=" + error
-            + "]";
-   }
-   
-   
 }

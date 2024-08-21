@@ -3,6 +3,11 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.se
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period12m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("company_id") 
@@ -25,11 +30,4 @@ public class Period12m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("total_non_current_assets") 
    private Double totalNonCurrentAssets;
-
-   @Override
-   public String toString() {
-      return "Period12m [companyId=" + companyId + ", asOfDate=" + asOfDate + ", period=" + period
-            + ", operatingIncome=" + operatingIncome + ", operatingRevenue=" + operatingRevenue + ", totalAssets="
-            + totalAssets + ", totalNonCurrentAssets=" + totalNonCurrentAssets + "]";
-   }
 }

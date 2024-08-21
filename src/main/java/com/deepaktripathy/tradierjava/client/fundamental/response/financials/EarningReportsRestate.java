@@ -8,6 +8,7 @@ import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCo
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EarningReportsRestate extends UnrecognizedFieldsCollector {
+   
    @JsonProperty("period_3m") 
    private Period3m period3Mo;
    
@@ -19,10 +20,4 @@ public class EarningReportsRestate extends UnrecognizedFieldsCollector {
    
    @JsonProperty("period_12m") 
    private Period12m period12Mo;
-
-   @Override
-   public String toString() {
-      return "EarningReportsRestate [period3Mo=" + period3Mo + ", period6Mo=" + period6Mo + ", period9Mo=" + period9Mo
-            + ", period12Mo=" + period12Mo + "]";
-   }
 }

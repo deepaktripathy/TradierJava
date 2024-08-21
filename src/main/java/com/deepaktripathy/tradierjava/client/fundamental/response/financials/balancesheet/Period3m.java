@@ -3,6 +3,11 @@ package com.deepaktripathy.tradierjava.client.fundamental.response.financials.ba
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Period3m extends UnrecognizedFieldsCollector {
 
    @JsonProperty("accession_number")
@@ -370,75 +375,4 @@ public class Period3m extends UnrecognizedFieldsCollector {
    
    @JsonProperty("preferred_securities_outside_stock_equity") 
    private Double preferredSecuritiesOutsideStockEquity;
-
-   @Override
-   public String toString() {
-      return "Period3m [accessionNumber=" + accessionNumber + ", accountsPayable=" + accountsPayable
-            + ", accountsReceivable=" + accountsReceivable + ", accumulatedDepreciation=" + accumulatedDepreciation
-            + ", additionalPaidInCapital=" + additionalPaidInCapital + ", allowanceForDoubtfulAccountsReceivable="
-            + allowanceForDoubtfulAccountsReceivable + ", assetsHeldForSaleCurrent=" + assetsHeldForSaleCurrent
-            + ", availableForSaleSecurities=" + availableForSaleSecurities + ", bsFileDate=" + bsFileDate
-            + ", buildingsAndImprovements=" + buildingsAndImprovements + ", capitalLeaseObligations="
-            + capitalLeaseObligations + ", capitalStock=" + capitalStock + ", cash=" + cash
-            + ", cashAndCashEquivalents=" + cashAndCashEquivalents + ", cashCashEquivalentsAndMarketableSecurities="
-            + cashCashEquivalentsAndMarketableSecurities + ", cashEquivalents=" + cashEquivalents + ", comTreShaNum="
-            + comTreShaNum + ", constructionInProgress=" + constructionInProgress + ", currencyId=" + currencyId
-            + ", currentAccruedExpenses=" + currentAccruedExpenses + ", currentAssets=" + currentAssets
-            + ", currentCapitalLeaseObligation=" + currentCapitalLeaseObligation + ", currentDebt=" + currentDebt
-            + ", currentDebtAndCapitalLeaseObligation=" + currentDebtAndCapitalLeaseObligation
-            + ", currentDeferredAssets=" + currentDeferredAssets + ", currentDeferredLiabilities="
-            + currentDeferredLiabilities + ", currentDeferredRevenue=" + currentDeferredRevenue
-            + ", currentLiabilities=" + currentLiabilities + ", definedPensionBenefit=" + definedPensionBenefit
-            + ", employeeBenefits=" + employeeBenefits + ", fileDate=" + fileDate + ", finishedGoods=" + finishedGoods
-            + ", fiscalYearEnd=" + fiscalYearEnd + ", fiscalYearEndChange=" + fiscalYearEndChange + ", formType="
-            + formType + ", gainsLossesNotAffectingRetainedEarnings=" + gainsLossesNotAffectingRetainedEarnings
-            + ", goodwill=" + goodwill + ", goodwillAndOtherIntangibleAssets=" + goodwillAndOtherIntangibleAssets
-            + ", grossAccountsReceivable=" + grossAccountsReceivable + ", grossPPE=" + grossPPE + ", incomeTaxPayable="
-            + incomeTaxPayable + ", inventory=" + inventory + ", investedCapital=" + investedCapital
-            + ", investmentinFinancialAssets=" + investmentinFinancialAssets + ", investmentsAndAdvances="
-            + investmentsAndAdvances + ", landAndImprovements=" + landAndImprovements + ", leases=" + leases
-            + ", liabilitiesHeldforSaleNonCurrent=" + liabilitiesHeldforSaleNonCurrent
-            + ", longTermCapitalLeaseObligation=" + longTermCapitalLeaseObligation + ", longTermDebt=" + longTermDebt
-            + ", longTermDebtAndCapitalLeaseObligation=" + longTermDebtAndCapitalLeaseObligation
-            + ", longTermInvestments=" + longTermInvestments + ", longTermProvisions=" + longTermProvisions
-            + ", minorityInterest=" + minorityInterest + ", netDebt=" + netDebt + ", netPPE=" + netPPE
-            + ", netTangibleAssets=" + netTangibleAssets + ", nonCurrentAccountsReceivable="
-            + nonCurrentAccountsReceivable + ", nonCurrentDeferredAssets=" + nonCurrentDeferredAssets
-            + ", nonCurrentDeferredLiabilities=" + nonCurrentDeferredLiabilities + ", nonCurrentDeferredRevenue="
-            + nonCurrentDeferredRevenue + ", nonCurrentDeferredTaxesAssets=" + nonCurrentDeferredTaxesAssets
-            + ", nonCurrentDeferredTaxesLiabilities=" + nonCurrentDeferredTaxesLiabilities
-            + ", nonCurrentPensionAndOtherPostretirementBenefitPlans="
-            + nonCurrentPensionAndOtherPostretirementBenefitPlans + ", numberOfShareHolders=" + numberOfShareHolders
-            + ", ordinarySharesNumber=" + ordinarySharesNumber + ", otherCurrentAssets=" + otherCurrentAssets
-            + ", otherCurrentBorrowings=" + otherCurrentBorrowings + ", otherCurrentLiabilities="
-            + otherCurrentLiabilities + ", otherEquityAdjustments=" + otherEquityAdjustments
-            + ", otherIntangibleAssets=" + otherIntangibleAssets + ", otherNonCurrentAssets=" + otherNonCurrentAssets
-            + ", otherNonCurrentLiabilities=" + otherNonCurrentLiabilities + ", otherProperties=" + otherProperties
-            + ", otherReceivables=" + otherReceivables + ", otherShortTermInvestments=" + otherShortTermInvestments
-            + ", payables=" + payables + ", payablesAndAccruedExpenses=" + payablesAndAccruedExpenses
-            + ", pensionandOtherPostRetirementBenefitPlansCurrent=" + pensionandOtherPostRetirementBenefitPlansCurrent
-            + ", period=" + period + ", periodEndingDate=" + periodEndingDate + ", prepaidAssets=" + prepaidAssets
-            + ", properties=" + properties + ", rawMaterials=" + rawMaterials + ", receivables=" + receivables
-            + ", reportType=" + reportType + ", restrictedCash=" + restrictedCash + ", retainedEarnings="
-            + retainedEarnings + ", shareIssued=" + shareIssued + ", stockholdersEquity=" + stockholdersEquity
-            + ", tangibleBookValue=" + tangibleBookValue + ", totalAssets=" + totalAssets + ", totalCapitalization="
-            + totalCapitalization + ", totalDebt=" + totalDebt + ", totalEquity=" + totalEquity
-            + ", totalEquityGrossMinorityInterest=" + totalEquityGrossMinorityInterest
-            + ", totalLiabilitiesNetMinorityInterest=" + totalLiabilitiesNetMinorityInterest
-            + ", totalNonCurrentAssets=" + totalNonCurrentAssets + ", totalNonCurrentLiabilitiesNetMinorityInterest="
-            + totalNonCurrentLiabilitiesNetMinorityInterest + ", totalTaxPayable=" + totalTaxPayable
-            + ", tradeandOtherPayablesNonCurrent=" + tradeandOtherPayablesNonCurrent + ", treasurySharesNumber="
-            + treasurySharesNumber + ", treasuryStock=" + treasuryStock + ", workingCapital=" + workingCapital
-            + ", workInProcess=" + workInProcess + ", commonStock=" + commonStock + ", common_stock_equity="
-            + common_stock_equity + ", duefrom_related_parties_current=" + duefrom_related_parties_current
-            + ", dueto_related_parties_current=" + dueto_related_parties_current + ", machinery_furniture_equipment="
-            + machinery_furniture_equipment + ", other_equity_interest=" + other_equity_interest
-            + ", other_inventories=" + other_inventories + ", other_payable=" + other_payable + ", preferred_stock="
-            + preferred_stock + ", currentNotesPayable=" + currentNotesPayable + ", currentProvisions="
-            + currentProvisions + ", dividendsPayable=" + dividendsPayable + ", interestPayable=" + interestPayable
-            + ", lineOfCredit=" + lineOfCredit + ", loansReceivable=" + loansReceivable + ", otherInvestments="
-            + otherInvestments + ", preferredSecuritiesOutsideStockEquity=" + preferredSecuritiesOutsideStockEquity
-            + "]";
-   }
-   
 }

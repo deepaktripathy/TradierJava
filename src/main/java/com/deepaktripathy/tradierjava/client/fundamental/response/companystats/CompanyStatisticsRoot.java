@@ -4,7 +4,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class CompanyStatisticsRoot{
+   
    @JsonProperty("request")
    private String request;
 
@@ -16,13 +22,6 @@ public class CompanyStatisticsRoot{
 
    @JsonProperty("error")
    private String error;
-
-   @Override
-   public String toString() {
-      return "CompanyStatisticsRoot [request=" + request + ", type=" + type + ", results=" + results + ", error="
-            + error + "]";
-   }
-
 }
 
 

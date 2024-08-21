@@ -6,7 +6,13 @@ import com.deepaktripathy.tradierjava.client.fundamental.response.financials.his
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class HistoricalReturns extends UnrecognizedFieldsCollector {
+
    @JsonProperty("period_1w") 
    private Period1w period1Wk;
 
@@ -15,10 +21,4 @@ public class HistoricalReturns extends UnrecognizedFieldsCollector {
    
    @JsonProperty("period_1y") 
    private Period1y period1Yr;
-
-   @Override
-   public String toString() {
-      return "HistoricalReturns [period1Wk=" + period1Wk + ", period1Mo=" + period1Mo + ", period1Yr=" + period1Yr
-            + "]";
-   }
 }
