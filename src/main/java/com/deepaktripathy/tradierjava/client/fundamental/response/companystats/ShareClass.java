@@ -25,6 +25,9 @@ public class ShareClass extends UnrecognizedFieldsCollector {
    @JsonProperty("delisting_date")
    private String delistingDate;
 
+   @JsonProperty("depositary_receipt_ratio")
+   private Double depositaryReceiptRatio;
+   
    @JsonProperty("exchange_id")
    private String exchangeId;
 

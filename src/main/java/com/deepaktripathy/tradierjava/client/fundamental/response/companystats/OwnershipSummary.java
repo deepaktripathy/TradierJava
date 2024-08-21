@@ -97,14 +97,14 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    @JsonProperty("institution_shares_sold")
    private Integer institutionSharesSold;
 
-   @JsonProperty("float")
-   private Integer myfloat;
-
    @JsonProperty("number_of_insider_buys")
    private Integer numberOfInsiderBuys;
 
    @JsonProperty("number_of_insider_sellers")
    private Integer numberOfInsiderSellers;
+
+   @JsonProperty("float")
+   private Integer publicFloat;
 
    @JsonProperty("quoted_shares_outstanding")
    private Integer quotedSharesOutstanding;

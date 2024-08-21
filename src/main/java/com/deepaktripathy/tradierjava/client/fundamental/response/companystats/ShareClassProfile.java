@@ -17,7 +17,7 @@ public class ShareClassProfile extends UnrecognizedFieldsCollector {
    private String enterpriseValueAsOfDate;
 
    @JsonProperty("market_cap")
-   private Object marketCap;
+   private Long marketCap;
 
    @JsonProperty("MarketCap.asOfDate")
    private String marketCapAsOfDate;

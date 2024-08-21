@@ -16,6 +16,9 @@ public class Headquarter extends UnrecognizedFieldsCollector {
    @JsonProperty("address_line2")
    private String addressLine2;
 
+   @JsonProperty("address_line3")
+   private String addressLine3;
+   
    @JsonProperty("city")
    private String city;
 

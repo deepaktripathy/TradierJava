@@ -3,7 +3,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import com.deepaktripathy.tradierjava.client.fundamental.DateKeyDeserializer;
+import com.deepaktripathy.tradierjava.client.fundamental.response.DateKeyDeserializer;
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

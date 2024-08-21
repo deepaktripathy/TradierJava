@@ -106,11 +106,8 @@ public class TradierAPI {
     */
    protected static void validateProps(Properties tradierProps) {
       LOGGER.trace("Validating props: {}", tradierProps.toString());
-      String accountId = tradierProps.getProperty(K_TRADIER_ACCOUNTID);
-      if (StringUtils.isBlank(accountId)) {
-         throw new IllegalArgumentException(
-               "Missing tradierjava.api.accountid property. This is obtained from Tradier account API settings page");
-      }
+
+      //accountId is optional, needed only for account/broker activities and is supplied by the user.
 
       String token = tradierProps.getProperty(K_TRADIER_TOKEN);
       if (StringUtils.isBlank(token)) {

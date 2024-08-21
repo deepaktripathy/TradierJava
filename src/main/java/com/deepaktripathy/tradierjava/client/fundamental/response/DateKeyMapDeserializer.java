@@ -1,4 +1,4 @@
-package com.deepaktripathy.tradierjava.client.fundamental;
+package com.deepaktripathy.tradierjava.client.fundamental.response;
 
 import java.io.IOException;
 import java.time.LocalDate;
