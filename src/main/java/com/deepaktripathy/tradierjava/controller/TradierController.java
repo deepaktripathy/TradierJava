@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,11 +55,11 @@ import com.deepaktripathy.tradierjava.client.user.response.Profile;
 
 @RestController
 public class TradierController {
+   private static final Logger LOGGER = LoggerFactory.getLogger(TradierController.class);
 
    /****************************
     * MarketDataAPI Endpoints
     ****************************/
-
    @GetMapping("/markets/quote")
    public String getQuote(@RequestHeader HttpHeaders headers,
          @RequestParam(value = "symbol", required = true) String symbol,
@@ -65,7 +67,7 @@ public class TradierController {
 
       Properties tradierProps = buildProperties(headers);
       Optional<Quote> quote = new TradierAPI(tradierProps).marketData().getQuote(symbol, includeGreeks);
-      System.out.println("Response quote: " + quote);
+      LOGGER.debug("Response quote: " + quote);
       return quote.toString();
    }
 
@@ -119,7 +121,7 @@ public class TradierController {
          @RequestParam(value = "underlying") String symbol) {
       Properties tradierProps = buildProperties(headers);
       List<String> options = new TradierAPI(tradierProps).marketData().lookupOptionSymbolsFor(symbol);
-//       System.out.println("Response options: " + options);
+//       LOGGER.debug("Response options: " + options);
 
       return options;
    }
@@ -181,7 +183,6 @@ public class TradierController {
    /****************************
     * TraderAPI Endpoints
     ****************************/
-
    @PostMapping(value = "/accounts/{account_id}/orders")
    public long postEquityOrder(@RequestHeader HttpHeaders headers,
          @PathVariable(name = "account_id", required = true) String accountId,
@@ -198,7 +199,7 @@ public class TradierController {
             OrderType.valueOf(orderType), Duration.valueOf(duration), stopPrice, orderTag);
       Properties tradierProps = buildProperties(headers);
 
-      System.out.println("Calling postStockOrder");
+      LOGGER.debug("Calling postStockOrder");
       return new TradierAPI(tradierProps).accounts().trader().postStockOrder(accountId, request);
    }
 
@@ -218,7 +219,7 @@ public class TradierController {
       OptionOrderRequest request = new OptionOrderRequest(OptionSide.valueOf(side), symbol, quantity, price,
             OrderType.valueOf(orderType), Duration.valueOf(duration), stopPrice, orderTag, optionSymbol);
       Properties tradierProps = buildProperties(headers);
-      System.out.println("Calling postOptionOrder");
+      LOGGER.debug("Calling postOptionOrder");
       return new TradierAPI(tradierProps).accounts().trader().postOptionOrder(accountId, request);
    }
 
@@ -234,7 +235,7 @@ public class TradierController {
       // since all these input parameters are optional, the validation can only be
       // done at the service level
       Properties tradierProps = buildProperties(headers);
-      System.out.println("test");
+      LOGGER.debug("test");
       return new TradierAPI(tradierProps).accounts().trader().modifyOrder(accountId, orderId, orderType, duration,
             price, stopPrice);
    }
@@ -260,7 +261,6 @@ public class TradierController {
    /****************************
     * AccountAPI Endpoints
     ****************************/
-
    @GetMapping("/accounts/{account_id}/balances")
    @ResponseBody
    public Balances getAccountBalances(@RequestHeader HttpHeaders headers,
@@ -339,8 +339,8 @@ public class TradierController {
 
    private Properties buildProperties(HttpHeaders headers) {
       Properties tradierProps = new Properties();
-//    	System.out.println("Headers: " + headers.toString());
-//    	System.out.println("Headers map: " + headers.toSingleValueMap().toString());
+//    	LOGGER.debug("Headers: " + headers.toString());
+//    	LOGGER.debug("Headers map: " + headers.toSingleValueMap().toString());
 //    	final String authorizationHeaderValue = request.getHeader("Authorization");
 //        if (authorizationHeaderValue != null && authorizationHeaderValue.startsWith("Bearer")) {
 //          String token = authorizationHeaderValue.substring(7, authorizationHeaderValue.length());
@@ -348,19 +348,19 @@ public class TradierController {
       if (headers.get(HttpHeaders.AUTHORIZATION) == null)
          return null;
 
-      System.out.println("Headers: auth all: " + headers.get(HttpHeaders.AUTHORIZATION));
+      LOGGER.debug("Headers: auth all: " + headers.get(HttpHeaders.AUTHORIZATION));
       final String authValue = headers.getFirst(HttpHeaders.AUTHORIZATION);
-      System.out.println("Headers: auth first: " + authValue);
+      LOGGER.debug("Headers: auth first: " + authValue);
       // also expects the url as a header.
 
       String token = null;
       if (authValue != null && authValue.startsWith("Bearer"))
          token = authValue.substring(7, authValue.length());// 6 chars + space
-      System.out.println("Headers: token: " + token);
+      LOGGER.debug("Headers: token: " + token);
       tradierProps.setProperty(TradierAPI.K_TRADIER_TOKEN, token);
 
       String accept = headers.getAccept().toString();
-      System.out.println("Headers: accept: " + accept);
+      LOGGER.debug("Headers: accept: " + accept);
       // String contentType = headers.getContentType();
 
       tradierProps.setProperty(TradierAPI.K_TRADIER_URL, "https://sandbox.tradier.com");

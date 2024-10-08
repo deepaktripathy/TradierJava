@@ -65,7 +65,7 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Object fundCompanyTotalMrketValue;
 
    @JsonProperty("fund_company_total_shares_bought_by_new_owners")
-   private Integer fundCompanyTotalSharesBoughtByNewOwners;
+   private Long fundCompanyTotalSharesBoughtByNewOwners;
 
    @JsonProperty("fund_company_total_shares_sold_out")
    private Integer fundCompanyTotalSharesSoldOut;
@@ -74,13 +74,13 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Integer insiderPercentOwned;
 
    @JsonProperty("insider_shares_bought")
-   private Integer insiderSharesBought;
+   private Long insiderSharesBought;
 
    @JsonProperty("insider_shares_owned")
-   private Integer insiderSharesOwned;
+   private Long insiderSharesOwned;
 
    @JsonProperty("insider_shares_sold")
-   private Integer insiderSharesSold;
+   private Long insiderSharesSold;
 
    @JsonProperty("institution_holder_number")
    private Integer institutionHolderNumber;
@@ -89,13 +89,13 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Double institutionPercentHeld;
 
    @JsonProperty("institution_shares_bought")
-   private Integer institutionSharesBought;
+   private Long institutionSharesBought;
 
    @JsonProperty("institution_shares_held")
    private Long institutionSharesHeld;
 
    @JsonProperty("institution_shares_sold")
-   private Integer institutionSharesSold;
+   private Long institutionSharesSold;
 
    @JsonProperty("number_of_insider_buys")
    private Integer numberOfInsiderBuys;
@@ -104,7 +104,7 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Integer numberOfInsiderSellers;
 
    @JsonProperty("float")
-   private Integer publicFloat;
+   private Long publicFloat;
 
    @JsonProperty("quoted_shares_outstanding")
    private Integer quotedSharesOutstanding;
@@ -116,10 +116,10 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private String shareClassId;
 
    @JsonProperty("share_class_level_shares_outstanding_balance_sheet")
-   private Integer shareClassLevelSharesOutstandingBalanceSheet;
+   private Long shareClassLevelSharesOutstandingBalanceSheet;
 
    @JsonProperty("share_class_level_shares_outstanding_interim")
-   private Integer shareClassLevelSharesOutstandingInterim;
+   private Long shareClassLevelSharesOutstandingInterim;
 
    @JsonProperty("share_class_level_treasury_share_outstanding")
    private Integer shareClassLevelTreasuryShareOutstanding;
@@ -131,5 +131,5 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private String sharesOutstandingWithBalanceSheetEndingDate;
 
    @JsonProperty("un_quoted_shares_outstanding")
-   private Integer unQuotedSharesOutstanding;
+   private Long unQuotedSharesOutstanding;
 }

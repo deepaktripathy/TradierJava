@@ -197,8 +197,6 @@ public class FundamentalAPI {
          String responseBodyStr = responseBody.string();
          LOGGER.debug("resp length: " + responseBodyStr.length());
          for(int count = 0; count < responseBodyStr.length(); count+=9000)
-            System.out.println(responseBodyStr.substring(count,  Math.min(count+9000, responseBodyStr.length())));
-         
          //LOGGER.debug("resp: " + responseBodyStr);
          
          if (responseCode == 200) {

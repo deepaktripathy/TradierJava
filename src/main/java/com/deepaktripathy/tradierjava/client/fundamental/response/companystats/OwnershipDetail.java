@@ -20,7 +20,7 @@ public class OwnershipDetail extends UnrecognizedFieldsCollector {
    private Long marketValue;
 
    @JsonProperty("number_of_shares")
-   private Integer numberOfShares;
+   private Long numberOfShares;
 
    @JsonProperty("owner_c_i_k")
    private Integer ownerCIK;
@@ -41,7 +41,7 @@ public class OwnershipDetail extends UnrecognizedFieldsCollector {
    private Double percentageOwnership;
 
    @JsonProperty("share_change")
-   private Integer shareChange;
+   private Long shareChange;
 
    @JsonProperty("share_class_id")
    private String shareClassId;
