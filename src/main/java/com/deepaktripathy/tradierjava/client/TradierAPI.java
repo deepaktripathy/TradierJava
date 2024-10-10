@@ -183,6 +183,7 @@ public class TradierAPI {
          loggingInterceptor.setLevel(BODY);
          clientBuilder.addInterceptor(loggingInterceptor);
       }
+      clientBuilder.connectTimeout(30, TimeUnit.SECONDS);
       clientBuilder.readTimeout(2, TimeUnit.MINUTES);
       clientBuilder.writeTimeout(2, TimeUnit.MINUTES);
       return clientBuilder.build();
