@@ -137,7 +137,7 @@ public class MarketDataAPI {
          ResponseBody responseBody = response.body();
          int responseCode = response.code();
          String responseBodyStr = responseBody.string();
-         System.out.println("resp: " + responseBodyStr);
+         LOGGER.debug("resp: " + responseBodyStr);
          if (responseCode == 200) {
             ObjectMapper mapper = Utils.objectMapper();
             final JsonNode jsonTree = mapper.readTree(responseBodyStr);

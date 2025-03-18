@@ -18,7 +18,7 @@ public abstract class UnrecognizedFieldsCollector {
    private void setUnrecognizedFields(String key, Object value) {
        this.unrecognizedFields.put(key, value);
        String valueClass = (value == null) ?"null" :value.getClass().getSimpleName();
-       System.out.println("Unrecognized field found under class: " + this.getClass().getName() 
+       LOGGER.debug("Unrecognized field found under class: " + this.getClass().getName() 
              + ", field: " + key + ", type: " + valueClass);
    }
    

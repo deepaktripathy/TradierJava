@@ -29,19 +29,19 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Double _13fPercentHeld;
 
    @JsonProperty("13_f_shares_bought")
-   private Integer _13fSharesBought;
+   private Long _13fSharesBought;
 
    @JsonProperty("13_f_shares_held")
    private Long _13fSharesHeld;
 
    @JsonProperty("13_f_shares_sold")
-   private Integer _13fSharesSold;
+   private Long _13fSharesSold;
 
    @JsonProperty("13_f_total_shares_bought_by_new_owners")
-   private Integer _13fTotalSharesBoughtByNewOwners;
+   private Long _13fTotalSharesBoughtByNewOwners;
 
    @JsonProperty("13_f_total_shares_sold_out")
-   private Integer _13fTotalSharesSoldOut;
+   private Long _13fTotalSharesSoldOut;
 
    @JsonProperty("13_f_total_market_value")
    private Object _13fTtalMarketValue;
@@ -68,7 +68,7 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Long fundCompanyTotalSharesBoughtByNewOwners;
 
    @JsonProperty("fund_company_total_shares_sold_out")
-   private Integer fundCompanyTotalSharesSoldOut;
+   private Long fundCompanyTotalSharesSoldOut;
 
    @JsonProperty("insider_percent_owned")
    private Integer insiderPercentOwned;
@@ -107,7 +107,7 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Long publicFloat;
 
    @JsonProperty("quoted_shares_outstanding")
-   private Integer quotedSharesOutstanding;
+   private Long quotedSharesOutstanding;
 
    @JsonProperty("reasonof_shares_change")
    private String reasonofSharesChange;
@@ -122,7 +122,7 @@ public class OwnershipSummary extends UnrecognizedFieldsCollector {
    private Long shareClassLevelSharesOutstandingInterim;
 
    @JsonProperty("share_class_level_treasury_share_outstanding")
-   private Integer shareClassLevelTreasuryShareOutstanding;
+   private Long shareClassLevelTreasuryShareOutstanding;
 
    @JsonProperty("shares_outstanding")
    private Long sharesOutstanding;

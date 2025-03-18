@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.deepaktripathy.tradierjava.client.fundamental.response.corpaction.SplitStat;
+import com.deepaktripathy.tradierjava.client.marketdata.MarketDataAPI;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class DateKeyMapDeserializer extends JsonDeserializer<Map<String, Object>> {
+   private static final Logger LOGGER = LoggerFactory.getLogger(DateKeyMapDeserializer.class);
 
    private TypeReference<HashMap<LocalDate, SplitStat>> typeRef = new TypeReference<HashMap<LocalDate, SplitStat>>() {};
 
@@ -30,8 +35,8 @@ public class DateKeyMapDeserializer extends JsonDeserializer<Map<String, Object>
        Map<LocalDate, SplitStat> map = new ObjectMapper().readValue(p, typeRef);
 
        for(Entry<LocalDate, SplitStat> e : map.entrySet()){
-          System.out.println("key: " + e.getKey());
-          System.out.println("value: " + e.getValue());
+          LOGGER.debug("key: " + e.getKey());
+          LOGGER.debug("value: " + e.getValue());
        }
 
        return target;
