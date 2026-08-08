@@ -1,6 +1,6 @@
 package com.deepaktripathy.tradierjava.client.marketdata.response;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.deepaktripathy.tradierjava.client.model.response.UnrecognizedFieldsCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,10 +28,10 @@ public class TimeSalesData extends UnrecognizedFieldsCollector {
    private Double price;
    
    @JsonProperty("time") 
-   private Date time;
+   private LocalDateTime time;
    
    @JsonProperty("timestamp") 
-   private Integer timestamp;
+   private Long timestamp;
    
    @JsonProperty("volume") 
    private Integer volume;

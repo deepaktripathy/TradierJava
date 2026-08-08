@@ -44,7 +44,15 @@ public class Utils {
    }
 
    /**
+    * Returns the String representation in YYYY-MM-DD HH:MM format.
+    */
+   public static String isoDateTimeShort(LocalDateTime dateTime) {
+      return dateTime.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:MM"));
+   }
+
+   /**
     * Returns the String representation in DateTimeFormatter.ISO_LOCAL_DATE_TIME format
+    * Structure: "2026-06-07T14:30:00"
     */
    public static String isoDateTime(LocalDateTime dateTime) {
       // final long millisPerDay = 1000 * 60 * 60 * 24;

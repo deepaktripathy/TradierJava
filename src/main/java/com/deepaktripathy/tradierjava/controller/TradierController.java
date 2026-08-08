@@ -33,10 +33,10 @@ import com.deepaktripathy.tradierjava.client.account.response.Balances;
 import com.deepaktripathy.tradierjava.client.account.response.GainLossResponse;
 import com.deepaktripathy.tradierjava.client.account.response.Order;
 import com.deepaktripathy.tradierjava.client.account.response.Position;
+import com.deepaktripathy.tradierjava.client.marketdata.TickInterval;
 import com.deepaktripathy.tradierjava.client.marketdata.request.OptionStrikePricesRequest;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Clock;
 import com.deepaktripathy.tradierjava.client.marketdata.response.HistoricPrice;
-import com.deepaktripathy.tradierjava.client.marketdata.response.Interval;
 import com.deepaktripathy.tradierjava.client.marketdata.response.MarketCalendar;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Option;
 import com.deepaktripathy.tradierjava.client.marketdata.response.Quote;
@@ -138,7 +138,7 @@ public class TradierController {
    @GetMapping("/markets/timesales")
    public TimeSalesResponse getTimesales(@RequestHeader HttpHeaders headers,
          @RequestParam(value = "symbol", required = true) String symbol,
-         @RequestParam(value = "interval", required = false) Interval interval,
+         @RequestParam(value = "interval", required = false) TickInterval interval,
          @RequestParam(value = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
          @RequestParam(value = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
          @RequestParam(value = "session_filter", required = false) SessionFilter sessionFilter) {

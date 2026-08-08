@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.deepaktripathy.tradierjava.client.fundamental.response.corpaction.SplitStat;
-import com.deepaktripathy.tradierjava.client.marketdata.MarketDataAPI;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

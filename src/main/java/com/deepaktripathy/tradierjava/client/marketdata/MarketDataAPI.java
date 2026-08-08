@@ -1,7 +1,7 @@
 package com.deepaktripathy.tradierjava.client.marketdata;
 
 import static com.deepaktripathy.tradierjava.utils.Utils.isoDate;
-import static com.deepaktripathy.tradierjava.utils.Utils.isoDateTime;
+import static com.deepaktripathy.tradierjava.utils.Utils.isoDateTimeShort;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -137,7 +137,7 @@ public class MarketDataAPI {
          ResponseBody responseBody = response.body();
          int responseCode = response.code();
          String responseBodyStr = responseBody.string();
-         LOGGER.debug("resp: " + responseBodyStr);
+         //LOGGER.debug("resp: " + responseBodyStr);
          if (responseCode == 200) {
             ObjectMapper mapper = Utils.objectMapper();
             final JsonNode jsonTree = mapper.readTree(responseBodyStr);
@@ -227,7 +227,16 @@ public class MarketDataAPI {
       return new ArrayList<>();
    }
 
-   public TimeSalesResponse getTimeSales(@Nonnull String symbol, @Nullable Interval interval,
+   /** 
+    * Returns intra-day quote data. Date ranges depend on tick interval:
+    * Interval >Data Available (Open)  >Data Available (All)
+    * tick     >5 Days                 >N/A
+    * 1min     >20 Days                >10 Days
+    * 5min     >40 Days                >18 Days
+    * 15min    >40 Days                >18 Days
+    * 
+    * */
+   public TimeSalesResponse getTimeSales(@Nonnull String symbol, @Nullable TickInterval interval,
          @Nullable LocalDateTime start, @Nullable LocalDateTime end, @Nullable SessionFilter sessionFilter) {
       Objects.requireNonNull(symbol);
 
@@ -238,13 +247,13 @@ public class MarketDataAPI {
          String url = String.format(baseUrl + "/v1/markets/timesales");
          HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
          httpBuilder.addQueryParameter("symbol", symbol);
-         httpBuilder.addQueryParameter("interval", (interval == null) ? "daily" : interval.toString());
-         httpBuilder.addQueryParameter("session_filter", (interval == null) ? "all" : interval.toString());
+         httpBuilder.addQueryParameter("interval", (interval == null) ? TickInterval.FIFTEEN.toString() : interval.toString());
+         httpBuilder.addQueryParameter("session_filter", sessionFilter.toString());
          if (start != null) {
-            httpBuilder.addQueryParameter("start", isoDateTime(start));
+            httpBuilder.addQueryParameter("start", isoDateTimeShort(start));
          }
          if (end != null) {
-            httpBuilder.addQueryParameter("end", isoDateTime(end));
+            httpBuilder.addQueryParameter("end", isoDateTimeShort(end));
          }
 
          Request.Builder requestBuilder = new Request.Builder().url(httpBuilder.build()).get();
@@ -283,6 +292,73 @@ public class MarketDataAPI {
          throw new RuntimeException(ex);
       }
       return new TimeSalesResponse();
+   }
+
+   /** 
+    * Returns intra day quote data. Date ranges depend on tick interval:
+    * Interval >Data Available (Open)  >Data Available (All)
+    * tick     >5 Days                 >N/A
+    * 1min     >20 Days                >10 Days
+    * 5min     >40 Days                >18 Days
+    * 15min    >40 Days                >18 Days
+    * 
+    * Tradier does not provide option intraday quotes. 
+    * */
+   private List<Quote> fetchIntraDayQuotes(String symbol, TickInterval interval, 
+         LocalDate startDate, LocalDate endDate, boolean includeAfterMarket) {
+      Objects.requireNonNull(symbol);
+
+      List<Quote> quotes = new ArrayList<>();
+      try {
+         //.url("https://api.tradier.com/v1/markets/timesales?
+         //symbol=GOOG&interval=5min&start=2026-07-01&end=2026-07-10&session_filter=all")         
+         String url = String.format(baseUrl + "/v1/markets/timesales");
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+
+         Request.Builder requestBuilder;
+         httpBuilder.addQueryParameter("symbol", symbol)
+               .addQueryParameter("interval", interval.toString())
+               .addQueryParameter("start", startDate.format(DateTimeFormatter.ISO_DATE))
+               .addQueryParameter("end", endDate.format(DateTimeFormatter.ISO_DATE))
+               .addQueryParameter("session_filter", includeAfterMarket ?"all" :"open");
+         requestBuilder = new Request.Builder().url(httpBuilder.build()).get();
+
+//work on these tradier quote stuff. these code move to tempSpace to test.
+//OTHERWISE 
+//ManualStockScanner to remove the disabled orders. 
+//Then for editmode disable wanted order chains and cancel edit is enable wanted order chains
+
+
+         headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+         Request request = requestBuilder.build();
+
+         Response response = httpClient.newCall(request).execute();
+
+         ResponseBody responseBody = response.body();
+         int responseCode = response.code();
+         String responseBodyStr = responseBody.string();
+         //LOGGER.debug("resp: " + responseBodyStr);
+         if (responseCode == 200) {
+            ObjectMapper mapper = Utils.objectMapper();
+            final JsonNode jsonTree = mapper.readTree(responseBodyStr);
+            JsonNode quoteNode = jsonTree.findPath("series");
+
+            // Tradier returns single quote as an object while multi as an Array
+            if (quoteNode.isObject()) {
+               Quote quote = mapper.treeToValue(quoteNode, Quote.class);
+               quotes.add(quote);
+            } else {
+               List<Quote> myQuotes = mapper.treeToValue(jsonTree.findPath("quotes"), Quotes.class).getQuotes();
+               if (myQuotes != null && !myQuotes.isEmpty())
+                  quotes.addAll(myQuotes);
+            }
+         } else
+            LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
+      } catch (Exception ex) {
+         throw new RuntimeException(ex);
+      }
+      return quotes;
    }
 
    //TODO: NOT yet complete as the response structure changes based on the request.
