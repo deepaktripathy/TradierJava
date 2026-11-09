@@ -153,6 +153,9 @@ public class TradierAPI {
       return marketData;
    }
 
+   /**
+    * @return a hard coded map of exchange code to option exchange names collected from Tradier.
+    */
    public Map<String, String> getOptionExchangeCodeMap() {
       String exchMapStr = "A=NYSE Amex Options" + ",B=BOX Options Exchange" + ",C=Chicago Board Options Exchange (CBOE)"
             + ",H=ISE Gemini" + ",I=International Securities Exchange (ISE)" + ",M=MIAX Options Exchange"

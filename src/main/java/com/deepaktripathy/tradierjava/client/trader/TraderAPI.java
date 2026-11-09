@@ -25,6 +25,12 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 /**
+ * Recommended Workflow from Tradier docs:
+ * For most integrations, follow this pattern for any order:
+ * Preview the order with preview=true to validate parameters and see costs
+ * If result: true, submit the same payload with preview=false
+ * Poll GET /v1/accounts/{account_id}/orders/{order_id} to monitor status — confirm it reaches open, partially_filled, or filled rather than rejected or canceled
+ * Cancel or modify as needed while the order is still open
  * 
  * @author deepak tripathy created on 07/02/2024
  *
@@ -47,6 +53,17 @@ public class TraderAPI {
       headers.put("Accept", "application/json");
    }
 
+   /** 
+    * Deletes an order.<br> 
+    * Tradier may return 200 - OK response which means the API call submitting 
+    * the order was correct and the order has been received but the order could 
+    * still be rejected at the brokerage level.<br> 
+    * So, it is important to check the order status after placing the order. 
+    * 
+    * @param accountId
+    * @param orderId id of existing order.
+    * @return supplied orderId if order is received,
+    */
    public long cancelOrder(@Nonnull String accountId, @Nonnull Long orderId) {
       Objects.requireNonNull(accountId);
       Objects.requireNonNull(orderId);
@@ -80,6 +97,17 @@ public class TraderAPI {
       return 0;
    }
 
+   /**
+    * Posts a stock trade order.<br>
+    * Tradier may return 200 - OK response which means the API call submitting 
+    * the order was correct and the order has been received but the order could 
+    * still be rejected at the brokerage level.<br> 
+    * So, it is important to check the order status after placing the order. 
+    * 
+    * @param accountId
+    * @param orderReq
+    * @return
+    */
    public long postStockOrder(@Nonnull String accountId, EquityOrderRequest orderReq) {
       Objects.requireNonNull(accountId);
       try {
@@ -118,6 +146,17 @@ public class TraderAPI {
       return 0;
    }
 
+   /**
+    * Posts an Option trade order.<br>
+    * Tradier may return 200 - OK response which means the API call submitting 
+    * the order was correct and the order has been received but the order could 
+    * still be rejected at the brokerage level.<br> 
+    * So, it is important to check the order status after placing the order. 
+    * 
+    * @param accountId
+    * @param orderReq
+    * @return
+    */
    public long postOptionOrder(@Nonnull String accountId, OptionOrderRequest orderReq) {
       Objects.requireNonNull(accountId);
       try {
@@ -156,6 +195,26 @@ public class TraderAPI {
       return 0;
    }
 
+   /**
+    * Modify the type, duration, price or stop price of an open order.<br>
+    * The quantity can not be modified.<br>
+    * An order is modifiable only if its status is open or partially_filled.<br> 
+    * So, check the order status before sending for modification.<br>
+    * 
+    * Tradier may return 200 - OK response which means the API call submitting 
+    * the order was correct and the order has been received but the order could 
+    * still be rejected at the brokerage level.<br> 
+    * So, it is important to check the order status after placing the order. 
+    * 
+    * 
+    * @param accountId
+    * @param existingOrderId
+    * @param orderType
+    * @param duration
+    * @param price
+    * @param stopPrice
+    * @return
+    */
    public long modifyOrder(@Nonnull String accountId, @Nonnull Long existingOrderId, @Nullable String orderType,
          @Nullable String duration, @Nullable Double price, @Nullable Double stopPrice) {
       Objects.requireNonNull(accountId);

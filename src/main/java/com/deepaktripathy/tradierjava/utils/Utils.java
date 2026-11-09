@@ -44,10 +44,10 @@ public class Utils {
    }
 
    /**
-    * Returns the String representation in YYYY-MM-DD HH:MM format.
+    * Returns the String representation in YYYY-MM-dd HH:mm format.
     */
    public static String isoDateTimeShort(LocalDateTime dateTime) {
-      return dateTime.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:MM"));
+      return dateTime.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm"));
    }
 
    /**

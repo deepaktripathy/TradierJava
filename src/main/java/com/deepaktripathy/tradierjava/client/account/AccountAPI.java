@@ -15,12 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.deepaktripathy.tradierjava.client.account.request.GainLossRequest;
+import com.deepaktripathy.tradierjava.client.account.request.HistoryRequest;
 import com.deepaktripathy.tradierjava.client.account.response.Balances;
 import com.deepaktripathy.tradierjava.client.account.response.GainLossResponse;
+import com.deepaktripathy.tradierjava.client.account.response.HistoryResponse;
 import com.deepaktripathy.tradierjava.client.account.response.Order;
 import com.deepaktripathy.tradierjava.client.account.response.Orders;
 import com.deepaktripathy.tradierjava.client.account.response.Position;
 import com.deepaktripathy.tradierjava.client.account.response.Positions;
+import com.deepaktripathy.tradierjava.client.account.response.history.HistoryEvent;
 import com.deepaktripathy.tradierjava.client.trader.TraderAPI;
 import com.deepaktripathy.tradierjava.utils.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -229,6 +232,10 @@ public class AccountAPI {
       return null;
    }
 
+   /**
+    * Retrieves orders placed or active for the current market session/present 
+    * calendar day.
+    */
    public List<Order> getOrders(@Nonnull String accountId, @Nullable Integer page, @Nullable Boolean includeTags) {
       List<Order> orders = new ArrayList<>();
 
@@ -274,6 +281,10 @@ public class AccountAPI {
       return orders;
    }
 
+   /**
+    * Returns an order. Order must have been placed or active for the current 
+    * market session/present calendar day.
+    */
    public Optional<Order> getOrder(@Nonnull String accountId, @Nonnull Long orderId, @Nullable Boolean includeTags) {
       Objects.requireNonNull(accountId);
       Objects.requireNonNull(orderId);
@@ -312,5 +323,71 @@ public class AccountAPI {
       return Optional.empty();
    }
 
-   // TODO: get History
+   /**
+    * History is only available for live accounts and not for sandbox/paper accounts.
+    * History is available for longer timeline (3 years). 
+    */
+   public List<HistoryEvent> getHistory(@Nonnull String accountId, HistoryRequest historyRequest) {
+      List<HistoryEvent> events = new ArrayList<>();
+
+      String url = String.format(baseUrl + "/v1/accounts/%s/history", accountId);
+
+      HttpUrl.Builder httpBuilder = HttpUrl.parse(url).newBuilder();
+      if (historyRequest != null) {
+//         httpBuilder.addQueryParameter("type", historyRequest.getHistoryType().toString());
+//         httpBuilder.addQueryParameter("limit", "" + historyRequest.getLimit());
+         //httpBuilder.addQueryParameter("page", "" + historyRequest.getPage());
+      }
+
+      Request.Builder requestBuilder = new Request.Builder().url(httpBuilder.build()).get();
+      headers.forEach((k, v) -> requestBuilder.addHeader(k, v));
+      Request request = requestBuilder.build();
+
+      try {
+         Response response = httpClient.newCall(request).execute();
+
+         ResponseBody responseBody = response.body();
+         int responseCode = response.code();
+         String responseBodyStr = responseBody.string();
+         
+         //test single entry
+         //responseBodyStr = "{\"history\":{\"event\":[{\"amount\":-50.00,\"date\":\"2026-06-02T00:00:00Z\",\"type\":\"transfer\",\"transfer\":{\"description\":\"Annual Inactivity Fee\",\"quantity\":0.00000000}}]}}";
+         
+         LOGGER.debug("Response body: " + responseBodyStr);
+         if (responseCode == 200) {
+            ObjectMapper mapper = Utils.objectMapper();
+            final JsonNode jsonTree = mapper.readTree(responseBodyStr);
+//            JsonNode historyNode = jsonTree.findPath("history");
+            
+//            HistoryResponse responseObj = mapper.readValue(responseBodyStr, HistoryResponse.class);
+
+//            if (historyNode != null) {
+//               System.out.println("history node type: " + historyNode.getNodeType());
+//               JsonNode node0 = historyNode.get(0);
+//               System.out.println("node0: " + node0);
+//            }
+
+            JsonNode historyNode = jsonTree.findPath("history");
+            if(! historyNode.isNull() && historyNode.isObject()) {
+             HistoryResponse responseObj = mapper.readValue(responseBodyStr, HistoryResponse.class);
+             events = responseObj.getHistory().getEvents();
+//               JsonNode eventNode = historyNode.findPath("event");
+               // Jackson parses returns single entries as an object while multi as an Array
+//               if (eventNode.isObject()) {
+//                  HistoryEvent event = mapper.treeToValue(eventNode, HistoryEvent.class);
+//                  events.add(event);
+//               } else {
+//                  List<HistoryEvent> eventList = mapper.treeToValue(jsonTree.findPath("event"), List.class);
+//                  if (eventList != null && !eventList.isEmpty())
+//                     events.addAll(eventList);
+//               }
+            }
+         } else
+            LOGGER.warn("Response code: " + responseCode + ", reason: " + responseBodyStr);
+         response.close();
+      } catch (IOException ex) {
+         throw new RuntimeException(ex);
+      }
+      return events;
+   }
 }
